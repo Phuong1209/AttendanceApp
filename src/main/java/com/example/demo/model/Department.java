@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -17,6 +18,7 @@ import java.util.Set;
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String department_name;
 
@@ -32,6 +34,7 @@ public class Department {
     private Set<User> users;
 
 
+    private String departmentName;
 
 
 }
