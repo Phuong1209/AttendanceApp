@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name="departmentJobtype")
 public class DepartmentJobtype {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long department_id;
     private Long jobType_id;
     @ManyToMany
