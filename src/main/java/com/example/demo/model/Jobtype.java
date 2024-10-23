@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name="jobtype")
+@Table(name="job_type")
 public class Jobtype {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
