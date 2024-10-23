@@ -19,7 +19,7 @@ public class DepartmentJobtype {
     private Long department_id;
     private Long jobType_id;
     @ManyToMany
-    private Set<Jobtype> jobType;
+    private Set<JobType> jobType;
     @ManyToMany
     private Set<Department> department;
 }
