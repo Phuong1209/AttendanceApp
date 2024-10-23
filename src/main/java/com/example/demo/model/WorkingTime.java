@@ -29,7 +29,7 @@ public class WorkingTime {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Set<Users> user;
 
 
 }
