@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name="departmentJobtype")
+@Table(name="department_jobType")
 public class DepartmentJobtype {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
