@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -27,13 +26,12 @@ public class Department {
             joinColumns = @JoinColumn(name = "department_id"),
             inverseJoinColumns = @JoinColumn(name = "jobtype_id")
     )
-    private Set<Jobtype> jobtypes;
+    private Set<JobType> jobtypes;
 
     @ManyToMany(mappedBy = "departments")
     private Set<User> users;
 
 
-    private String departmentName;
 
 
 }

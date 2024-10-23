@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Table(name="jobtype")
-public class Jobtype {
+public class JobType {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
