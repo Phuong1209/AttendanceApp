@@ -24,13 +24,12 @@ public class WorkingTime {
     private LocalDateTime worktime;
     private LocalDateTime overtime;
 
-    @OneToMany(mappedBy = "working_time", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "workingTime", cascade = CascadeType.ALL)
     private Set<Task> tasks;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
-
 
 }
 
