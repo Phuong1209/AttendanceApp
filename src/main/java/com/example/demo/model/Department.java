@@ -18,7 +18,6 @@ import java.util.Set;
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String department_name;
 
@@ -28,7 +27,7 @@ public class Department {
             joinColumns = @JoinColumn(name = "department_id"),
             inverseJoinColumns = @JoinColumn(name = "jobtype_id")
     )
-    private Set<JobType> jobtypes;
+    private Set<Jobtype> jobtypes;
 
     @ManyToMany(mappedBy = "departments")
     private Set<User> users;
