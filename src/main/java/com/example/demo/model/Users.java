@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 
-public class user {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -20,7 +20,7 @@ public class user {
     private String userFullname;
     private String userPassword;
     @ManyToMany
-    private Set<position> position;
+    private Set<Position> position;
     @ManyToMany
-    private Set<department> department;
+    private Set<Department> department;
 }

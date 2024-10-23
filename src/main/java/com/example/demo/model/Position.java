@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 
-public class position {
+public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
