@@ -16,9 +16,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String user_name;
-    private String user_fullname;
-    private String user_passwords;
+    private String userName;
+    private String userFullName;
+    private String userPasswords;
     @ManyToMany
     @JoinTable(
             name="user_position",
@@ -38,4 +38,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<WorkingTime> workingTimes;
 
+    public void setId() {
+    }
 }
+
+
