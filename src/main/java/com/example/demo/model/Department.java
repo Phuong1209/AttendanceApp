@@ -31,7 +31,36 @@ public class Department {
     @ManyToMany(mappedBy = "departments")
     private Set<User> users;
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<JobType> getJobtypes() {
+        return jobtypes;
+    }
+
+    public void setJobtypes(Set<JobType> jobtypes) {
+        this.jobtypes = jobtypes;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
 }
