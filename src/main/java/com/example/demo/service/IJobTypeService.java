@@ -1,7 +1,12 @@
 package com.example.demo.service;
-//import com.model.JobType;
-//import com.model
-import org.springframework.stereotype.Service;
 
-public interface IJobTypeService extends
+import com.example.demo.model.JobType;
+import java.util.List;
+import java.util.Optional;
+
+public interface IJobTypeService {
+    List<JobType> findAll();  // Phải trả về List
+    Optional<JobType> findById(Long id);
+    void save(JobType jobType);
+    void remove(Long id);
 }

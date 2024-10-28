@@ -17,7 +17,7 @@ import java.util.Set;
 public class JobType {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long jobtype_id;
     private String jobType_name;
     private LocalDateTime create_at;
     private LocalDateTime update_at;
