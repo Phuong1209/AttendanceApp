@@ -7,11 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -48,6 +45,11 @@ public class DepartmentController {
             BindingResult result
             ) {
 
+        // Check if the department already exists
+        if (repo.existsByName(departmentDto.getName())) {
+            result.rejectValue("name", "error.departmentDto", "The department already exists");
+        }
+
         if(result.hasErrors()){
             return "department/CreateDepartment";
         }
@@ -62,7 +64,83 @@ public class DepartmentController {
 
     }
 
+    //Edit Department
+    @GetMapping("/edit")
+    public String showEditPage(
+            Model model,
+            @RequestParam int id
+            ){
 
+        try{
+            Department department = repo.findById((long) id).get();
+            model.addAttribute("department", department);
 
+            DepartmentDto departmentDto = new DepartmentDto();
+            departmentDto.setName(department.getName());
+
+            model.addAttribute("departmentDto", departmentDto);
+
+        }
+        catch(Exception ex){
+            System.out.println("Exception: " + ex.getMessage());
+            return "redirect:/department";
+        }
+
+        return "department/EditDepartment";
+
+    }
+
+    @PostMapping("/edit")
+    public String editDepartment(
+            Model model,
+            @RequestParam int id,
+            @Valid @ModelAttribute DepartmentDto departmentDto,
+            BindingResult result
+            ){
+
+        try{
+            Department department = repo.findById((long) id).get();
+            model.addAttribute("department", department);
+
+            if (repo.existsByName(departmentDto.getName())) {
+                result.rejectValue("name", "error.departmentDto", "The department already exists");
+            }
+
+            if(result.hasErrors()){
+                return "department/EditDepartment";
+            }
+
+            department.setName(departmentDto.getName());
+
+            repo.save(department);
+
+        }
+        catch(Exception ex){
+            System.out.println("Exception: " + ex.getMessage());
+        }
+
+        return "redirect:/department";
+
+    }
+
+    //Delete Department
+    @GetMapping("/delete")
+    public String deleteDepartment(
+            @RequestParam int id
+    ){
+
+        try{
+            Department department = repo.findById((long) id).get();
+
+            repo.delete(department);
+
+        }
+        catch(Exception ex){
+            System.out.println("Exception: " + ex.getMessage());
+        }
+
+        return "redirect:/department";
+
+    }
 
 }
