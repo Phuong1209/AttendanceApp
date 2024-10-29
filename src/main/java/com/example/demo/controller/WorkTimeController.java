@@ -15,14 +15,16 @@ import java.util.List;
 public class WorkTimeController {
 
     @Autowired
-    private WorkTimeService workingTimeService;
+    private WorkTimeService workTimeService;
 
     // Check-in endpoint
     @PostMapping("/checkin")
-    public ResponseEntity<String> checkin(@RequestParam Long userId, @RequestParam LocalDateTime checkinTime) {
+    public ResponseEntity<String> checkin(@RequestParam Long userId, @RequestParam String checkinTime) {
         try {
-            workingTimeService.checkin(userId, checkinTime);
-            return ResponseEntity.ok("Check-in successful");
+// Convert String to LocalDateTime
+            LocalDateTime parsedCheckinTime = LocalDateTime.parse(checkinTime);
+
+            workTimeService.checkin(userId, parsedCheckinTime);            return ResponseEntity.ok("Check-in successful");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -32,7 +34,7 @@ public class WorkTimeController {
     @PostMapping("/checkout")
     public ResponseEntity<String> checkout(@RequestParam Long userId, @RequestParam LocalDateTime checkoutTime) {
         try {
-            workingTimeService.checkout(userId, checkoutTime);
+            workTimeService.checkout(userId, checkoutTime);
             return ResponseEntity.ok("Check-out successful");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -42,14 +44,14 @@ public class WorkTimeController {
     // Update break time
     @PostMapping("/breaktime")
     public ResponseEntity<String> updateBreaktime(@RequestParam Long userId, @RequestParam LocalDateTime breaktime) {
-        workingTimeService.updateBreaktime(userId, breaktime);
+        workTimeService.updateBreaktime(userId, breaktime);
         return ResponseEntity.ok("Breaktime updated successfully");
     }
 
     // Fetch all working times for a user
     @GetMapping("/user/{userId}")
     public List<WorkingTime> getWorkingTimes(@PathVariable Long userId) {
-        return workingTimeService.getWorkTimesByUser(userId);
+        return workTimeService.getWorkTimesByUser(userId);
     }
 }
 
