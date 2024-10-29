@@ -29,7 +29,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name="department",
+            name="user_department",
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )
