@@ -1,4 +1,5 @@
 package com.example.demo.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -20,15 +21,16 @@ public class WorkingTime {
     private LocalDate date;
     private LocalDateTime checkin_time;
     private LocalDateTime checkout_time;
-    private LocalDateTime breaktime;
+    private Float breaktime;
     private LocalDateTime worktime;
     private LocalDateTime overtime;
 
-    @OneToMany(mappedBy = "workingTime", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "workingTime", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Task> tasks;
 
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JsonManagedReference
     private User user;
 
 }

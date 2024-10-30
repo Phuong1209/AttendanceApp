@@ -1,4 +1,5 @@
 package com.example.demo.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -28,8 +30,10 @@ public class Department {
     )
     private Set<JobType> jobtypes;
 
-    @ManyToMany(mappedBy = "departments")
+    @ManyToMany(mappedBy = "departments",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<User> users;
+
 
 
 
