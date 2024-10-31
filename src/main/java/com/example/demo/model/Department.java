@@ -31,6 +31,7 @@ public class Department {
     @ManyToMany(mappedBy = "departments")
     private Set<User> users;
 
+    //setter and getter
     public Long getId() {
         return id;
     }

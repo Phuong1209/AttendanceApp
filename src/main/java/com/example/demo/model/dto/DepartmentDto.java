@@ -1,6 +1,6 @@
 package com.example.demo.model.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotEmpty;
 
 public class DepartmentDto {
     @NotEmpty(message = "The name is required")
