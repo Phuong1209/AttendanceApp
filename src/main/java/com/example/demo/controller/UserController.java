@@ -34,26 +34,12 @@ public class UserController {
         return "user/index";
     }
 
-    //Create User
-    //Dropdown list
-/*
-    static List<String> departmentList = null;
-
-    static {
-        departmentList = new ArrayList<>();
-        departmentList.add("Developer");
-        departmentList.add("Manager");
-        departmentList.add("Consultant");
-        departmentList.add("Tester");
-    }
-*/
-
     //Show Create form
     @GetMapping("/create")
     public String showCreatePage1(Model model){
         UserDto userDto = new UserDto(); //declare dto
         model.addAttribute("userDto", userDto); //add dto to model
-
+        //Show department list
         List<Department> departments = departmentRepository.findAll();
         model.addAttribute("departments", departments);//
         return "user/CreateUser";
@@ -79,6 +65,7 @@ public class UserController {
         user.setUsername(userDto.getUsername());
         user.setFullname(userDto.getFullname());
         user.setPassword(userDto.getPassword());
+        user.setDepartments(userDto.getDepartment());
 
         userRepository.save(user);
 
