@@ -16,7 +16,7 @@ public class WorkingTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long user_id;
+//    private Long user_id;
     private LocalDate date;
     private LocalDateTime checkin_time;
     private LocalDateTime checkout_time;
@@ -27,10 +27,15 @@ public class WorkingTime {
     @OneToMany(mappedBy = "workingTime", cascade = CascadeType.ALL)
     private Set<Task> tasks;
 
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+//    private User user;
+    // In WorkingTime class
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
+    private Long user_id; // This should be Long if User's id is Long
+
+
 }
-
-

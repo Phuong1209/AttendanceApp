@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IJobTypeService {
-    List<JobType> findAll();  // Phải trả về List
+    List<JobType> findAll();
     Optional<JobType> findById(Long id);
     void save(JobType jobType);
-    void remove(Long id);
+    void remove(Long Jobtypeid);
 }

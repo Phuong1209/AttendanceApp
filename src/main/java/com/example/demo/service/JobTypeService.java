@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.model.JobType;
 import com.example.demo.repository.IJobTypeRepository;
-import com.example.demo.service.IJobTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,4 +34,3 @@ public class JobTypeService implements IJobTypeService {
         JobTypeRepository.deleteById(id);  // Xóa JobType theo id
     }
 }
-

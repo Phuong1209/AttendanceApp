@@ -13,9 +13,14 @@ import java.util.Set;
 @Data
 
 public class User {
-    @Id
+  /*  @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;*/
+  // In User class
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id; // make sure it's Long if the foreign key references a Long type in WorkingTime
+
     private String user_name;
     private String user_fullname;
     private String user_passwords;

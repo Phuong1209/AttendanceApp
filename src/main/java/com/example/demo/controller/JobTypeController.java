@@ -18,17 +18,16 @@ public class JobTypeController {
     @Autowired
     private IJobTypeService jobTypeService;
 
-    // Lấy danh sách tất cả JobTypes
-    @GetMapping("")
+    // Fetch all JobTypes
+    @GetMapping("{/id}")
     public ResponseEntity<List<JobType>> getAllJobTypes() {
         List<JobType> jobTypes = jobTypeService.findAll();
-        if (jobTypes.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(jobTypes, HttpStatus.OK);
+        return jobTypes.isEmpty() ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) :
+                new ResponseEntity<>(jobTypes, HttpStatus.OK);
     }
 
-    // Lấy thông tin của một JobType dựa trên id
+    // Fetch JobType by ID
     @GetMapping("/{id}")
     public ResponseEntity<JobType> getJobTypeById(@PathVariable Long id) {
         Optional<JobType> jobType = jobTypeService.findById(id);
@@ -36,30 +35,28 @@ public class JobTypeController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Tạo mới một JobType
-    @PostMapping("")
+    // Create new JobType
+    @PostMapping
     public ResponseEntity<JobType> createJobType(@RequestBody JobType jobType) {
         jobTypeService.save(jobType);
         return new ResponseEntity<>(jobType, HttpStatus.CREATED);
     }
 
-    // Cập nhật một JobType
+    // Update existing JobType
     @PutMapping("/{id}")
-    public ResponseEntity<JobType> updateJobType(@PathVariable Long id, @RequestBody JobType jobType) {
-        Optional<JobType> existingJobType = jobTypeService.findById(id);
-        if (!existingJobType.isPresent()) {
+    public ResponseEntity<JobType> editJobType(@PathVariable Long id, @RequestBody JobType jobType) {
+        if (!jobTypeService.findById(id).isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        jobType.setJobtype_id(id);
+        jobType.setId(id);
         jobTypeService.save(jobType);
         return new ResponseEntity<>(jobType, HttpStatus.OK);
     }
 
-    // Xóa một JobType dựa trên id
+    // Delete JobType
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteJobType(@PathVariable Long id) {
-        Optional<JobType> jobType = jobTypeService.findById(id);
-        if (!jobType.isPresent()) {
+        if (!jobTypeService.findById(id).isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         jobTypeService.remove(id);
