@@ -1,41 +1,46 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Department;
-import com.example.demo.model.Position;
-import com.example.demo.model.User;
-import com.example.demo.model.WorkingTime;
+import com.example.demo.model.*;
 import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.repository.MemberManagementRepository;
 import com.example.demo.repository.PositionRepository;
 import com.example.demo.repository.WorkingTimeRepository;
+import com.example.demo.security.MyUserPrincipal;
+import com.example.demo.utils.AppUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
+
 public class MemberManagementService implements IMemberManagementService {
 //
 //    @Autowired
 //    private Session session;
 
-    @Autowired
-    private MemberManagementRepository memberManagementRepository;
+
+    private final MemberManagementRepository memberManagementRepository;
     private final PositionRepository positionRepository;
     private final DepartmentRepository departmentRepository;
     private final WorkingTimeRepository workingTimeRepository;
-
-    public MemberManagementService(PositionRepository positionRepository, DepartmentRepository departmentRepository, WorkingTimeRepository workingTimeRepository) {
-        this.positionRepository = positionRepository;
-        this.departmentRepository = departmentRepository;
-        this.workingTimeRepository = workingTimeRepository;
-    }
+    private final PasswordEncoder passwordEncoder;
+//    public MemberManagementService(MemberManagementRepository memberManagementRepository, PositionRepository positionRepository, DepartmentRepository departmentRepository, WorkingTimeRepository workingTimeRepository) {
+//        this.memberManagementRepository = memberManagementRepository;
+//        this.positionRepository = positionRepository;
+//        this.departmentRepository = departmentRepository;
+//        this.workingTimeRepository = workingTimeRepository;
+//    }
 
 
     @Override
@@ -51,6 +56,7 @@ public class MemberManagementService implements IMemberManagementService {
     @Transactional
     @Override
     public User save(User user) {
+        user.setUserPasswords(passwordEncoder.encode(user.getUserPasswords()));
         return memberManagementRepository.save(user);
     }
 
@@ -104,4 +110,16 @@ public class MemberManagementService implements IMemberManagementService {
         return Collections.emptyList();
 
     }
-}
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = memberManagementRepository.findByUserName(username);
+        String pass = passwordEncoder.encode("120901");
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return new MyUserPrincipal(user);
+    }
+
+
+    }
