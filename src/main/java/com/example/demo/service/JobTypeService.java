@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Service
 public class JobTypeService implements IJobTypeService {
-
     @Autowired
     private IJobTypeRepository JobTypeRepository;
 
