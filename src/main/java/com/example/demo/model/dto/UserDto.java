@@ -3,6 +3,7 @@ package com.example.demo.model.dto;
 import com.example.demo.model.Department;
 import jakarta.validation.constraints.NotEmpty;
 
+import java.util.List;
 import java.util.Set;
 
 public class UserDto {
@@ -13,6 +14,19 @@ public class UserDto {
     @NotEmpty(message = "The password is required")
     private String password;
     private Set<Department> department;
+
+    //Multiple selection
+    private List<Long> departmentIds;
+
+    //getter and setter
+
+    public List<Long> getDepartmentIds() {
+        return departmentIds;
+    }
+
+    public void setDepartmentIds(List<Long> departmentIds) {
+        this.departmentIds = departmentIds;
+    }
 
     public Set<Department> getDepartment() {
         return department;

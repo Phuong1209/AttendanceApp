@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Department;
+import com.example.demo.model.JobType;
+import com.example.demo.model.User;
 import com.example.demo.model.dto.DepartmentDto;
 import com.example.demo.repository.DepartmentRepository;
+import com.example.demo.repository.JobtypeRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,20 +14,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/department")
 
 public class DepartmentController {
-
-    //Show list Department
-    //1. Create Department Repo
+    //Create Department Repo
     @Autowired
-    private DepartmentRepository repo;
-    //2. Create method to show Department List
+    private DepartmentRepository departmentRepository;
+    @Autowired
+    private JobtypeRepository jobtypeRepository;
+
+    //Show Department List
     @GetMapping({"","/"})
     public String showDepartmentList(Model model){
-        List<Department> departments = repo.findAll(); //add Department list from DB to "departments"
+        List<Department> departments = departmentRepository.findAll(); //add Department list from DB to "departments"
         model.addAttribute("departments", departments); //add all department listed to model
         return "department/index"; //show department from model to user view
     }
@@ -35,6 +40,10 @@ public class DepartmentController {
     public String showCreatePage(Model model){
         DepartmentDto departmentDto = new DepartmentDto(); //declare dto
         model.addAttribute("departmentDto", departmentDto); //add dto to model
+
+        //show list jobtype
+        List<JobType> jobtypes = jobtypeRepository.findAll();
+        model.addAttribute("jobtypes", jobtypes);//
         return "department/CreateDepartment";
     }
 
@@ -46,7 +55,7 @@ public class DepartmentController {
             ) {
 
         // Check if the department already exists
-        if (repo.existsByName(departmentDto.getName())) {
+        if (departmentRepository.existsByName(departmentDto.getName())) {
             result.rejectValue("name", "error.departmentDto", "The department already exists");
         }
 
@@ -58,7 +67,7 @@ public class DepartmentController {
         Department department = new Department();
         department.setName(departmentDto.getName());
 
-        repo.save(department);
+        departmentRepository.save(department);
 
         return "redirect:/department";
 
@@ -72,7 +81,7 @@ public class DepartmentController {
             ){
 
         try{
-            Department department = repo.findById((long) id).get();
+            Department department = departmentRepository.findById((long) id).get();
             model.addAttribute("department", department);
 
             DepartmentDto departmentDto = new DepartmentDto();
@@ -99,10 +108,10 @@ public class DepartmentController {
             ){
 
         try{
-            Department department = repo.findById((long) id).get();
+            Department department = departmentRepository.findById((long) id).get();
             model.addAttribute("department", department);
 
-            if (repo.existsByName(departmentDto.getName())) {
+            if (departmentRepository.existsByName(departmentDto.getName())) {
                 result.rejectValue("name", "error.departmentDto", "The department already exists");
             }
 
@@ -112,7 +121,7 @@ public class DepartmentController {
 
             department.setName(departmentDto.getName());
 
-            repo.save(department);
+            departmentRepository.save(department);
 
         }
         catch(Exception ex){
@@ -130,9 +139,8 @@ public class DepartmentController {
     ){
 
         try{
-            Department department = repo.findById((long) id).get();
-
-            repo.delete(department);
+            Department department = departmentRepository.findById((long) id).get();
+            departmentRepository.delete(department);
 
         }
         catch(Exception ex){
@@ -141,6 +149,26 @@ public class DepartmentController {
 
         return "redirect:/department";
 
+    }
+
+    //Show Memberlist:
+    @GetMapping("/{id}/users")
+    public String showMemberlist(@PathVariable("id") Long departmentId, Model model) {
+        Set<User> users = departmentRepository.findUsersByDepartmentId(departmentId);
+
+        if (users == null) {
+            model.addAttribute("errorMessage", "Department not found or has no users.");
+            return "redirect:/department";
+        }
+
+        model.addAttribute("users", users);
+
+        // Fetch the department name
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid department Id:" + departmentId));
+        model.addAttribute("departmentName", department.getName());
+
+        return "department/MemberList";
     }
 
 }

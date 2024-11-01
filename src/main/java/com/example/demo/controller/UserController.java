@@ -14,7 +14,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -36,9 +38,10 @@ public class UserController {
 
     //Show Create form
     @GetMapping("/create")
-    public String showCreatePage1(Model model){
+    public String showCreatePage(Model model){
         UserDto userDto = new UserDto(); //declare dto
         model.addAttribute("userDto", userDto); //add dto to model
+
         //Show department list
         List<Department> departments = departmentRepository.findAll();
         model.addAttribute("departments", departments);//
@@ -66,6 +69,15 @@ public class UserController {
         user.setFullname(userDto.getFullname());
         user.setPassword(userDto.getPassword());
         user.setDepartments(userDto.getDepartment());
+
+        // Convert department IDs to Department entities
+/*        Set<Department> departments = new HashSet<>();
+        for (Long departmentId : userDto.getDepartmentIds()) {
+            Department department = departmentRepository.findById(departmentId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid department ID: " + departmentId));
+            departments.add(department);
+        }
+        user.setDepartments(departments);*/
 
         userRepository.save(user);
 
@@ -155,6 +167,7 @@ public class UserController {
         return "redirect:/user";
 
     }
+
 
 
 }
