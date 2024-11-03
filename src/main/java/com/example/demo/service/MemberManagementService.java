@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.UserDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.repository.MemberManagementRepository;
@@ -15,10 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -80,6 +79,29 @@ public class MemberManagementService implements IMemberManagementService {
         }
         return Collections.emptyList();
     }
+
+    @Override
+    public List<UserDTO> getAllUser() {
+        List<User> users = memberManagementRepository.findAll();
+        List<UserDTO> userDTOS = new ArrayList<>();
+        for(User user : users){
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUserName(user.getUserName());
+
+            //get position list by user and set to position for user
+            List<Position> positions = positionRepository.findByUsers(user);
+            Set<String> positionNames = positions.stream().map(Position::getPositionName).collect(Collectors.toSet());
+            userDTO.setLocations(positionNames);
+
+            //get department list by user and set to department for user
+            List<Department> departments = departmentRepository.findByUsers(user);
+            userDTO.setDepartments(departments.stream().map(Department::getDepartmentName).collect(Collectors.toSet()));
+
+            userDTOS.add(userDTO);
+        }
+        return userDTOS;
+    }
+
     public List<Department>getDepartmentByUser(Long userId){
         if(userId!=null){
             Optional<User>optionalUser=memberManagementRepository.findById(userId);
@@ -120,6 +142,7 @@ public class MemberManagementService implements IMemberManagementService {
         }
         return new MyUserPrincipal(user);
     }
+
 
 
     }

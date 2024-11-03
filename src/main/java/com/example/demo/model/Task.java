@@ -34,6 +34,4 @@ public class Task {
     @JoinColumn(name = "jobtype_id")
     private JobType jobtype;
 
-
-
 }
