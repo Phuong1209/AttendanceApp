@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.UserExcelDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.repository.MemberManagementRepository;
@@ -87,20 +88,49 @@ public class MemberManagementService implements IMemberManagementService {
         for(User user : users){
             UserDTO userDTO = new UserDTO();
             userDTO.setUserName(user.getUserName());
+            userDTO.setUserFullName(user.getUserFullName());
 
             //get position list by user and set to position for user
             List<Position> positions = positionRepository.findByUsers(user);
             Set<String> positionNames = positions.stream().map(Position::getPositionName).collect(Collectors.toSet());
-            userDTO.setLocations(positionNames);
+            userDTO.setPositions(positionNames);
 
             //get department list by user and set to department for user
             List<Department> departments = departmentRepository.findByUsers(user);
             userDTO.setDepartments(departments.stream().map(Department::getDepartmentName).collect(Collectors.toSet()));
 
+//          //get workingTime by user and set to workingTime for user
+//            List<WorkingTime> workingTimes = workingTimeRepository.findByUser(user);
+//            userDTO.setWorkingTime(workingTimes.stream().map(WorkingTime::get).collect(Collectors.toSet()));
+
             userDTOS.add(userDTO);
         }
         return userDTOS;
+
     }
+//    public List<UserDTO> getAllUserById() {
+//        List<User> users = memberManagementRepository.findAll();
+//        List<UserDTO> userDTOS = new ArrayList<>();
+//        for(User user : users){
+//            UserDTO userDTO = new UserDTO();
+//            userDTO.setUserName(user.getUserName());
+//
+//            userDTO.setUserFullName(user.getUserFullName());
+//
+//            //get position list by user and set to position for user
+//            List<Position> positions = positionRepository.findByUsers(user);
+//            Set<String> positionNames = positions.stream().map(Position::getPositionName).collect(Collectors.toSet());
+//            userDTO.setPositions(positionNames);
+//
+//            //get department list by user and set to department for user
+//            List<Department> departments = departmentRepository.findByUsers(user);
+//            userDTO.setDepartments(departments.stream().map(Department::getDepartmentName).collect(Collectors.toSet()));
+//
+//            userDTOS.add(userDTO);
+//        }
+//        return userDTOS;
+//
+//    }
 
     public List<Department>getDepartmentByUser(Long userId){
         if(userId!=null){
@@ -141,6 +171,31 @@ public class MemberManagementService implements IMemberManagementService {
             throw new UsernameNotFoundException(username);
         }
         return new MyUserPrincipal(user);
+    }
+
+    public List<UserExcelDTO> getUsersExcel() {
+        List<User> users = memberManagementRepository.findAll();
+        List<UserExcelDTO> userDTOS = new ArrayList<>();
+        for (User user : users) {
+            UserExcelDTO userDTO = new UserExcelDTO();
+            userDTO.setUserName(user.getUserName());
+
+            userDTO.setUserFullName(user.getUserFullName());
+
+
+            //get position list by user and set to position for user
+            List<Position> positions = positionRepository.findByUsers(user);
+            Set<String> positionNames = positions.stream().map(Position::getPositionName).collect(Collectors.toSet());
+            userDTO.setPositions(String.join(", ", positionNames));
+
+            //get department list by user and set to department for user
+            List<Department> departments = departmentRepository.findByUsers(user);
+            Set<String> departmentsNames = departments.stream().map(Department::getDepartmentName).collect(Collectors.toSet());
+            userDTO.setDepartments(String.join(", ", departmentsNames));
+
+            userDTOS.add(userDTO);
+        }
+        return userDTOS;
     }
 
 
