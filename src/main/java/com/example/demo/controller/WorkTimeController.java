@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/worktimes")
+@RequestMapping("/worktime")
 public class WorkTimeController {
 
     @Autowired
@@ -23,18 +23,19 @@ public class WorkTimeController {
         try {
 // Convert String to LocalDateTime
             LocalDateTime parsedCheckinTime = LocalDateTime.parse(checkinTime);
-
-            workTimeService.checkin(userId, parsedCheckinTime);            return ResponseEntity.ok("Check-in successful");
+            workTimeService.checkin(userId, parsedCheckinTime);
+            return ResponseEntity.ok("Check-in successful");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Error:"+ e.getMessage());
         }
     }
 
     // Check-out endpoint
     @PostMapping("/checkout")
-    public ResponseEntity<String> checkout(@RequestParam Long userId, @RequestParam LocalDateTime checkoutTime) {
+    public ResponseEntity<String> checkout(@RequestParam Long userId, @RequestParam String checkoutTime) {
         try {
-            workTimeService.checkout(userId, checkoutTime);
+            LocalDateTime parsedCheckoutTime = LocalDateTime.parse(checkoutTime);
+            workTimeService.checkout(userId, parsedCheckoutTime);
             return ResponseEntity.ok("Check-out successful");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -43,9 +44,13 @@ public class WorkTimeController {
 
     // Update break time
     @PostMapping("/breaktime")
-    public ResponseEntity<String> updateBreaktime(@RequestParam Long userId, @RequestParam LocalDateTime breaktime) {
-        workTimeService.updateBreaktime(userId, breaktime);
-        return ResponseEntity.ok("Breaktime updated successfully");
+    public ResponseEntity<String> updateBreaktime(@RequestParam Long userId, @RequestParam Float  breaktime) {
+        try {
+            workTimeService.updateBreaktime(userId, breaktime);
+            return ResponseEntity.ok("Break time updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 
     // Fetch all working times for a user

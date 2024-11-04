@@ -20,7 +20,8 @@ public class WorkingTime {
     private LocalDate date;
     private LocalDateTime checkin_time;
     private LocalDateTime checkout_time;
-    private LocalDateTime breaktime;
+    private Float breaktime;
+
     private LocalDateTime worktime;
     private LocalDateTime overtime;
 
