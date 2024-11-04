@@ -114,6 +114,11 @@ public class WorkTimeService implements IWorkTimeService {
     }
 
     @Override
+    public Optional<WorkingTime> findByUserIdAndDate(Long userId, LocalDate date) {
+        return workTimeRepository.findByUserIdAndDate(userId, date);
+    }
+
+    @Override
     public WorkingTime getById(Long id) {
         return workTimeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("No work time record found for ID " + id));
@@ -121,8 +126,15 @@ public class WorkTimeService implements IWorkTimeService {
 
     @Override
     public void save(WorkingTime workingTime) {
-        workTimeRepository.save(workingTime);
+        Optional<WorkingTime> existingRecord = workTimeRepository.findByUserIdAndDate(workingTime.getUser_id(), workingTime.getDate());
 
+        // If record exists for the same user and date, throw an exception
+        if (existingRecord.isPresent()) {
+            throw new IllegalArgumentException("A record already exists for this user on the selected date.");
+        }
+
+        workTimeRepository.save(workingTime);
     }
+
 
 }

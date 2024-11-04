@@ -2,8 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.model.WorkingTime;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface IWorkTimeService {
     WorkingTime checkin(Long userId, LocalDateTime checkinTime);      // Check-in user
@@ -17,4 +19,6 @@ public interface IWorkTimeService {
     WorkingTime getById(Long id);            // Retrieve a work time record by ID
     void save(WorkingTime workingTime);      // Save or update a work time record
     void delete(Long id);                    // Delete a work time record by ID
+    Optional<WorkingTime> findByUserIdAndDate(Long userId, LocalDate date);
+
 }

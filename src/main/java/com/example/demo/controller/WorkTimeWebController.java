@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/worktime")
@@ -29,6 +30,21 @@ public class WorkTimeWebController {
     public String showCreateForm(Model model) {
         model.addAttribute("workingTime", new WorkingTime());
         return "worktime_create";
+    }
+    // Handle form submission for creating a new record
+    @PostMapping("/create")
+    public String createWorkTimeRecord(@ModelAttribute("workingTime") WorkingTime workingTime, Model model) {
+        // Check if a record already exists for the user on the given date
+        Optional<WorkingTime> existingRecord = workTimeService.findByUserIdAndDate(workingTime.getUser_id(), workingTime.getDate());
+
+        if (existingRecord.isPresent()) {
+            model.addAttribute("error", "A record already exists for this user on the selected date.");
+            return "worktime-create";
+        }
+
+        // If no existing record, save the new work time record
+        workTimeService.save(workingTime);
+        return "redirect:/worktime"; // Redirect to the worktime list page after creation
     }
 
     // Save a new work time record

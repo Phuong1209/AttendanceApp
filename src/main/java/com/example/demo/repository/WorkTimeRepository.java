@@ -14,8 +14,8 @@ import java.util.Optional;
 public interface WorkTimeRepository  extends JpaRepository<WorkingTime, Long> {
     List<WorkingTime> findByUserId(Long userId);
 
-    // Finds today's check-in for the user
-    Optional<WorkingTime> findByUserIdAndDate(Long userId, LocalDate date);
+    @Query("SELECT w FROM WorkingTime w WHERE w.user_id = :userId AND w.date = :date")
+    Optional<WorkingTime> findByUserIdAndDate(@Param("userId") Long userId, @Param("date") LocalDate date);
 
     // Custom query to find the latest WorkingTime for check-out
     @Query("SELECT w FROM WorkingTime w WHERE w.user_id = :userId ORDER BY w.checkin_time DESC")
@@ -32,5 +32,6 @@ public interface WorkTimeRepository  extends JpaRepository<WorkingTime, Long> {
 
     @Query("SELECT w FROM WorkingTime w WHERE w.user_id = :userId AND w.checkout_time IS NULL ORDER BY w.checkin_time DESC")
     Optional<WorkingTime> findLatestUnclosedByUserIdOrderByCheckin_timeDesc(@Param("userId") Long userId);
+
 
 }
