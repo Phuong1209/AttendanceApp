@@ -68,16 +68,16 @@ public class UserController {
         user.setUsername(userDto.getUsername());
         user.setFullname(userDto.getFullname());
         user.setPassword(userDto.getPassword());
-        user.setDepartments(userDto.getDepartment());
+        //user.setDepartments(userDto.getDepartment());
 
         // Convert department IDs to Department entities
-/*        Set<Department> departments = new HashSet<>();
+        Set<Department> departments = new HashSet<>();
         for (Long departmentId : userDto.getDepartmentIds()) {
             Department department = departmentRepository.findById(departmentId)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid department ID: " + departmentId));
             departments.add(department);
         }
-        user.setDepartments(departments);*/
+        user.setDepartments(departments);
 
         userRepository.save(user);
 
