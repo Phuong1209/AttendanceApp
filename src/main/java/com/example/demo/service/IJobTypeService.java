@@ -8,4 +8,9 @@ public interface IJobTypeService {
     Optional<JobType> findById(Long id);
     void save(JobType jobType);
     void remove(Long id);
+///1101 added
+    JobType addJobType(String jobTypeName);
+
+    JobType updateJobTypeName(Long id, String jobTypeName);
+    ///
 }

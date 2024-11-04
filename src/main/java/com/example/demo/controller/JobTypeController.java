@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+
 import com.example.demo.model.JobType;
 import com.example.demo.service.IJobTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,16 @@ public class JobTypeController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(jobTypes, HttpStatus.OK);
+    }
+    //1101 added
+    // Endpoint to add a new job type
+    @PostMapping("/add")
+    public JobType addJobType(@RequestParam String jobTypeName) {
+        return jobTypeService.addJobType(jobTypeName);
+    }
+    @PutMapping("/{id}/updateName")
+    public JobType updateJobTypeName(@PathVariable Long id, @RequestParam String jobTypeName) {
+        return jobTypeService.updateJobTypeName(id, jobTypeName);
     }
 
     // Lấy thông tin của một JobType dựa trên id
