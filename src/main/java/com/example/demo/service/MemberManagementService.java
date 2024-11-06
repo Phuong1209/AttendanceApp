@@ -46,11 +46,17 @@ public class MemberManagementService implements IMemberManagementService {
     @Override
     public Iterable<User> findAll() {
         return memberManagementRepository.findAll();
+
     }
 
     @Override
     public  Optional<User> findById(Long id) {
-        return memberManagementRepository.findById(id);
+        Optional<User> user=memberManagementRepository.findById(id);
+        if(user.isPresent()){
+            List<WorkingTime>workingTimes = workingTimeRepository.findByUser(user.get());
+            user.get().setWorkingTimes(new HashSet<>(workingTimes));
+        }
+        return user;
     }
 
     @Transactional
@@ -59,6 +65,7 @@ public class MemberManagementService implements IMemberManagementService {
         user.setUserPasswords(passwordEncoder.encode(user.getUserPasswords()));
         return memberManagementRepository.save(user);
     }
+
 
     @Transactional
     @Override
@@ -89,6 +96,7 @@ public class MemberManagementService implements IMemberManagementService {
             UserDTO userDTO = new UserDTO();
             userDTO.setUserName(user.getUserName());
             userDTO.setUserFullName(user.getUserFullName());
+            userDTO.setId(user.getId());
 
             //get position list by user and set to position for user
             List<Position> positions = positionRepository.findByUsers(user);
@@ -108,29 +116,7 @@ public class MemberManagementService implements IMemberManagementService {
         return userDTOS;
 
     }
-//    public List<UserDTO> getAllUserById() {
-//        List<User> users = memberManagementRepository.findAll();
-//        List<UserDTO> userDTOS = new ArrayList<>();
-//        for(User user : users){
-//            UserDTO userDTO = new UserDTO();
-//            userDTO.setUserName(user.getUserName());
-//
-//            userDTO.setUserFullName(user.getUserFullName());
-//
-//            //get position list by user and set to position for user
-//            List<Position> positions = positionRepository.findByUsers(user);
-//            Set<String> positionNames = positions.stream().map(Position::getPositionName).collect(Collectors.toSet());
-//            userDTO.setPositions(positionNames);
-//
-//            //get department list by user and set to department for user
-//            List<Department> departments = departmentRepository.findByUsers(user);
-//            userDTO.setDepartments(departments.stream().map(Department::getDepartmentName).collect(Collectors.toSet()));
-//
-//            userDTOS.add(userDTO);
-//        }
-//        return userDTOS;
-//
-//    }
+
 
     public List<Department>getDepartmentByUser(Long userId){
         if(userId!=null){

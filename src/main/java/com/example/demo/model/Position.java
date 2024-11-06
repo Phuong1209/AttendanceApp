@@ -20,7 +20,7 @@ public class Position {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String positionName;
-    @ManyToMany(mappedBy="positions", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy="positions", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonBackReference
     private Set<User> users;
 

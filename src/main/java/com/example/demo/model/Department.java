@@ -31,7 +31,7 @@ public class Department {
     )
     private Set<JobType> jobtypes;
 
-    @ManyToMany(mappedBy = "departments",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "departments",cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonBackReference
     private Set<User> users;
 

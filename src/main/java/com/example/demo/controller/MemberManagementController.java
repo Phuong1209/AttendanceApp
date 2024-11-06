@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 @CrossOrigin("*")
 @RequestMapping("/user/member")
 public class MemberManagementController {
@@ -37,15 +37,13 @@ public class MemberManagementController {
         return ResponseEntity.ok().body(memberManagementService.getAllUser());
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<User> getAllUserById(@PathVariable Long id) {
         Optional<User> userOptional = memberManagementService.findById(id);
         return userOptional.map(user -> new ResponseEntity<User>(user, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> getAllUserById() {
-//        return ResponseEntity.ok().body(memberManagementService.getAllUserById());
-//    }
+
 
     @GetMapping("getPosition/{id}")
     public ResponseEntity<?> getPosition(@PathVariable Long id) {
