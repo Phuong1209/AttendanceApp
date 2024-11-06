@@ -22,11 +22,11 @@ public class Department {
 
     @ManyToMany
     @JoinTable(
-            name = "department_jobtype",
+            name = "department_job_type",
             joinColumns = @JoinColumn(name = "department_id"),
-            inverseJoinColumns = @JoinColumn(name = "jobtype_id")
+            inverseJoinColumns = @JoinColumn(name = "job_type_id")
     )
-    private Set<JobType> jobtypes;
+    private Set<JobType> jobTypes;
 
     @ManyToMany(mappedBy = "departments")
     private Set<User> users;
@@ -48,12 +48,12 @@ public class Department {
         this.name = name;
     }
 
-    public Set<JobType> getJobtypes() {
-        return jobtypes;
+    public Set<JobType> getJobTypes() {
+        return jobTypes;
     }
 
-    public void setJobtypes(Set<JobType> jobtypes) {
-        this.jobtypes = jobtypes;
+    public void setJobTypes(Set<JobType> jobTypes) {
+        this.jobTypes = jobTypes;
     }
 
     public Set<User> getUsers() {

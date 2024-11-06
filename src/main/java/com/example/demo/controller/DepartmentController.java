@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,8 +43,8 @@ public class DepartmentController {
         model.addAttribute("departmentDto", departmentDto); //add dto to model
 
         //show list jobtype
-        List<JobType> jobtypes = jobtypeRepository.findAll();
-        model.addAttribute("jobtypes", jobtypes);//
+        List<JobType> jobTypes = jobtypeRepository.findAll();
+        model.addAttribute("jobTypes", jobTypes);//
         return "department/CreateDepartment";
     }
 
@@ -66,6 +67,15 @@ public class DepartmentController {
         //create new department in db
         Department department = new Department();
         department.setName(departmentDto.getName());
+
+        // Convert department IDs to Department entities
+        Set<JobType> jobTypes = new HashSet<>();
+        for (Long jobTypeId : departmentDto.getJobTypeIds()) {
+            JobType jobType = jobtypeRepository.findById(jobTypeId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid JobType ID: " + jobTypeId));
+            jobTypes.add(jobType);
+        }
+        department.setJobTypes(jobTypes);
 
         departmentRepository.save(department);
 
@@ -137,7 +147,6 @@ public class DepartmentController {
     public String deleteDepartment(
             @RequestParam int id
     ){
-
         try{
             Department department = departmentRepository.findById((long) id).get();
             departmentRepository.delete(department);
@@ -169,6 +178,26 @@ public class DepartmentController {
         model.addAttribute("departmentName", department.getName());
 
         return "department/MemberList";
+    }
+
+    //Show JobTypelist:
+    @GetMapping("/{id}/jobtypes")
+    public String showJobTypelist(@PathVariable("id") Long departmentId, Model model) {
+        Set<JobType> jobTypes = departmentRepository.findJobTypesByDepartmentId(departmentId);
+
+        if (jobTypes == null) {
+            model.addAttribute("errorMessage", "Department not found or has no users.");
+            return "redirect:/department";
+        }
+
+        model.addAttribute("jobTypes", jobTypes);
+
+        // Fetch the department name
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid department Id:" + departmentId));
+        model.addAttribute("departmentName", department.getName());
+
+        return "department/JobTypeList";
     }
 
 }

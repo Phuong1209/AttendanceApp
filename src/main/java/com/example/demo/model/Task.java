@@ -33,8 +33,8 @@ public class Task {
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "jobtype_id")
-    private JobType jobtype;
+    @JoinColumn(name = "job_type_id")
+    private JobType jobType;
 
 
 

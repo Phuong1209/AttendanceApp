@@ -14,12 +14,10 @@ public class UserDto {
     @NotEmpty(message = "The password is required")
     private String password;
     private Set<Department> department;
-
     //Multiple selection
     private List<Long> departmentIds;
 
     //getter and setter
-
     public List<Long> getDepartmentIds() {
         return departmentIds;
     }

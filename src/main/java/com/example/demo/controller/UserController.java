@@ -68,7 +68,6 @@ public class UserController {
         user.setUsername(userDto.getUsername());
         user.setFullname(userDto.getFullname());
         user.setPassword(userDto.getPassword());
-        //user.setDepartments(userDto.getDepartment());
 
         // Convert department IDs to Department entities
         Set<Department> departments = new HashSet<>();
