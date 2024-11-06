@@ -37,6 +37,4 @@ public class Task {
     private JobType jobType;
 
 
-
-
 }

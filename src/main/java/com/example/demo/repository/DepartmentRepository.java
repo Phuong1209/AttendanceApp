@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Department;
+import com.example.demo.model.Position;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,8 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface DepartmentRepository extends JpaRepository <Department, Long> {
+public interface DepartmentRepository extends JpaRepository<Department,Long> {
+    List<Department> findByUsers(User user);
     boolean existsByName(String name);
     @Query("SELECT d.users FROM Department d WHERE d.id = :departmentId")
     Set<User> findUsersByDepartmentId(@Param("departmentId") Long departmentId);
