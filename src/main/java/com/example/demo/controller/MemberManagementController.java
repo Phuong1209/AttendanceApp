@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
+@CrossOrigin(origins = "*")
 @RequestMapping("/user/member")
 public class MemberManagementController {
     @Autowired
@@ -71,19 +71,19 @@ public class MemberManagementController {
     }
 
     @PutMapping ("/{id}")
-    public ResponseEntity<User> editUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<User> editUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
         Optional<User> userOptional = memberManagementService.findById(id);
-        if (!userOptional.isPresent()) {
+        if (userOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         User existingUser = userOptional.get();
-        existingUser.setId(id);
-        existingUser.setUserName(user.getUserName());
-        existingUser.setUserFullName(user.getUserFullName());
-        existingUser.setUserPasswords(user.getUserPasswords());
-        existingUser.setWorkingTimes(user.getWorkingTimes());
-        existingUser.setDepartments(user.getDepartments());
-        existingUser.setPositions(user.getPositions());
+        existingUser.setId(userDTO.getId());
+        existingUser.setUserName(userDTO.getUserName());
+        existingUser.setUserFullName(userDTO.getUserFullName());
+//        existingUser.setUserPasswords(userDTO.getUserPasswords());
+//        existingUser.setWorkingTimes(userDTO.getWorkingTimes());
+//        existingUser.setDepartments(user.getDepartments());
+//        existingUser.setPositions(user.getPositions());
         memberManagementService.save(existingUser);
         return new ResponseEntity<>(existingUser, HttpStatus.OK);
     }
@@ -92,7 +92,7 @@ public class MemberManagementController {
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
         Optional<User> userOptional = memberManagementService.findById(id);
-        if (!userOptional.isPresent()) {
+        if (userOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         memberManagementService.remove(id);

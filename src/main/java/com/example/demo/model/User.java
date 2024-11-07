@@ -1,10 +1,13 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.UserDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Objects;
+
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -12,9 +15,10 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +32,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "position_id")
     )
     @JsonManagedReference
-    @EqualsAndHashCode.Exclude
     private Set<Position> positions;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
@@ -38,12 +41,15 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )
     @JsonManagedReference
-    @EqualsAndHashCode.Exclude
     private Set<Department> departments;
 
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    @EqualsAndHashCode.Exclude
     private Set<WorkingTime> workingTimes;
 
+    public User(UserDTO userDTO){
+        this.id=userDTO.getId();
+        this.userName=userDTO.getUserName();
+        this.userFullName=userDTO.getUserFullName();
+    }
 }
