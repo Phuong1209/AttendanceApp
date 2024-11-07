@@ -12,7 +12,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/departmentui")
-public class DepartmentControllerUI {
+public class DepartmentUIController {
     @Autowired
     private IDepartmentService departmentService;
 
