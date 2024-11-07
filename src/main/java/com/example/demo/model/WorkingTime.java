@@ -25,12 +25,11 @@ public class WorkingTime {
     private Float worktime;
     private Float overtime;
 
-    @OneToMany(mappedBy = "workingTime", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "workingTime", cascade = CascadeType.ALL)
     private Set<Task> tasks;
 
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    @JsonBackReference
     private User user;
 }
 
