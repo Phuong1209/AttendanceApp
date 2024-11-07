@@ -7,6 +7,8 @@ import com.example.demo.service.Department.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -24,12 +26,12 @@ public class DepartmentController {
 
     //show list
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Department>> getAllDepartment (){
-        List<Department> departmentList= (List<Department>) departmentService.findAll();
-        if(departmentList.isEmpty()){
+    public ResponseEntity<Iterable<Department>> getAllDepartment() {
+        List<Department> departmentList = (List<Department>) departmentService.findAll();
+        if (departmentList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(departmentList,HttpStatus.OK);
+        return new ResponseEntity<>(departmentList, HttpStatus.OK);
     }
 
     //find by id
@@ -60,7 +62,7 @@ public class DepartmentController {
 
     //delete
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
+    public ResponseEntity<Department> deleteDepartment(@PathVariable Long id) {
         Optional<Department> departmentOptional = departmentService.findById(id);
         if (!departmentOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -68,12 +70,5 @@ public class DepartmentController {
         departmentService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
-    //set jobtype
-/*
-    private Set<JobType> jobTypes = new HashSet<>();
-    private Set<User> users = new HashSet<>();
-*/
 }
 
