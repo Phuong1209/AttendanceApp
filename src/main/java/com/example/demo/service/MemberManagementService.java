@@ -42,27 +42,26 @@ public class MemberManagementService implements IMemberManagementService {
 //        this.workingTimeRepository = workingTimeRepository;
 //    }
 
-
+    @Transactional
     @Override
     public Iterable<User> findAll() {
         return memberManagementRepository.findAll();
 
     }
-
+    @Transactional
     @Override
     public  Optional<User> findById(Long id) {
-        Optional<User> user=memberManagementRepository.findById(id);
-        if(user.isPresent()){
-            List<WorkingTime>workingTimes = workingTimeRepository.findByUser(user.get());
-            user.get().setWorkingTimes(new HashSet<>(workingTimes));
-        }
-        return user;
+        Optional<User> userOptional =memberManagementRepository.findById(id);
+//        if(userOptional.isPresent()){
+//            List<WorkingTime>workingTimes = workingTimeRepository.findByUser(userOptional.get());
+//            userOptional.get().setWorkingTimes(new HashSet<>(workingTimes));
+//        }
+        return userOptional;
     }
 
     @Transactional
     @Override
-    public User save(User user) {
-        user.setUserPasswords(passwordEncoder.encode(user.getUserPasswords()));
+    public User save( User user) {
         return memberManagementRepository.save(user);
     }
 
@@ -152,10 +151,7 @@ public class MemberManagementService implements IMemberManagementService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = memberManagementRepository.findByUserName(username);
-        String pass = passwordEncoder.encode("120901");
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
+        String pass = passwordEncoder.encode(user.getUserPasswords());
         return new MyUserPrincipal(user);
     }
 
@@ -183,7 +179,4 @@ public class MemberManagementService implements IMemberManagementService {
         }
         return userDTOS;
     }
-
-
-
-    }
+}

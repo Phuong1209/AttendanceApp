@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 //import com.example.demo.model.MemberManagement;
 //import com.example.service.IMemberManagementService;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserExcelDTO;
 import com.example.demo.excel.UserExcelExporter;
 import com.example.demo.model.Department;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 @RequestMapping("/user/member")
 public class MemberManagementController {
     @Autowired
@@ -69,16 +70,24 @@ public class MemberManagementController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping ("/{id}")
     public ResponseEntity<User> editUser(@PathVariable Long id, @RequestBody User user) {
         Optional<User> userOptional = memberManagementService.findById(id);
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        user.setId(id);
-        memberManagementService.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        User existingUser = userOptional.get();
+        existingUser.setId(id);
+        existingUser.setUserName(user.getUserName());
+        existingUser.setUserFullName(user.getUserFullName());
+        existingUser.setUserPasswords(user.getUserPasswords());
+        existingUser.setWorkingTimes(user.getWorkingTimes());
+        existingUser.setDepartments(user.getDepartments());
+        existingUser.setPositions(user.getPositions());
+        memberManagementService.save(existingUser);
+        return new ResponseEntity<>(existingUser, HttpStatus.OK);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {

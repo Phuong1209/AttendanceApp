@@ -28,6 +28,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "position_id")
     )
     @JsonManagedReference
+    @EqualsAndHashCode.Exclude
     private Set<Position> positions;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
@@ -37,10 +38,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )
     @JsonManagedReference
+    @EqualsAndHashCode.Exclude
     private Set<Department> departments;
 
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
+    @EqualsAndHashCode.Exclude
     private Set<WorkingTime> workingTimes;
 
 }
