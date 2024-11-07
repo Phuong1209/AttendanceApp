@@ -20,5 +20,5 @@ public interface IWorkTimeService {
     void save(WorkingTime workingTime);      // Save or update a work time record
     void delete(Long id);                    // Delete a work time record by ID
     Optional<WorkingTime> findByUserIdAndDate(Long userId, LocalDate date);
-
+    void updateWorkingTime(Long id, Long userId, LocalDateTime checkinTime, LocalDateTime checkoutTime, Float breaktime);
 }

@@ -56,11 +56,7 @@ public class WorkTimeService implements IWorkTimeService {
         calculateWorkAndOvertime(workingTime);
         return workTimeRepository.save(workingTime);
 
-        //        WorkingTime workingTime = workTimeRepository.findLatestByUserId(userId);
-//        if (workingTime.getCheckin_time() == null) {
-//            throw new IllegalStateException("No check-in record found for user ID " + userId + " on " + checkoutDate);
-//        }
-//        WorkingTime workingTime = workingTime.;
+
         }
 
     @Override
@@ -77,6 +73,16 @@ public class WorkTimeService implements IWorkTimeService {
 
     }
 
+    public boolean hasClosedRecordForDate(Long userId, LocalDate date) {
+        Optional<WorkingTime> existingWorkTime = workTimeRepository.findByUserIdAndDate(userId, date);
+        // If a record exists and has a checkout time, return true
+        return existingWorkTime.isPresent() && existingWorkTime.get().getCheckout_time() != null;
+    }
+
+    public boolean hasRecordForDate(Long userId, LocalDate date) {
+        // Check if any record exists for this user and date
+        return workTimeRepository.findByUserIdAndDate(userId, date).isPresent();
+    }
 
     @Override
     public List<WorkingTime> getWorkTimesByUser(Long userId) {
@@ -136,5 +142,32 @@ public class WorkTimeService implements IWorkTimeService {
         workTimeRepository.save(workingTime);
     }
 
+    @Override
+    public void updateWorkingTime(Long id, Long userId, LocalDateTime checkinTime, LocalDateTime checkoutTime, Float breaktime) {
+        WorkingTime workingTime = workTimeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No working time record found with ID " + id));
 
+        // Extract the date from the new check-in time
+        LocalDate checkinDate = checkinTime.toLocalDate();
+        LocalDate checkoutDate = checkoutTime.toLocalDate();
+
+        // Check for any other record with the same user ID and date
+        Optional<WorkingTime> conflictingRecord = workTimeRepository.findByUserIdAndDate(userId, checkinDate);
+
+        // If a conflicting record exists and it's not the one being updated, throw an exception
+        if (conflictingRecord.isPresent() && !conflictingRecord.get().getId().equals(id)) {
+            throw new IllegalArgumentException("A record for this user already exists on this date.");
+        }
+        // Ensure that the check-out time is on the same day as the check-in time
+        if (!checkinDate.equals(checkoutDate)) {
+            throw new IllegalArgumentException("Check-out time must be on the same day as the check-in time.");
+        }
+
+        workingTime.setCheckin_time(checkinTime);
+        workingTime.setCheckout_time(checkoutTime);
+        workingTime.setBreaktime(breaktime);
+
+        calculateWorkAndOvertime(workingTime);  // Recalculate work and overtime
+        workTimeRepository.save(workingTime);
+    }
 }
