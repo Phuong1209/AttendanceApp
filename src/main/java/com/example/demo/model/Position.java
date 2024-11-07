@@ -23,5 +23,4 @@ public class Position {
     @ManyToMany(mappedBy="positions", cascade=CascadeType.ALL)
     private Set<User> users;
 
-
 }
