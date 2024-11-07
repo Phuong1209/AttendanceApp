@@ -62,7 +62,7 @@ public class DepartmentController {
 
     //delete
     @DeleteMapping("/{id}")
-    public ResponseEntity<Department> deleteDepartment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
         Optional<Department> departmentOptional = departmentService.findById(id);
         if (!departmentOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -70,5 +70,6 @@ public class DepartmentController {
         departmentService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }
 
