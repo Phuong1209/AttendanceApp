@@ -21,7 +21,9 @@ public class Task {
     private String id;
     private LocalDateTime date;
     private float totalTime;
+    @Column(columnDefinition = "TEXT")
     private String comment;
+
     @ManyToOne
     @JoinColumn(name = "working_time_id")
     private WorkingTime workingTime;
@@ -31,9 +33,8 @@ public class Task {
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "jobtype_id")
-    private JobType jobtype;
-
+    @JoinColumn(name = "job_type_id")
+    private JobType jobType;
 
 
 }

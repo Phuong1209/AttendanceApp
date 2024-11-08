@@ -1,8 +1,11 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,8 +19,8 @@ public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String position_name;
-    @ManyToMany(mappedBy="positions",cascade=CascadeType.ALL)
+    private String positionName;
+    @ManyToMany(mappedBy="positions", cascade=CascadeType.ALL)
     private Set<User> users;
 
 }
