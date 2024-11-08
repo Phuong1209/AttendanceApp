@@ -26,7 +26,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "working_time_id")
-    private WorkingTime workingTime;
+    private WorkTime workTime;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)

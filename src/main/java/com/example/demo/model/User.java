@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,7 +38,7 @@ public class User {
     private Set<Department> departments;
 
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL)
-    private Set<WorkingTime> workingTimes;
+    private Set<WorkTime> workTimes;
 
     //setter and getter
 
@@ -92,11 +91,11 @@ public class User {
         this.departments = departments;
     }
 
-    public Set<WorkingTime> getWorkingTimes() {
-        return workingTimes;
+    public Set<WorkTime> getWorkTimes() {
+        return workTimes;
     }
 
-    public void setWorkingTimes(Set<WorkingTime> workingTimes) {
-        this.workingTimes = workingTimes;
+    public void setWorkTimes(Set<WorkTime> workTimes) {
+        this.workTimes = workTimes;
     }
 }
