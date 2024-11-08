@@ -11,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "working_time")
+@Table(name = "work_time")
 
 public class WorkTime {
     @Id

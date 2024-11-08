@@ -17,15 +17,14 @@ import java.time.LocalDateTime;
 
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    private LocalDateTime date;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private float totalTime;
     @Column(columnDefinition = "TEXT")
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "working_time_id")
+    @JoinColumn(name = "work_time_id")
     private WorkTime workTime;
 
     @ManyToOne
