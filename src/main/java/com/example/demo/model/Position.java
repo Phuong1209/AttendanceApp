@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.PositionDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 
+
 public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +26,10 @@ public class Position {
     @JsonBackReference
     private Set<User> users;
 
-
+    public Position(String positionName) {
+        this.positionName=positionName;
+    }
+    public Position(PositionDTO positionDTO){
+        this.positionName= positionDTO.getPositionName();
+    }
 }

@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import com.example.demo.dto.UserDTO;
+import com.example.demo.repository.DepartmentRepository;
+import com.example.demo.repository.PositionRepository;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -9,6 +11,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "user")
@@ -27,8 +30,8 @@ public class User implements Serializable {
     private String userPasswords;
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(
-            name="user_position",
-            joinColumns = @JoinColumn(name="user_id"),
+            name = "user_position",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "position_id")
     )
     @JsonManagedReference
@@ -36,20 +39,27 @@ public class User implements Serializable {
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(
-            name="user_department",
-            joinColumns = @JoinColumn(name="user_id"),
+            name = "user_department",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )
     @JsonManagedReference
     private Set<Department> departments;
 
-    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<WorkingTime> workingTimes;
 
-    public User(UserDTO userDTO){
-        this.id=userDTO.getId();
-        this.userName=userDTO.getUserName();
-        this.userFullName=userDTO.getUserFullName();
+//    public void updateFromDTO(UserDTO userDTO) {
+//        this.userName = userDTO.getUserName();
+//        this.userFullName = userDTO.getUserFullName();
+//        this.positions = userDTO.getPositions();
+//        this.departments = userDTO.getDepartments();
+//    }
+
+    public User(UserDTO userDTO) {
+        this.id = userDTO.getId();
+        this.userName = userDTO.getUserName();
+        this.userFullName = userDTO.getUserFullName();
     }
 }

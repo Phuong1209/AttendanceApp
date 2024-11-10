@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.dto.PositionDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserExcelDTO;
 import com.example.demo.model.*;
@@ -8,7 +10,6 @@ import com.example.demo.repository.MemberManagementRepository;
 import com.example.demo.repository.PositionRepository;
 import com.example.demo.repository.WorkingTimeRepository;
 import com.example.demo.security.MyUserPrincipal;
-import com.example.demo.utils.AppUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +29,6 @@ public class MemberManagementService implements IMemberManagementService {
 //
 //    @Autowired
 //    private Session session;
-
 
     private final MemberManagementRepository memberManagementRepository;
     private final PositionRepository positionRepository;
@@ -65,7 +65,6 @@ public class MemberManagementService implements IMemberManagementService {
         return memberManagementRepository.save(user);
     }
 
-
     @Transactional
     @Override
     public void remove(Long id) {
@@ -99,12 +98,26 @@ public class MemberManagementService implements IMemberManagementService {
 
             //get position list by user and set to position for user
             List<Position> positions = positionRepository.findByUsers(user);
-            Set<String> positionNames = positions.stream().map(Position::getPositionName).collect(Collectors.toSet());
-            userDTO.setPositions(positionNames);
+            Set<PositionDTO> positionDTOS = new HashSet<>();
+            for (Position position : positions){
+                PositionDTO positionDTO = new PositionDTO();
+                positionDTO.setId(position.getId());
+                positionDTO.setPositionName(position.getPositionName());
+                positionDTOS.add(positionDTO);
+            }
+//            Set<PositionDTO> positionNames = positions.stream().map(Position::getPositionName).collect(Collectors.toSet());
+            userDTO.setPositions(positionDTOS);
 
             //get department list by user and set to department for user
             List<Department> departments = departmentRepository.findByUsers(user);
-            userDTO.setDepartments(departments.stream().map(Department::getDepartmentName).collect(Collectors.toSet()));
+            Set<DepartmentDTO> departmentDTOS= new HashSet<>();
+            for(Department department: departments){
+                DepartmentDTO departmentDTO = new DepartmentDTO();
+                departmentDTO.setDepartmentName(department.getDepartmentName());
+                departmentDTOS.add(departmentDTO);
+            }
+            userDTO.setDepartments(departmentDTOS);
+//            userDTO.setDepartments(departments.stream().map(Department::getDepartmentName).collect(Collectors.toSet()));
 
 //          //get workingTime by user and set to workingTime for user
 //            List<WorkingTime> workingTimes = workingTimeRepository.findByUser(user);
@@ -113,9 +126,7 @@ public class MemberManagementService implements IMemberManagementService {
             userDTOS.add(userDTO);
         }
         return userDTOS;
-
     }
-
 
     public List<Department>getDepartmentByUser(Long userId){
         if(userId!=null){
@@ -179,4 +190,5 @@ public class MemberManagementService implements IMemberManagementService {
         }
         return userDTOS;
     }
+
 }
