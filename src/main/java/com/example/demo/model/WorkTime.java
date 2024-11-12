@@ -1,4 +1,5 @@
 package com.example.demo.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -28,7 +29,7 @@ public class WorkTime {
     private Set<Task> tasks;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     //getter and setter

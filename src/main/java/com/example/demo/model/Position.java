@@ -20,7 +20,7 @@ public class Position {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String positionName;
-    @ManyToMany(mappedBy="positions", cascade=CascadeType.ALL)
-    private Set<User> users;
+    @OneToOne
+    private User user;
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,13 +29,12 @@ public class User {
 
     private Set<Position> positions;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany
     @JoinTable(
             name="user_department",
-            joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "department_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id")
     )
-
     private Set<Department> departments;
 
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL)

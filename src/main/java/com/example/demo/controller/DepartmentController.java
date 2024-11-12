@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Department;
+import com.example.demo.model.dto.DepartmentSummaryDTO;
 import com.example.demo.service.Department.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,6 +65,13 @@ public class DepartmentController {
         }
         departmentService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //summarize
+    @GetMapping("/summarize")
+    public ResponseEntity<List<DepartmentSummaryDTO>> getDepartmentSummaries() {
+        List<DepartmentSummaryDTO> summaries = departmentService.getDepartmentSummaries();
+        return ResponseEntity.ok(summaries);
     }
 
 }
