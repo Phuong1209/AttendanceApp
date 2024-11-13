@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.UserDTO;
+import com.example.demo.model.Department;
 import com.example.demo.model.Position;
 import com.example.demo.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +14,9 @@ import java.util.Set;
 public interface IMemberManagementService extends IGeneralService<User>, UserDetailsService {
 
     List<Position> getPositionByUser(Long userId);
+
+    List<Department>getDepartmentByUser(Long userId);
+
     List<UserDTO> getAllUser();
 
 

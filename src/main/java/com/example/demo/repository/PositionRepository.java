@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 
-public interface PositionRepository extends JpaRepository<Position,Long> {
+public interface PositionRepository extends JpaRepository<Position, Long> {
     List<Position> findByUsers(User user);
 
 

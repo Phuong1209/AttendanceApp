@@ -13,13 +13,15 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Entity
 @Table(name = "user")
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+
+@Entity
 @Getter
 @Setter
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 
 public class User implements Serializable {
     @Id
@@ -28,7 +30,9 @@ public class User implements Serializable {
     private String userName;
     private String userFullName;
     private String userPasswords;
+
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+
     @JoinTable(
             name = "user_position",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -50,16 +54,9 @@ public class User implements Serializable {
     @JsonManagedReference
     private Set<WorkingTime> workingTimes;
 
-//    public void updateFromDTO(UserDTO userDTO) {
-//        this.userName = userDTO.getUserName();
-//        this.userFullName = userDTO.getUserFullName();
-//        this.positions = userDTO.getPositions();
-//        this.departments = userDTO.getDepartments();
-//    }
-
     public User(UserDTO userDTO) {
-        this.id = userDTO.getId();
         this.userName = userDTO.getUserName();
         this.userFullName = userDTO.getUserFullName();
+        this.userPasswords = userDTO.getPassword();
     }
 }

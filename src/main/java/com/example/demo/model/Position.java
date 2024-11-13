@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,22 +15,20 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 
 
-public class Position {
+public class Position implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String positionName;
-    @ManyToMany(mappedBy="positions", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy="positions", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<User> users;
 
-    public Position(String positionName) {
-        this.positionName=positionName;
-    }
     public Position(PositionDTO positionDTO){
-        this.positionName= positionDTO.getPositionName();
+        this.positionName = positionDTO.getPositionName();
     }
 }

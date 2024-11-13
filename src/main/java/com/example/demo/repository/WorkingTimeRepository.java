@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Set;
 @Repository
+
 public interface WorkingTimeRepository extends JpaRepository<WorkingTime, Long> {
     List<WorkingTime> findByUser(User user);
 }

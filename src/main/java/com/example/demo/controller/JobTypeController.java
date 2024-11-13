@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+
 import com.example.demo.model.JobType;
 import com.example.demo.service.IJobTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
