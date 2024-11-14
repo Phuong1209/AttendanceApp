@@ -6,6 +6,8 @@ import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IUserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
@@ -13,18 +15,23 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
-public class DepartmentService implements IDepartmentService {
-    @Autowired
-    private IDepartmentRepository departmentRepository;
-    private IUserRepository userRepository;
-    private IJobTypeRepository jobTypeRepository;
+@RequiredArgsConstructor
 
+public class DepartmentService implements IDepartmentService {
+
+    private final IDepartmentRepository departmentRepository;
+    private final IUserRepository userRepository;
+    private final IJobTypeRepository jobTypeRepository;
+
+    @Transactional
     @Override
     public Iterable<Department> findAll() {
         return departmentRepository.findAll();
     }
 
+    @Transactional
     @Override
     public Optional<Department> findById(Long id) {
         return departmentRepository.findById(id);
@@ -32,21 +39,61 @@ public class DepartmentService implements IDepartmentService {
 
     @Transactional
     @Override
-    public Department save(Department department) {
-        for (User user : department.getUsers()) {
-            user.getDepartments().add(department);
-        }
-        return departmentRepository.save(department);
+    public Department save(Department model) {
+        return departmentRepository.save(model);
     }
 
+    @Transactional
     @Override
     public void remove(Long id) {
         departmentRepository.deleteById(id);
     }
 
+    @Override
+    public List<DepartmentDTO> getAllDepartment() {
+        List<Department> departments = departmentRepository.findAll();
+        List<DepartmentDTO> departmentDTOS = new ArrayList<>();
+        for(Department department : departments) {
+            DepartmentDTO departmentDTO = new DepartmentDTO();
+            departmentDTO.setName(department.getName());
+            departmentDTO.setId(department.getId());
+
+            //get department list by user and set to department for user
+            List<User> users = userRepository.findByDepartments(department);
+            Set<UserDTO> userDTOS = new HashSet<>();
+            for(User user: users) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setId(user.getId());
+                userDTO.setUserName(user.getUserName());
+                userDTO.setFullName(user.getFullName());
+                userDTO.setPassword(user.getPassword());
+                userDTOS.add(userDTO);
+            }
+            departmentDTO.setUsers(userDTOS);
+
+            departmentDTOS.add(departmentDTO);
+        }
+        return departmentDTOS;
+    }
+
+    public List<User> getUserByDepartment(Long departmentId) {
+        if(departmentId != null){
+            Optional<Department>optionalDepartment = departmentRepository.findById(departmentId);
+            if(optionalDepartment.isPresent()) {
+                Department foundDepartment=optionalDepartment.get();
+                List<User>users = userRepository.findByDepartments(foundDepartment);
+                log.info("Users of department {}:{}",foundDepartment.getName(),users);
+                return users;
+            }
+        }
+        return Collections.emptyList();
+    }
+
     //test DTO
+    /*@Transactional
     public List<DepartmentDTO> getAllDepartmentsWithUsers() {
         List<Department> departments = departmentRepository.findAll();
+        departments.forEach(department -> Hibernate.initialize(department.getUsers()));
         return departments.stream().map(department -> {
             Set<UserDTO> userDTOs = department.getUsers().stream()
                     .map(user -> new UserDTO(user.getId(), user.getFullName(), user.getUserName(), user.getPassword()))
@@ -56,7 +103,7 @@ public class DepartmentService implements IDepartmentService {
     }
 
     //test
-/*    @Transactional
+    @Transactional
     public Department addUsersToDepartment(Long departmentId, Set<User> users) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new RuntimeException("Department not found"));
@@ -68,37 +115,22 @@ public class DepartmentService implements IDepartmentService {
         }
 
         return departmentRepository.save(department);
-    }*/
-
-
-
-    /*public List<DepartmentDto> getAllDepartment() {
+    }
+*/
+/*    public List<DepartmentDTO> getAllDepartmentsWithUsers() {
         List<Department> departments = departmentRepository.findAll();
-        List<DepartmentDto> departmentDtos = new ArrayList<>();
+        List<DepartmentDTO> departmentDtos = new ArrayList<>();
         for(Department department : departments){
-            DepartmentDto departmentDto = new DepartmentDto();
+            DepartmentDTO departmentDto = new DepartmentDTO();
             departmentDto.setName(department.getName());
             departmentDto.setId(department.getId());
-
-            //get department's job type list
-            //add jobTypeDto to list jobTypeDtos
-            List<JobType> jobTypes = jobTypeRepository.findByDepartments(department);
-            Set<JobTypeDto> JobTypeDtos = new HashSet<>();
-            for (JobType jobType : jobTypes){
-                JobTypeDto jobTypeDto = new JobTypeDto();
-                jobTypeDto.setId(jobType.getId());
-                jobTypeDto.setName(jobType.getName());
-                JobTypeDtos.add(jobTypeDto);
-            }
-            //set jobTypeDtos to departmentDto
-            departmentDto.setJobTypes(JobTypeDtos);
 
             //get department's user list
             //add userDto to list userDtos
             List<User> users = userRepository.findByDepartments(department);
-            Set<UserDto> userDtos = new HashSet<>();
+            Set<UserDTO> userDtos = new HashSet<>();
             for(User user : users){
-                UserDto userDto = new UserDto();
+                UserDTO userDto = new UserDTO();
                 userDto.setUserName(user.getUserName());
                 userDto.setFullName(user.getFullName());
                 userDto.setPassword(user.getPassword());
@@ -111,9 +143,9 @@ public class DepartmentService implements IDepartmentService {
             departmentDtos.add(departmentDto);
         }
         return departmentDtos;
-    }
+    }*/
 
-    public List<JobType>getJobTypeByDepartment(Long departmentId){
+    /*public List<JobType>getJobTypeByDepartment(Long departmentId){
         if(departmentId!=null){
             Optional<Department>optionalDepartment=departmentRepository.findById(departmentId);
             if(optionalDepartment.isPresent()){
@@ -136,7 +168,7 @@ public class DepartmentService implements IDepartmentService {
             }
         }
         return Collections.emptyList();
-    }
+    }*/
 
     //Summarize Department
     public List<DepartmentSummaryDTO> getDepartmentSummaries() {
@@ -180,6 +212,5 @@ public class DepartmentService implements IDepartmentService {
         }
         return summaries;
     }
-*/
 }
 

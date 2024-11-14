@@ -16,6 +16,10 @@ public class DepartmentDTO {
         this.users = users;
     }
 
+    public DepartmentDTO() {
+
+    }
+
     //getter and setter
     public Long getId() {
         return id;

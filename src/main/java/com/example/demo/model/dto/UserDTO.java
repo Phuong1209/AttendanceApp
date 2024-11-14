@@ -1,12 +1,19 @@
 package com.example.demo.model.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Set;
+
+@Getter
+@Setter
 public class UserDTO {
     private Long id;
     private String fullName;
     private String userName;
     private String password;
     //private Set<PositionDto> positions;
-    //private Set<DepartmentDto> departments;
+    private Set<DepartmentDTO> departments;
     //private Set<WorkTimeDto> workTimes;
 
     //constructor
@@ -15,6 +22,9 @@ public class UserDTO {
         this.fullName = fullName;
         this.userName = userName;
         this.password = password;
+    }
+
+    public UserDTO() {
     }
 
     //getter and setter

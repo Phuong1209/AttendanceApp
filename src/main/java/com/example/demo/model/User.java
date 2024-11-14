@@ -1,9 +1,12 @@
 package com.example.demo.model;
 
+import com.example.demo.model.dto.UserDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -11,29 +14,39 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+//@Data
+@Getter
+@Setter
 
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fullName;
     private String userName;
     private String password;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Position> positions;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(
             name="user_department",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )
-    @JsonIgnoreProperties("users")
+    @JsonManagedReference
     private Set<Department> departments;
 
-    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<WorkTime> workTimes;
+
+    //constructor
+    public User(UserDTO userDTO) {
+        this.userName = userDTO.getUserName();
+        this.fullName = userDTO.getFullName();
+        this.password = userDTO.getPassword();
+    }
 
     //setter and getter
     public Long getId() {
@@ -91,4 +104,5 @@ public class User {
     public void setWorkTimes(Set<WorkTime> workTimes) {
         this.workTimes = workTimes;
     }
+
 }

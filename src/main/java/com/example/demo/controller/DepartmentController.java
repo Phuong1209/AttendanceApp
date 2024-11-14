@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Department;
+import com.example.demo.model.User;
 import com.example.demo.model.dto.DepartmentDTO;
 import com.example.demo.model.dto.DepartmentSummaryDTO;
 import com.example.demo.service.Department.IDepartmentService;
@@ -21,11 +22,28 @@ public class DepartmentController {
     @Autowired
     private IDepartmentService departmentService;
 
-    //test show list
+    @GetMapping
+    public ResponseEntity<?> getAllDepartments() {
+        return ResponseEntity.ok().body(departmentService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Department> getAllDepartmentById(@PathVariable Long id) {
+        Optional<Department> departmentOptional = departmentService.findById(id);
+        return departmentOptional.map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("getUser/{id}")
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        List<User> users = departmentService.getUserByDepartment(id);
+        return ResponseEntity.ok().body(users);
+    }
+
+/*    //test show list
     @GetMapping
     public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
         return new ResponseEntity<>(departmentService.getAllDepartmentsWithUsers(), HttpStatus.OK);
-    }
+    }*/
 
     //show list
 /*    @RequestMapping(method = RequestMethod.GET)
@@ -35,14 +53,14 @@ public class DepartmentController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(departmentList, HttpStatus.OK);
-    }*/
+    }
 
     //find by id
     @GetMapping("/{id}")
     public ResponseEntity<Department> findDepartmentsById(@PathVariable Long id) {
         Optional<Department> departmentOptional = departmentService.findById(id);
         return departmentOptional.map(Department -> new ResponseEntity<>(Department, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+    }*/
 
     //create
     @PostMapping("")
@@ -74,11 +92,11 @@ public class DepartmentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-/*    //summarize
+    //summarize
     @GetMapping("/summarize")
     public ResponseEntity<List<DepartmentSummaryDTO>> getDepartmentSummaries() {
         List<DepartmentSummaryDTO> summaries = departmentService.getDepartmentSummaries();
         return ResponseEntity.ok(summaries);
-    }*/
+    }
 
 }

@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
+import com.example.demo.model.dto.UserDTO;
 import com.example.demo.service.JobType.IJobTypeService;
 import com.example.demo.service.User.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,29 @@ import java.util.Optional;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/user")
+
 public class UserController {
     @Autowired
     private IUserService userService;
 
-    //show list
+    @GetMapping
+    public ResponseEntity<?> getAllUsers() {
+        return ResponseEntity.ok().body(userService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getAllUserById(@PathVariable Long id) {
+        Optional<User> userOptional = userService.findById(id);
+        return userOptional.map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("getDepartment/{id}")
+    public ResponseEntity<?> getDepartment(@PathVariable Long id) {
+        List<Department> departments = userService.getDepartmentByUser(id);
+        return ResponseEntity.ok().body(departments);
+    }
+
+    /*//show list
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<User>> getAllUser() {
         List<User> userList = (List<User>) userService.findAll();
@@ -35,7 +54,7 @@ public class UserController {
     public ResponseEntity<User> findUsersById(@PathVariable Long id) {
         Optional<User> userOptional = userService.findById(id);
         return userOptional.map(JobType -> new ResponseEntity<>(JobType, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+    }*/
 
     //create
     @PostMapping("")
