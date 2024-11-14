@@ -19,7 +19,6 @@ public class WorkTimeController {
     private IWorkTimeService workTimeService;
 
     //show list
-    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<WorkTime>> getAllWorkTime() {
         List<WorkTime> workTimeList = (List<WorkTime>) workTimeService.findAll();
         if (workTimeList.isEmpty()) {

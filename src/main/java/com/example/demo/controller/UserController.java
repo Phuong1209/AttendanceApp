@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
 import com.example.demo.service.JobType.IJobTypeService;
@@ -21,12 +22,12 @@ public class UserController {
 
     //show list
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable<User>> getAllJobType() {
-        List<User> jobTypeList = (List<User>) userService.findAll();
-        if (jobTypeList.isEmpty()) {
+    public ResponseEntity<Iterable<User>> getAllUser() {
+        List<User> userList = (List<User>) userService.findAll();
+        if (userList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(jobTypeList, HttpStatus.OK);
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
     //find by id

@@ -1,10 +1,13 @@
 package com.example.demo.service.WorkTime;
 
 import com.example.demo.model.WorkTime;
+//import com.example.demo.model.dto.WorkTimeDto;
 import com.example.demo.service.IGeneralService;
 
 public interface IWorkTimeService extends IGeneralService<WorkTime> {
-/*
+//    List<WorkTimeDto> getAllWorkTime();
+
+    /*Code TA
     WorkTime checkin(Long userId, LocalDateTime checkinTime);      // Check-in user
     WorkTime checkout(Long userId, LocalDateTime checkoutTime);    // Check-out user
     WorkTime updateBreaktime(Long userId, Float breaktimeHours); // Set/update breaktime

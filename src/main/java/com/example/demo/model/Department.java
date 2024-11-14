@@ -1,15 +1,11 @@
 package com.example.demo.model;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -32,8 +28,8 @@ public class Department {
     )
     private Set<JobType> jobTypes;
 
-    @ManyToMany(mappedBy = "departments",cascade=CascadeType.ALL)
-
+    @ManyToMany(mappedBy = "departments")
+    @JsonIgnoreProperties("departments")
     private Set<User> users;
 
     //setter and getter

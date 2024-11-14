@@ -1,12 +1,19 @@
 package com.example.demo.repository;
 
+import com.example.demo.model.Task;
+import com.example.demo.model.User;
 import com.example.demo.model.WorkTime;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IWorkTimeRepository extends JpaRepository<WorkTime, Long> {
-/*
+    List<WorkTime> findByUser(User user);
+
+
+    /*Code TA
     @Query("SELECT w FROM WorkingTime w WHERE w.user_id = :userId AND w.date = :date")
     Optional<WorkingTime> findByUserIdAndDate(@Param("userId") Long userId, @Param("date") LocalDate date);
 

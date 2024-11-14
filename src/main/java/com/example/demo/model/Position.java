@@ -1,12 +1,7 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "position")
@@ -20,7 +15,7 @@ public class Position {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String positionName;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
-
 }

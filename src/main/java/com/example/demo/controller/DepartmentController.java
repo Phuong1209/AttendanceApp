@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Department;
+import com.example.demo.model.dto.DepartmentDTO;
 import com.example.demo.model.dto.DepartmentSummaryDTO;
 import com.example.demo.service.Department.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,21 @@ public class DepartmentController {
     @Autowired
     private IDepartmentService departmentService;
 
+    //test show list
+    @GetMapping
+    public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
+        return new ResponseEntity<>(departmentService.getAllDepartmentsWithUsers(), HttpStatus.OK);
+    }
+
     //show list
-    @RequestMapping(method = RequestMethod.GET)
+/*    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Department>> getAllDepartment() {
         List<Department> departmentList = (List<Department>) departmentService.findAll();
         if (departmentList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(departmentList, HttpStatus.OK);
-    }
+    }*/
 
     //find by id
     @GetMapping("/{id}")
@@ -67,11 +74,11 @@ public class DepartmentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //summarize
+/*    //summarize
     @GetMapping("/summarize")
     public ResponseEntity<List<DepartmentSummaryDTO>> getDepartmentSummaries() {
         List<DepartmentSummaryDTO> summaries = departmentService.getDepartmentSummaries();
         return ResponseEntity.ok(summaries);
-    }
+    }*/
 
 }

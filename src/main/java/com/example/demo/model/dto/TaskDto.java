@@ -1,37 +1,20 @@
-package com.example.demo.model;
+/*
+package com.example.demo.model.dto;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.demo.model.JobType;
+import com.example.demo.model.Project;
+import com.example.demo.model.WorkTime;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
-
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Builder
-@Table(name = "task")
-
-public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TaskDto {
     private Long id;
     private float totalTime;
-    @Column(columnDefinition = "TEXT")
     private String comment;
-
-    @ManyToOne
-    @JoinColumn(name = "work_time_id")
-    private WorkTime workTime;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
-
-    @ManyToOne
-    @JoinColumn(name = "job_type_id")
+    private WorkTimeDto workTime;
+    private ProjectDto project;
     private JobType jobType;
 
     //getter and setter
@@ -59,19 +42,19 @@ public class Task {
         this.comment = comment;
     }
 
-    public WorkTime getWorkTime() {
+    public WorkTimeDto getWorkTime() {
         return workTime;
     }
 
-    public void setWorkTime(WorkTime workTime) {
+    public void setWorkTime(WorkTimeDto workTime) {
         this.workTime = workTime;
     }
 
-    public Project getProject() {
+    public ProjectDto getProject() {
         return project;
     }
 
-    public void setProject(Project project) {
+    public void setProject(ProjectDto project) {
         this.project = project;
     }
 
@@ -83,3 +66,4 @@ public class Task {
         this.jobType = jobType;
     }
 }
+*/

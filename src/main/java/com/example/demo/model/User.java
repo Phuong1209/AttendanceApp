@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,13 +20,7 @@ public class User {
     private String fullName;
     private String userName;
     private String password;
-    @ManyToMany
-    @JoinTable(
-            name="user_position",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name = "position_id")
-    )
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Position> positions;
 
     @ManyToMany
@@ -35,14 +29,13 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )
+    @JsonIgnoreProperties("users")
     private Set<Department> departments;
 
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL)
     private Set<WorkTime> workTimes;
 
     //setter and getter
-
-
     public Long getId() {
         return id;
     }

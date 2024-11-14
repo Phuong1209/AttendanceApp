@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Task;
+import com.example.demo.model.User;
 import com.example.demo.service.Task.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,6 @@ public class TaskController {
     private ITaskService taskService;
 
     //show list
-    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Task>> getAllTask() {
         List<Task> taskList = (List<Task>) taskService.findAll();
         if (taskList.isEmpty()) {
