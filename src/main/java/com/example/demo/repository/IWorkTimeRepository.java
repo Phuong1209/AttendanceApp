@@ -10,8 +10,7 @@ import java.util.List;
 
 @Repository
 public interface IWorkTimeRepository extends JpaRepository<WorkTime, Long> {
-    List<WorkTime> findByUser(User user);
-
+    List<WorkTime> findWorkTimeByUser(User user);
 
     /*Code TA
     @Query("SELECT w FROM WorkingTime w WHERE w.user_id = :userId AND w.date = :date")

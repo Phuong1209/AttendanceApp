@@ -39,6 +39,7 @@ public class User implements Serializable {
     private Set<Department> departments;
 
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<WorkTime> workTimes;
 
     //constructor

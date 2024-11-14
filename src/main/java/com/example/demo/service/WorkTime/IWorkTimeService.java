@@ -2,10 +2,15 @@ package com.example.demo.service.WorkTime;
 
 import com.example.demo.model.WorkTime;
 //import com.example.demo.model.dto.WorkTimeDto;
+import com.example.demo.model.dto.WorkTimeDTO;
 import com.example.demo.service.IGeneralService;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface IWorkTimeService extends IGeneralService<WorkTime> {
-//    List<WorkTimeDto> getAllWorkTime();
+    //List<WorkTimeDTO> getAllWorkTime();
 
     /*Code TA
     WorkTime checkin(Long userId, LocalDateTime checkinTime);      // Check-in user

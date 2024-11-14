@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
+import com.example.demo.model.WorkTime;
 import com.example.demo.model.dto.UserDTO;
 import com.example.demo.service.JobType.IJobTypeService;
 import com.example.demo.service.User.IUserService;
@@ -37,6 +38,12 @@ public class UserController {
     public ResponseEntity<?> getDepartment(@PathVariable Long id) {
         List<Department> departments = userService.getDepartmentByUser(id);
         return ResponseEntity.ok().body(departments);
+    }
+
+    @GetMapping("getWorkTime/{id}")
+    public ResponseEntity<?> getWorkTime(@PathVariable Long id) {
+        List<WorkTime> workTimes = userService.getWorkTimeByUser(id);
+        return ResponseEntity.ok().body(workTimes);
     }
 
     /*//show list

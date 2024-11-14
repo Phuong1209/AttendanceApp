@@ -3,8 +3,10 @@ package com.example.demo.service.User;
 import com.example.demo.model.Department;
 import com.example.demo.model.User;
 //import com.example.demo.model.dto.WorkTimeDto;
+import com.example.demo.model.WorkTime;
 import com.example.demo.model.dto.DepartmentDTO;
 import com.example.demo.model.dto.UserDTO;
+import com.example.demo.model.dto.WorkTimeDTO;
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.repository.IWorkTimeRepository;
@@ -61,8 +63,8 @@ public class UserService implements IUserService {
             userDTO.setId(user.getId());
             userDTO.setPassword(user.getPassword());
 
-            //get department list by user and set to department for user
-            List<Department> departments = departmentRepository.findByUsers(user);
+            //get department list
+            List<Department> departments = departmentRepository.findDepartmentByUsers(user);
             Set<DepartmentDTO> departmentDTOS = new HashSet<>();
             for(Department department: departments) {
                 DepartmentDTO departmentDTO = new DepartmentDTO();
@@ -72,19 +74,51 @@ public class UserService implements IUserService {
             }
             userDTO.setDepartments(departmentDTOS);
 
+            //get worktime list
+            List<WorkTime> workTimes = workTimeRepository.findWorkTimeByUser(user);
+            Set<WorkTimeDTO> workTimeDTOS = new HashSet<>();
+            for(WorkTime workTime : workTimes) {
+                WorkTimeDTO workTimeDTO = new WorkTimeDTO();
+                workTimeDTO.setId(workTime.getId());
+                workTimeDTO.setDate(workTime.getDate());
+                workTimeDTO.setCheckinTime(workTime.getCheckinTime());
+                workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
+                workTimeDTO.setBreakTime(workTime.getBreakTime());
+                workTimeDTO.setWorkTime(workTime.getWorkTime());
+                workTimeDTO.setOverTime(workTime.getOverTime());
+                workTimeDTOS.add(workTimeDTO);
+            }
+            userDTO.setWorkTimes(workTimeDTOS);
+
+            //add user to user DTO
             userDTOS.add(userDTO);
         }
         return userDTOS;
     }
 
+    //list department
     public List<Department> getDepartmentByUser(Long userId) {
         if(userId != null){
             Optional<User>optionalUser = userRepository.findById(userId);
             if(optionalUser.isPresent()) {
                 User foundUser=optionalUser.get();
-                List<Department>departments = departmentRepository.findByUsers(foundUser);
+                List<Department>departments = departmentRepository.findDepartmentByUsers(foundUser);
                 log.info("Department of user {}:{}",foundUser.getUserName(),departments);
                 return departments;
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    //list worktime
+    public List<WorkTime> getWorkTimeByUser(Long userId) {
+        if(userId != null){
+            Optional<User>optionalUser = userRepository.findById(userId);
+            if(optionalUser.isPresent()) {
+                User foundUser=optionalUser.get();
+                List<WorkTime> workTimes = workTimeRepository.findWorkTimeByUser(foundUser);
+                log.info("Worktimes of user {}:{}",foundUser.getUserName(), workTimes);
+                return workTimes;
             }
         }
         return Collections.emptyList();
