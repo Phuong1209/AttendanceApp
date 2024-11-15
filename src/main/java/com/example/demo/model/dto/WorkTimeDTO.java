@@ -18,5 +18,4 @@ public class WorkTimeDTO {
     private Float workTime;
     private Float overTime;
     //private Set<TaskDto> tasks;
-    private UserDTO user;
 }

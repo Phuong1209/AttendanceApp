@@ -7,11 +7,13 @@ import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "work_time")
+@Getter
+@Setter
 
 public class WorkTime {
     @Id
@@ -32,78 +34,6 @@ public class WorkTime {
     @JsonBackReference
     private User user;
 
-    //getter and setter
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalTime getCheckinTime() {
-        return checkinTime;
-    }
-
-    public void setCheckinTime(LocalTime checkinTime) {
-        this.checkinTime = checkinTime;
-    }
-
-    public LocalTime getCheckoutTime() {
-        return checkoutTime;
-    }
-
-    public void setCheckoutTime(LocalTime checkoutTime) {
-        this.checkoutTime = checkoutTime;
-    }
-
-    public Float getBreakTime() {
-        return breakTime;
-    }
-
-    public void setBreakTime(Float breakTime) {
-        this.breakTime = breakTime;
-    }
-
-    public Float getWorkTime() {
-        return workTime;
-    }
-
-    public void setWorkTime(Float workTime) {
-        this.workTime = workTime;
-    }
-
-    public Float getOverTime() {
-        return overTime;
-    }
-
-    public void setOverTime(Float overTime) {
-        this.overTime = overTime;
-    }
-
-    public Set<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
 
 

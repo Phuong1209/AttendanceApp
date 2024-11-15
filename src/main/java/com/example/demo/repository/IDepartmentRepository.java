@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface IDepartmentRepository extends JpaRepository <Department, Long> {
-    List<Department> findDepartmentByUsers(User user);
+    List<Department> findByUsers(User user);
     Optional<Department> findByName(String name);
 }

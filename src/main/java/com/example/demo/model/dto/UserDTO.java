@@ -17,7 +17,7 @@ public class UserDTO {
     private Set<WorkTimeDTO> workTimes;
 
     //constructor
-    public UserDTO(Long id, String fullName, String userName, String password) {
+/*    public UserDTO(Long id, String fullName, String userName, String password) {
         this.id = id;
         this.fullName = fullName;
         this.userName = userName;
@@ -25,5 +25,5 @@ public class UserDTO {
     }
 
     public UserDTO() {
-    }
+    }*/
 }

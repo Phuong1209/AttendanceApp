@@ -64,7 +64,7 @@ public class UserService implements IUserService {
             userDTO.setPassword(user.getPassword());
 
             //get department list
-            List<Department> departments = departmentRepository.findDepartmentByUsers(user);
+            List<Department> departments = departmentRepository.findByUsers(user);
             Set<DepartmentDTO> departmentDTOS = new HashSet<>();
             for(Department department: departments) {
                 DepartmentDTO departmentDTO = new DepartmentDTO();
@@ -75,7 +75,7 @@ public class UserService implements IUserService {
             userDTO.setDepartments(departmentDTOS);
 
             //get worktime list
-            List<WorkTime> workTimes = workTimeRepository.findWorkTimeByUser(user);
+            List<WorkTime> workTimes = workTimeRepository.findByUser(user);
             Set<WorkTimeDTO> workTimeDTOS = new HashSet<>();
             for(WorkTime workTime : workTimes) {
                 WorkTimeDTO workTimeDTO = new WorkTimeDTO();
@@ -102,7 +102,7 @@ public class UserService implements IUserService {
             Optional<User>optionalUser = userRepository.findById(userId);
             if(optionalUser.isPresent()) {
                 User foundUser=optionalUser.get();
-                List<Department>departments = departmentRepository.findDepartmentByUsers(foundUser);
+                List<Department>departments = departmentRepository.findByUsers(foundUser);
                 log.info("Department of user {}:{}",foundUser.getUserName(),departments);
                 return departments;
             }
@@ -116,7 +116,7 @@ public class UserService implements IUserService {
             Optional<User>optionalUser = userRepository.findById(userId);
             if(optionalUser.isPresent()) {
                 User foundUser=optionalUser.get();
-                List<WorkTime> workTimes = workTimeRepository.findWorkTimeByUser(foundUser);
+                List<WorkTime> workTimes = workTimeRepository.findByUser(foundUser);
                 log.info("Worktimes of user {}:{}",foundUser.getUserName(), workTimes);
                 return workTimes;
             }
