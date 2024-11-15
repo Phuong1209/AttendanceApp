@@ -26,11 +26,4 @@ public class Project {
     @JsonManagedReference
     private Set<Task> tasks;
 
-
-
-
-
-
-
-
 }

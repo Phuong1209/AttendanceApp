@@ -1,11 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Department;
-import com.example.demo.model.JobType;
 import com.example.demo.model.User;
 import com.example.demo.model.WorkTime;
-import com.example.demo.model.dto.UserDTO;
-import com.example.demo.service.JobType.IJobTypeService;
 import com.example.demo.service.User.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,23 +42,6 @@ public class UserController {
         List<WorkTime> workTimes = userService.getWorkTimeByUser(id);
         return ResponseEntity.ok().body(workTimes);
     }
-
-    /*//show list
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable<User>> getAllUser() {
-        List<User> userList = (List<User>) userService.findAll();
-        if (userList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(userList, HttpStatus.OK);
-    }
-
-    //find by id
-    @GetMapping("/{id}")
-    public ResponseEntity<User> findUsersById(@PathVariable Long id) {
-        Optional<User> userOptional = userService.findById(id);
-        return userOptional.map(JobType -> new ResponseEntity<>(JobType, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }*/
 
     //create
     @PostMapping("")

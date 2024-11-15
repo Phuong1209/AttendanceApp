@@ -10,8 +10,5 @@ public class TaskDTO {
     private Long id;
     private float totalTime;
     private String comment;
-    //private WorkTimeDTO workTime;
-    //private ProjectDTO project;
-    //private JobType jobType;
 
 }

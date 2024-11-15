@@ -2,7 +2,6 @@ package com.example.demo.service.User;
 
 import com.example.demo.model.Department;
 import com.example.demo.model.User;
-//import com.example.demo.model.dto.WorkTimeDto;
 import com.example.demo.model.WorkTime;
 import com.example.demo.model.dto.DepartmentDTO;
 import com.example.demo.model.dto.UserDTO;
@@ -13,7 +12,6 @@ import com.example.demo.repository.IWorkTimeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

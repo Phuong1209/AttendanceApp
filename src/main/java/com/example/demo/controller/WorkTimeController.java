@@ -40,24 +40,6 @@ public class WorkTimeController {
         return ResponseEntity.ok().body(tasks);
     }
 
-    //show list (old)
-    /*public ResponseEntity<Iterable<WorkTime>> getAllWorkTime() {
-        List<WorkTime> workTimeList = (List<WorkTime>) workTimeService.findAll();
-        if (workTimeList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(workTimeList, HttpStatus.OK);
-    }*/
-
-    //find by id old
-/*
-    @GetMapping("/{id}")
-    public ResponseEntity<WorkTime> findWorkTimesById(@PathVariable Long id) {
-        Optional<WorkTime> departmentOptional = workTimeService.findById(id);
-        return departmentOptional.map(WorkTime -> new ResponseEntity<>(WorkTime, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-*/
-
     //create
     @PostMapping("")
     public ResponseEntity<WorkTime> createWorkTime(@RequestBody WorkTime workTime) {

@@ -12,6 +12,5 @@ public class JobTypeDto {
     private Long id;
     private String name;
     private Set<DepartmentDTO> departments;
-    //private Set<TaskDto> tasks;
 
 }

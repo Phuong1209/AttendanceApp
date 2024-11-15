@@ -58,7 +58,7 @@ public class DepartmentService implements IDepartmentService {
             departmentDTO.setName(department.getName());
             departmentDTO.setId(department.getId());
 
-            //get department list by user and set to department for user
+            //get user list
             List<User> users = userRepository.findByDepartments(department);
             Set<UserDTO> userDTOS = new HashSet<>();
             for(User user: users) {
@@ -69,13 +69,16 @@ public class DepartmentService implements IDepartmentService {
                 userDTO.setPassword(user.getPassword());
                 userDTOS.add(userDTO);
             }
+            //add user list to department
             departmentDTO.setUsers(userDTOS);
 
+            //add department to list department
             departmentDTOS.add(departmentDTO);
         }
         return departmentDTOS;
     }
 
+    //get list user
     public List<User> getUserByDepartment(Long departmentId) {
         if(departmentId != null){
             Optional<Department>optionalDepartment = departmentRepository.findById(departmentId);
@@ -89,86 +92,6 @@ public class DepartmentService implements IDepartmentService {
         return Collections.emptyList();
     }
 
-    //test DTO
-    /*@Transactional
-    public List<DepartmentDTO> getAllDepartmentsWithUsers() {
-        List<Department> departments = departmentRepository.findAll();
-        departments.forEach(department -> Hibernate.initialize(department.getUsers()));
-        return departments.stream().map(department -> {
-            Set<UserDTO> userDTOs = department.getUsers().stream()
-                    .map(user -> new UserDTO(user.getId(), user.getFullName(), user.getUserName(), user.getPassword()))
-                    .collect(Collectors.toSet());
-            return new DepartmentDTO(department.getId(), department.getName(), userDTOs);
-        }).collect(Collectors.toList());
-    }
-
-    //test
-    @Transactional
-    public Department addUsersToDepartment(Long departmentId, Set<User> users) {
-        Department department = departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new RuntimeException("Department not found"));
-
-        for (User user : users) {
-            user.getDepartments().add(department);
-            department.getUsers().add(user);
-            userRepository.save(user);
-        }
-
-        return departmentRepository.save(department);
-    }
-*/
-/*    public List<DepartmentDTO> getAllDepartmentsWithUsers() {
-        List<Department> departments = departmentRepository.findAll();
-        List<DepartmentDTO> departmentDtos = new ArrayList<>();
-        for(Department department : departments){
-            DepartmentDTO departmentDto = new DepartmentDTO();
-            departmentDto.setName(department.getName());
-            departmentDto.setId(department.getId());
-
-            //get department's user list
-            //add userDto to list userDtos
-            List<User> users = userRepository.findByDepartments(department);
-            Set<UserDTO> userDtos = new HashSet<>();
-            for(User user : users){
-                UserDTO userDto = new UserDTO();
-                userDto.setUserName(user.getUserName());
-                userDto.setFullName(user.getFullName());
-                userDto.setPassword(user.getPassword());
-                userDtos.add(userDto);
-            }
-            //set userDtos to departmentDto
-            departmentDto.setUsers(userDtos);
-
-            //add DepartmentDto to Dtos
-            departmentDtos.add(departmentDto);
-        }
-        return departmentDtos;
-    }*/
-
-    /*public List<JobType>getJobTypeByDepartment(Long departmentId){
-        if(departmentId!=null){
-            Optional<Department>optionalDepartment=departmentRepository.findById(departmentId);
-            if(optionalDepartment.isPresent()){
-                Department foundDepartment=optionalDepartment.get();
-                List<JobType>jobTypes=jobTypeRepository.findByDepartments(foundDepartment);
-                log.info("JobTypes of department {}:{}",foundDepartment.getName(),jobTypes);
-                return jobTypes;
-            }
-        }
-        return Collections.emptyList();
-    }
-    public List<User>getUserByDepartment(Long departmentId) {
-        if (departmentId != null) {
-            Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
-            if (optionalDepartment.isPresent()) {
-                Department foundDepartment = optionalDepartment.get();
-                List<User> users = userRepository.findByDepartments(foundDepartment);
-                log.info("Users of department {}:{}", foundDepartment.getName(), users);
-                return users;
-            }
-        }
-        return Collections.emptyList();
-    }*/
 
     //Summarize Department
     public List<DepartmentSummaryDTO> getDepartmentSummaries() {

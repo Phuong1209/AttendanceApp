@@ -39,29 +39,6 @@ public class DepartmentController {
         return ResponseEntity.ok().body(users);
     }
 
-/*    //test show list
-    @GetMapping
-    public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
-        return new ResponseEntity<>(departmentService.getAllDepartmentsWithUsers(), HttpStatus.OK);
-    }*/
-
-    //show list
-/*    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Department>> getAllDepartment() {
-        List<Department> departmentList = (List<Department>) departmentService.findAll();
-        if (departmentList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(departmentList, HttpStatus.OK);
-    }
-
-    //find by id
-    @GetMapping("/{id}")
-    public ResponseEntity<Department> findDepartmentsById(@PathVariable Long id) {
-        Optional<Department> departmentOptional = departmentService.findById(id);
-        return departmentOptional.map(Department -> new ResponseEntity<>(Department, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }*/
-
     //create
     @PostMapping("")
     public ResponseEntity<Department> createDepartment(@RequestBody Department department) {
