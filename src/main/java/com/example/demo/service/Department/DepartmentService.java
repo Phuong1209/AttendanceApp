@@ -7,8 +7,6 @@ import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,6 +47,21 @@ public class DepartmentService implements IDepartmentService {
         departmentRepository.deleteById(id);
     }
 
+    //get list user of department
+    public List<User> getUserByDepartment(Long departmentId) {
+        if(departmentId != null){
+            Optional<Department>optionalDepartment = departmentRepository.findById(departmentId);
+            if(optionalDepartment.isPresent()) {
+                Department foundDepartment=optionalDepartment.get();
+                List<User>users = userRepository.findByDepartments(foundDepartment);
+                log.info("Users of department {}:{}",foundDepartment.getName(),users);
+                return users;
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    //get list department
     @Override
     public List<DepartmentDTO> getAllDepartment() {
         List<Department> departments = departmentRepository.findAll();
@@ -78,23 +91,8 @@ public class DepartmentService implements IDepartmentService {
         return departmentDTOS;
     }
 
-    //get list user
-    public List<User> getUserByDepartment(Long departmentId) {
-        if(departmentId != null){
-            Optional<Department>optionalDepartment = departmentRepository.findById(departmentId);
-            if(optionalDepartment.isPresent()) {
-                Department foundDepartment=optionalDepartment.get();
-                List<User>users = userRepository.findByDepartments(foundDepartment);
-                log.info("Users of department {}:{}",foundDepartment.getName(),users);
-                return users;
-            }
-        }
-        return Collections.emptyList();
-    }
-
-
-    //Summarize Department
-    public List<DepartmentSummaryDTO> getDepartmentSummaries() {
+    //Summarize by Department
+    public List<DepartmentSummaryDTO> getSummaryByDepartment() {
         List<Department> departments = departmentRepository.findAll();
         List<DepartmentSummaryDTO> summaries = new ArrayList<>();
 

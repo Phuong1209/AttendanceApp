@@ -8,7 +8,7 @@ import java.util.Set;
 @Getter
 @Setter
 
-public class JobTypeDto {
+public class JobTypeDTO {
     private Long id;
     private String name;
     private Set<DepartmentDTO> departments;

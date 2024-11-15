@@ -2,19 +2,18 @@ package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "project")
+@Getter
+@Setter
 
 public class Project {
     @Id

@@ -71,8 +71,8 @@ public class DepartmentController {
 
     //summarize
     @GetMapping("/summarize")
-    public ResponseEntity<List<DepartmentSummaryDTO>> getDepartmentSummaries() {
-        List<DepartmentSummaryDTO> summaries = departmentService.getDepartmentSummaries();
+    public ResponseEntity<List<DepartmentSummaryDTO>> getSummaryByDepartment() {
+        List<DepartmentSummaryDTO> summaries = departmentService.getSummaryByDepartment();
         return ResponseEntity.ok(summaries);
     }
 
