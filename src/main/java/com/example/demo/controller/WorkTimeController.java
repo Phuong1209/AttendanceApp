@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Department;
+import com.example.demo.model.Task;
+import com.example.demo.model.User;
 import com.example.demo.model.WorkTime;
 import com.example.demo.service.WorkTime.IWorkTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +21,42 @@ public class WorkTimeController {
     @Autowired
     private IWorkTimeService workTimeService;
 
-    //show list
-    public ResponseEntity<Iterable<WorkTime>> getAllWorkTime() {
+    //show list new
+    @GetMapping
+    public ResponseEntity<?> getAllWorkTimes() {
+        return ResponseEntity.ok().body(workTimeService.findAll());
+    }
+
+    //show by id new
+    @GetMapping("/{id}")
+    public ResponseEntity<WorkTime> getAllUserByWorkTime(@PathVariable Long id) {
+        Optional<WorkTime> workTimeOptional = workTimeService.findById(id);
+        return workTimeOptional.map(workTime -> new ResponseEntity<>(workTime, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("getTask/{id}")
+    public ResponseEntity<?> getTask(@PathVariable Long id) {
+        List<Task> tasks = workTimeService.getTaskByWorkTime(id);
+        return ResponseEntity.ok().body(tasks);
+    }
+
+    //show list (old)
+    /*public ResponseEntity<Iterable<WorkTime>> getAllWorkTime() {
         List<WorkTime> workTimeList = (List<WorkTime>) workTimeService.findAll();
         if (workTimeList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(workTimeList, HttpStatus.OK);
-    }
+    }*/
 
-    //find by id
+    //find by id old
+/*
     @GetMapping("/{id}")
     public ResponseEntity<WorkTime> findWorkTimesById(@PathVariable Long id) {
         Optional<WorkTime> departmentOptional = workTimeService.findById(id);
         return departmentOptional.map(WorkTime -> new ResponseEntity<>(WorkTime, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+*/
 
     //create
     @PostMapping("")

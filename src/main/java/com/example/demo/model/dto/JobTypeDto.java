@@ -1,6 +1,12 @@
 package com.example.demo.model.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Set;
+
+@Getter
+@Setter
 
 public class JobTypeDto {
     private Long id;
@@ -8,36 +14,4 @@ public class JobTypeDto {
     private Set<DepartmentDTO> departments;
     //private Set<TaskDto> tasks;
 
-    //getter and setter
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Set<DepartmentDTO> getDepartments() {
-        return departments;
-    }
-
-    public void setDepartments(Set<DepartmentDTO> departments) {
-        this.departments = departments;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-/*    public Set<TaskDto> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(Set<TaskDto> tasks) {
-        this.tasks = tasks;
-    }*/
 }

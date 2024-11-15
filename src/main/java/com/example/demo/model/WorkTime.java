@@ -1,5 +1,6 @@
 package com.example.demo.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class WorkTime {
     private Float overTime;
 
     @OneToMany(mappedBy = "workTime", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<Task> tasks;
 
     @ManyToOne

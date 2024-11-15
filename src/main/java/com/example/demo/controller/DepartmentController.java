@@ -30,7 +30,7 @@ public class DepartmentController {
     @GetMapping("/{id}")
     public ResponseEntity<Department> getAllDepartmentById(@PathVariable Long id) {
         Optional<Department> departmentOptional = departmentService.findById(id);
-        return departmentOptional.map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return departmentOptional.map(department -> new ResponseEntity<>(department, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("getUser/{id}")

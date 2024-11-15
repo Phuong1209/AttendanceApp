@@ -20,6 +20,7 @@ public class TaskController {
     private ITaskService taskService;
 
     //show list
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Task>> getAllTask() {
         List<Task> taskList = (List<Task>) taskService.findAll();
         if (taskList.isEmpty()) {

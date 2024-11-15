@@ -1,5 +1,7 @@
 package com.example.demo.service.WorkTime;
 
+import com.example.demo.model.Department;
+import com.example.demo.model.Task;
 import com.example.demo.model.WorkTime;
 //import com.example.demo.model.dto.WorkTimeDto;
 import com.example.demo.model.dto.WorkTimeDTO;
@@ -10,7 +12,8 @@ import java.util.List;
 
 @Repository
 public interface IWorkTimeService extends IGeneralService<WorkTime> {
-    //List<WorkTimeDTO> getAllWorkTime();
+    List<WorkTimeDTO> getAllWorkTime();
+    List<Task> getTaskByWorkTime(Long workTimeId);
 
     /*Code TA
     WorkTime checkin(Long userId, LocalDateTime checkinTime);      // Check-in user

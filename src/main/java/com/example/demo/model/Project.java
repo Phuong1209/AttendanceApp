@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class Project {
     private String name;
     private String code;
     @OneToMany(mappedBy = "project")
+    @JsonManagedReference
     private Set<Task> tasks;
 
 

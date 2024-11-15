@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,5 +18,5 @@ public class WorkTimeDTO {
     private Float breakTime;
     private Float workTime;
     private Float overTime;
-    //private Set<TaskDto> tasks;
+    private Set<TaskDTO> tasks;
 }
