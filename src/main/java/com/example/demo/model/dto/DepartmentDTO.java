@@ -12,6 +12,7 @@ public class DepartmentDTO {
     private Long id;
     private String name;
     private Set<UserDTO> users;
+    private Set<JobTypeDTO> jobTypes;
 
 }
 

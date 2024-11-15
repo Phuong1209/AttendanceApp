@@ -61,6 +61,20 @@ public class DepartmentService implements IDepartmentService {
         return Collections.emptyList();
     }
 
+    //get list jobType of department
+    public List<JobType> getJobTypeByDepartment(Long departmentId) {
+        if(departmentId != null){
+            Optional<Department>optionalDepartment = departmentRepository.findById(departmentId);
+            if(optionalDepartment.isPresent()) {
+                Department foundDepartment=optionalDepartment.get();
+                List<JobType> jobTypes = jobTypeRepository.findByDepartments(foundDepartment);
+                log.info("JobTypes of department {}:{}",foundDepartment.getName(), jobTypes);
+                return jobTypes;
+            }
+        }
+        return Collections.emptyList();
+    }
+
     //get list department
     @Override
     public List<DepartmentDTO> getAllDepartment() {
@@ -84,6 +98,18 @@ public class DepartmentService implements IDepartmentService {
             }
             //add user list to department
             departmentDTO.setUsers(userDTOS);
+
+            //get jobType list
+            List<JobType> jobTypes = jobTypeRepository.findByDepartments(department);
+            Set<JobTypeDTO> jobTypeDTOS = new HashSet<>();
+            for(JobType jobType : jobTypes) {
+                JobTypeDTO jobTypeDTO = new JobTypeDTO();
+                jobTypeDTO.setId(jobType.getId());
+                jobTypeDTO.setName(jobType.getName());
+                jobTypeDTOS.add(jobTypeDTO);
+            }
+            //add user list to department
+            departmentDTO.setJobTypes(jobTypeDTOS);
 
             //add department to list department
             departmentDTOS.add(departmentDTO);

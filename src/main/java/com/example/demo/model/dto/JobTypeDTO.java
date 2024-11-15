@@ -11,6 +11,4 @@ import java.util.Set;
 public class JobTypeDTO {
     private Long id;
     private String name;
-    private Set<DepartmentDTO> departments;
-
 }
