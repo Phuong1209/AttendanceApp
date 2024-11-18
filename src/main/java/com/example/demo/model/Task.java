@@ -1,40 +1,41 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+//@Data
 @Builder
 @Table(name = "task")
+@Getter
+@Setter
 
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    private LocalDateTime date;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private float totalTime;
     @Column(columnDefinition = "TEXT")
     private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "working_time_id")
-    private WorkingTime workingTime;
+    @JoinColumn(name = "work_time_id")
+    @JsonBackReference
+    private WorkTime workTime;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     private Project project;
 
     @ManyToOne
     @JoinColumn(name = "job_type_id")
+    @JsonManagedReference
     private JobType jobType;
-
 
 }

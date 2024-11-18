@@ -3,6 +3,6 @@ import com.example.demo.model.JobType;
 import com.example.demo.service.IGeneralService;
 
 
-public interface IJobTypeService extends IGeneralService<JobType> {
 
+public interface IJobTypeService extends IGeneralService<JobType> {
 }

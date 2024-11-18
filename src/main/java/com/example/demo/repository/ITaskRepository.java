@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IJobTypeRepository extends JpaRepository<JobType, Long> {
-    List<JobType> findByDepartments(Department department);
+public interface ITaskRepository extends JpaRepository<Task, Long> {
+    List<Task> findByWorkTime(WorkTime workTime);
+    List<Task> findByProject(Project project);
 }

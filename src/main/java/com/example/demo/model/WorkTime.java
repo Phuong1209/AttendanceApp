@@ -4,33 +4,39 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "working_time")
+@Table(name = "work_time")
+@Getter
+@Setter
 
-public class WorkingTime {
+public class WorkTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
-    private LocalDateTime checkin_time;
-    private LocalDateTime checkout_time;
-    private Float breaktime;
-    private Float worktime;
-    private Float overtime;
+    private LocalTime checkinTime;
+    private LocalTime checkoutTime;
+    private Float breakTime;
+    private Float workTime;
+    private Float overTime;
 
-    @OneToMany(mappedBy = "workingTime", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "workTime", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<Task> tasks;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
+
 }
+
 
 

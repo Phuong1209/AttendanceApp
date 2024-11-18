@@ -1,20 +1,19 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "project")
+@Getter
+@Setter
 
 public class Project {
     @Id
@@ -22,16 +21,8 @@ public class Project {
     private Long id;
     private String name;
     private String code;
-    private LocalDateTime create_at;
-    private LocalDateTime update_at;
-    @OneToMany(mappedBy = "project",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project")
+    @JsonManagedReference
     private Set<Task> tasks;
-
-
-
-
-
-
-
 
 }
