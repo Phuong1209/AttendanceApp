@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 
 @Entity
 @AllArgsConstructor
@@ -15,7 +17,7 @@ import lombok.*;
 @Getter
 @Setter
 
-public class Task {
+public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,7 +37,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "job_type_id")
-    @JsonManagedReference
+    @JsonBackReference("jobtype-task")
     private JobType jobType;
 
 }

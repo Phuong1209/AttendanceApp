@@ -16,8 +16,10 @@ public interface IDepartmentService extends IGeneralService<Department> {
     List<DepartmentDTO> getAllDepartment();
     List<User> getUserByDepartment(Long departmentId);
     List<JobType> getJobTypeByDepartment(Long departmentId);
+
+    //summary
     List<DepartmentSummaryDTO> getSummaryByDepartment();
 
-    //test edit
+    //edit
     DepartmentDTO editDepartment(Long departmentId, String name, Set<Long> jobTypeIds);
 }

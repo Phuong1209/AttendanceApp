@@ -1,9 +1,12 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -14,18 +17,20 @@ import java.util.Set;
 @Getter
 @Setter
 
-public class JobType {
+public class JobType implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String name;
 
     @ManyToMany(mappedBy = "jobTypes")
-    @JsonBackReference
+    //@JsonBackReference("department-jobtype")
+    @JsonIgnore
     private Set<Department> departments;
 
     @OneToMany(mappedBy = "jobType",cascade = CascadeType.ALL)
-    @JsonBackReference
+    //@JsonManagedReference("jobtype-task")
+    @JsonIgnore
     private Set<Task> tasks;
 
 }
