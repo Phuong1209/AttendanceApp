@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-//@Data
 @Getter
 @Setter
 @AllArgsConstructor

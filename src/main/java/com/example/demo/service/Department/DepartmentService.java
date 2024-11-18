@@ -117,6 +117,53 @@ public class DepartmentService implements IDepartmentService {
         return departmentDTOS;
     }
 
+    //Edit
+    @Transactional
+    public DepartmentDTO editDepartment(Long departmentId, String newName, Set<Long> newJobTypeIds) {
+        // Find the department by ID
+        Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
+        if (!optionalDepartment.isPresent()) {
+            throw new NoSuchElementException("Department not found with ID: " + departmentId);
+        }
+
+        Department department = optionalDepartment.get();
+
+        // Update the department's name
+        if (newName != null && !newName.trim().isEmpty()) {
+            department.setName(newName);
+        }
+
+        // Update the department's job types
+        if (newJobTypeIds != null && !newJobTypeIds.isEmpty()) {
+            // Fetch the new JobType entities by their IDs
+            List<JobType> newJobTypes = jobTypeRepository.findAllById(newJobTypeIds);
+            if (newJobTypes.size() != newJobTypeIds.size()) {
+                throw new IllegalArgumentException("One or more JobType IDs are invalid.");
+            }
+            department.setJobTypes(new HashSet<>(newJobTypes));
+        }
+
+        // Save the updated department
+        Department updatedDepartment = departmentRepository.save(department);
+
+        // Map the updated department to DepartmentDTO
+        DepartmentDTO departmentDTO = new DepartmentDTO();
+        departmentDTO.setId(updatedDepartment.getId());
+        departmentDTO.setName(updatedDepartment.getName());
+
+        // Map job types to JobTypeDTO
+        Set<JobTypeDTO> jobTypeDTOS = new HashSet<>();
+        for (JobType jobType : updatedDepartment.getJobTypes()) {
+            JobTypeDTO jobTypeDTO = new JobTypeDTO();
+            jobTypeDTO.setId(jobType.getId());
+            jobTypeDTO.setName(jobType.getName());
+            jobTypeDTOS.add(jobTypeDTO);
+        }
+        departmentDTO.setJobTypes(jobTypeDTOS);
+
+        return departmentDTO;
+    }
+
     //Summarize by Department
     public List<DepartmentSummaryDTO> getSummaryByDepartment() {
         List<Department> departments = departmentRepository.findAll();

@@ -4,13 +4,12 @@ import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
 import com.example.demo.model.dto.DepartmentDTO;
+import com.example.demo.model.dto.DepartmentEditRequest;
 import com.example.demo.model.dto.DepartmentSummaryDTO;
 import com.example.demo.model.dto.JobTypeDTO;
-import com.example.demo.model.dto.UserDTO;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.Department.IDepartmentService;
-import com.example.demo.service.JobType.IJobTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,36 +89,15 @@ public class DepartmentController {
         return new ResponseEntity<>(newDepartment, HttpStatus.CREATED);
     }
 
-    //edit (new)
-/*    @PutMapping("/{id}")
-    public ResponseEntity<Department> editDepartment(@PathVariable Long id, @RequestBody DepartmentDTO departmentDTO) {
-        Optional<Department> departmentOptional = departmentService.findById(id);
-        if (departmentOptional.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        Department existingDepartment = departmentOptional.get();
-        existingDepartment.setId(departmentDTO.getId());
-        existingDepartment.setName(departmentDTO.getName());
+    //edit
+    @PutMapping("/{id}")
+    public ResponseEntity<DepartmentDTO> editDepartment(
+            @PathVariable("id") Long departmentId,
+            @RequestBody DepartmentEditRequest editRequest) {
+        DepartmentDTO updatedDepartment = departmentService.editDepartment(departmentId, editRequest.getName(), editRequest.getJobTypeIds());
+        return ResponseEntity.ok(updatedDepartment);
+    }
 
-        //Edit list JobType
-        Set<JobTypeDTO> jobTypeDTOS = departmentDTO.getJobTypes();
-        Set<JobType> jobTypes = new HashSet<>();
-        for (JobTypeDTO jobTypeDTO : jobTypeDTOS) {
-            JobType jobType;
-            Optional<JobType> optionalJobType = jobTypeRepository.findById(jobTypeDTO.getId());
-            if (optionalJobType.isPresent()) {
-                jobType = optionalJobType.get();
-            }
-            jobType = new JobType();
-            jobType.setId(jobTypeDTO.getId());
-            jobType.setName(jobTypeDTO.getName());
-            jobTypes.add(jobType);
-        }
-        existingDepartment.setJobTypes(jobTypes);
-
-        departmentService.save(existingDepartment);
-        return new ResponseEntity<>(existingDepartment, HttpStatus.OK);
-    }*/
 
     //delete
     @DeleteMapping("/{id}")

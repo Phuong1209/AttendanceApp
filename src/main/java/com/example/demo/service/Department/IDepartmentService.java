@@ -9,6 +9,7 @@ import com.example.demo.service.IGeneralService;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface IDepartmentService extends IGeneralService<Department> {
@@ -16,4 +17,7 @@ public interface IDepartmentService extends IGeneralService<Department> {
     List<User> getUserByDepartment(Long departmentId);
     List<JobType> getJobTypeByDepartment(Long departmentId);
     List<DepartmentSummaryDTO> getSummaryByDepartment();
+
+    //test edit
+    DepartmentDTO editDepartment(Long departmentId, String name, Set<Long> jobTypeIds);
 }
