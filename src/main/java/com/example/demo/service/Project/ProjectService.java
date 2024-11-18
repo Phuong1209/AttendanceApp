@@ -88,7 +88,7 @@ public class ProjectService implements IProjectService {
 
     //Edit
     @Transactional
-    public ProjectDTO editProject(Long projectId, String newName, Set<Long> newTaskIds) {
+    public ProjectDTO editProject(Long projectId, String newName, String newCode,Set<Long> newTaskIds) {
         // Find the project by ID
         Optional<Project> optionalProject = projectRepository.findById(projectId);
         if (!optionalProject.isPresent()) {
@@ -97,9 +97,14 @@ public class ProjectService implements IProjectService {
 
         Project project = optionalProject.get();
 
-        // Update the project's name
+        // Update project's name
         if (newName != null && !newName.trim().isEmpty()) {
             project.setName(newName);
+        }
+
+        // Update project's code
+        if (newCode != null && !newCode.trim().isEmpty()) {
+            project.setCode(newCode);
         }
 
         // Update the project's tasks
@@ -119,6 +124,7 @@ public class ProjectService implements IProjectService {
         ProjectDTO projectDTO = new ProjectDTO();
         projectDTO.setId(updatedProject.getId());
         projectDTO.setName(updatedProject.getName());
+        projectDTO.setCode(updatedProject.getCode());
 
         // Map tasks to TaskDTO
         Set<TaskDTO> taskDTOS = new HashSet<>();

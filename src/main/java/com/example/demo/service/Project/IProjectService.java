@@ -15,5 +15,5 @@ public interface IProjectService extends IGeneralService<Project> {
     List<Task> getTaskByProject(Long projectId);
     List<ProjectSummaryDTO> getSummaryByProject();
     //edit
-    ProjectDTO editProject(Long projectId, String name, Set<Long> taskIds);
+    ProjectDTO editProject(Long projectId, String name, String code, Set<Long> taskIds);
 }

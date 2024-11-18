@@ -82,7 +82,7 @@ public class ProjectController {
     public ResponseEntity<ProjectDTO> editProject(
             @PathVariable("id") Long projectId,
             @RequestBody ProjectEditRequest editRequest) {
-        ProjectDTO updatedProject = projectService.editProject(projectId, editRequest.getName(), editRequest.getTaskIds());
+        ProjectDTO updatedProject = projectService.editProject(projectId, editRequest.getName(), editRequest.getCode(), editRequest.getTaskIds());
         return ResponseEntity.ok(updatedProject);
     }
 

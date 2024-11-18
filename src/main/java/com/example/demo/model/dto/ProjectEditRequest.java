@@ -10,5 +10,6 @@ import java.util.Set;
 
 public class ProjectEditRequest {
     private String name;
+    private String code;
     private Set<Long> taskIds;
 }
