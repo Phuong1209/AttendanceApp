@@ -1,6 +1,6 @@
 package com.example.demo.model;
 import com.example.demo.model.dto.DepartmentDTO;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,11 +27,11 @@ public class Department implements Serializable {
             joinColumns = @JoinColumn(name = "department_id"),
             inverseJoinColumns = @JoinColumn(name = "jobtype_id")
     )
-    @JsonManagedReference
+    @JsonManagedReference("department-jobtype")
     private Set<JobType> jobTypes;
 
     @ManyToMany(mappedBy = "departments", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("departments")
+    @JsonBackReference
     private Set<User> users;
 
     //constructor
