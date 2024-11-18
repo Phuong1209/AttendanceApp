@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Department;
-import com.example.demo.model.Task;
-import com.example.demo.model.User;
-import com.example.demo.model.WorkTime;
+import com.example.demo.model.*;
+import com.example.demo.model.dto.WorkTimeDTO;
+import com.example.demo.service.User.IUserService;
 import com.example.demo.service.WorkTime.IWorkTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,40 +19,56 @@ import java.util.Optional;
 public class WorkTimeController {
     @Autowired
     private IWorkTimeService workTimeService;
+    @Autowired
+    private IUserService userService;
 
-    //show list new
+
+    //show list
     @GetMapping
     public ResponseEntity<?> getAllWorkTimes() {
         return ResponseEntity.ok().body(workTimeService.findAll());
     }
 
-    //show by id new
+    //show by id
     @GetMapping("/{id}")
     public ResponseEntity<WorkTime> getAllUserByWorkTime(@PathVariable Long id) {
         Optional<WorkTime> workTimeOptional = workTimeService.findById(id);
         return workTimeOptional.map(workTime -> new ResponseEntity<>(workTime, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    //get task list
     @GetMapping("getTask/{id}")
     public ResponseEntity<?> getTask(@PathVariable Long id) {
         List<Task> tasks = workTimeService.getTaskByWorkTime(id);
         return ResponseEntity.ok().body(tasks);
     }
 
-    //create
+    //create (new)
     @PostMapping("")
-    public ResponseEntity<WorkTime> createWorkTime(@RequestBody WorkTime workTime) {
-        // Calculate work time in hours
-        Duration duration = Duration.between(workTime.getCheckinTime(), workTime.getCheckoutTime());
-        float workTimeHours = duration.toMinutes() / 60.0f - workTime.getBreakTime();
+    public ResponseEntity<WorkTime> createWorkTime(@RequestBody WorkTimeDTO workTimeDTO) {
+        WorkTime newWorkTime = new WorkTime();
+        newWorkTime.setCheckinTime(workTimeDTO.getCheckinTime());
+        newWorkTime.setCheckoutTime(workTimeDTO.getCheckoutTime());
+        newWorkTime.setBreakTime(workTimeDTO.getBreakTime());
 
-        // Set workTime and overTime based on the calculations
-        workTime.setWorkTime(workTimeHours);
-        workTime.setOverTime(workTimeHours > 8 ? workTimeHours - 8 : 0);
+        //caculate workTime overTime
+        Duration duration = Duration.between(newWorkTime.getCheckinTime(), newWorkTime.getCheckoutTime());
+        float workTimeHours = duration.toMinutes() / 60.0f - newWorkTime.getBreakTime();
 
-        // Save the updated workTime entity
-        workTimeService.save(workTime);
-        return new ResponseEntity<>(workTime, HttpStatus.CREATED);
+        //set workTime and overTime
+        newWorkTime.setWorkTime(workTimeHours);
+        newWorkTime.setOverTime(workTimeHours > 8 ? workTimeHours - 8 : 0);
+
+        // Fetch user from database using user ID
+/*        Optional<User> optionalUser = userService.findById(workTimeDTO.getUser().getId());
+        if (optionalUser.isEmpty()) {
+            return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+        }
+        newWorkTime.setUser(optionalUser.get());*/
+
+        //save new workTime
+        workTimeService.save(newWorkTime);
+        return new ResponseEntity<>(newWorkTime, HttpStatus.CREATED);
     }
 
     //edit

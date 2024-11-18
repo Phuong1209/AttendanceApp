@@ -27,11 +27,13 @@ public class ProjectController {
     @Autowired
     private ITaskRepository taskRepository;
 
+    //show list
     @GetMapping
     public ResponseEntity<?> getAllProjects() {
         return ResponseEntity.ok().body(projectService.findAll());
     }
 
+    //show by id
     @GetMapping("/{id}")
     public ResponseEntity<Project> getAllProjectById(@PathVariable Long id) {
         Optional<Project> projectOptional = projectService.findById(id);
