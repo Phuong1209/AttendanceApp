@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ProjectDTO;
+import com.example.demo.dto.ProjectEditRequest;
+import com.example.demo.dto.ProjectSummaryDTO;
 import com.example.demo.model.Project;
 import com.example.demo.model.Task;
-import com.example.demo.model.dto.*;
 import com.example.demo.repository.ITaskRepository;
 import com.example.demo.service.Project.IProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @CrossOrigin("*")

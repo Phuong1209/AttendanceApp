@@ -1,11 +1,7 @@
 package com.example.demo.service.JobType;
 
 import com.example.demo.model.JobType;
-import com.example.demo.model.dto.JobTypeDTO;
 import com.example.demo.repository.IJobTypeRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

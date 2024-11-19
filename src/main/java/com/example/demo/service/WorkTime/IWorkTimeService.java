@@ -2,7 +2,7 @@ package com.example.demo.service.WorkTime;
 
 import com.example.demo.model.Task;
 import com.example.demo.model.WorkTime;
-import com.example.demo.model.dto.WorkTimeDTO;
+import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.service.IGeneralService;
 import org.springframework.stereotype.Repository;
 

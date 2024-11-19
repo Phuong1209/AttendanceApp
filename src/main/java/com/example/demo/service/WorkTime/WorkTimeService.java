@@ -1,7 +1,9 @@
 package com.example.demo.service.WorkTime;
 
+import com.example.demo.dto.TaskDTO;
+import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
-import com.example.demo.model.dto.*;
 import com.example.demo.repository.ITaskRepository;
 import com.example.demo.repository.IWorkTimeRepository;
 import jakarta.transaction.Transactional;
@@ -85,7 +87,7 @@ public class WorkTimeService implements IWorkTimeService {
             }).collect(Collectors.toSet());
             workTimeDTO.setTasks(taskDTOS);
 
-            // Map user to UserDTO
+            // Map user
             if (workTime.getUser() != null) {
                 UserDTO userDTO = new UserDTO();
                 userDTO.setId(workTime.getUser().getId());

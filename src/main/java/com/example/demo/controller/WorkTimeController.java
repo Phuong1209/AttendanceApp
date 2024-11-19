@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.TaskDTO;
+import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
-import com.example.demo.model.dto.*;
 import com.example.demo.service.User.IUserService;
 import com.example.demo.service.WorkTime.IWorkTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class WorkTimeController {
     @Autowired
     private IUserService userService;
 
-    //show list (new)
+    //show list
     @GetMapping
     public ResponseEntity<List<WorkTimeDTO>> getAllWorkTimes() {
         List<WorkTimeDTO> workTimeDTOS = workTimeService.getAllWorkTime();

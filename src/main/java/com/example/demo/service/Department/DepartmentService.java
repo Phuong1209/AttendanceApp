@@ -1,7 +1,7 @@
 package com.example.demo.service.Department;
 
+import com.example.demo.dto.*;
 import com.example.demo.model.*;
-import com.example.demo.model.dto.*;
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IUserRepository;

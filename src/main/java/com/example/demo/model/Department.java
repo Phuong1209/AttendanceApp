@@ -1,5 +1,5 @@
 package com.example.demo.model;
-import com.example.demo.model.dto.DepartmentDTO;
+import com.example.demo.dto.DepartmentDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

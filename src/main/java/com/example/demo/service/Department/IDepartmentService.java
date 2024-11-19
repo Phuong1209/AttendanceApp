@@ -3,8 +3,8 @@ package com.example.demo.service.Department;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
-import com.example.demo.model.dto.DepartmentDTO;
-import com.example.demo.model.dto.DepartmentSummaryDTO;
+import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.dto.DepartmentSummaryDTO;
 import com.example.demo.service.IGeneralService;
 import org.springframework.stereotype.Repository;
 
