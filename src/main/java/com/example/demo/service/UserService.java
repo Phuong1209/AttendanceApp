@@ -31,7 +31,6 @@ public class UserService {
     PasswordEncoder passwordEncoder;
     IUserRepository userRepository;
     UserMapper userMapper;
-
     public UserResponse createRequest(UserCreationRequest request){
         if(userRepository.existsByUsername(request.getUsername())){
             throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
@@ -40,21 +39,16 @@ public class UserService {
         user.setUser_passwords(passwordEncoder.encode(user.getUser_passwords()));
         HashSet<String> position = new HashSet<>();
         position.add(Position.USER.name());
-//        user.setRoles(roles);
         return userMapper.toUserResponse(userRepository.save(user));
     }
     public UserResponse getMyInfo(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
-//        var context = SecurityContextHolder.getContext();
-//        String username = context.getAuthentication().getName();
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_FOUND)
         );
         return userMapper.toUserResponse(user);
     }
-//    @PreAuthorize("hasPosition('ADMIN')")
-@PreAuthorize("hasAuthority('POSITION_ADMIN')")
+    @PreAuthorize("hasPosition('ADMIN')")
     public List<UserResponse> getAllUsers(){
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse).toList();
@@ -64,16 +58,7 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
-//    @PostAuthorize("returnObject.username == authentication.name")
-//    public UserResponse updateUser(Long userId, UserUpdateRequest request){
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-//        userMapper.updateUser(user, request);
-//        user.setUser_passwords(passwordEncoder.encode(request.getUser_passwords()));
-//        List<com.example.demo.model.Position> position = positionRepository.findAllById(Collections.singleton(request.getId()));
-//        user.setPositions(new HashSet<>(position));
-//        return userMapper.toUserResponse(userRepository.save(user));
-//    }
+
 public UserResponse updateUser(Long userId, UserUpdateRequest request) {
     User user = userRepository.findById(userId)
             .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
