@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.*;
+import com.example.demo.model.dto.DepartmentDTO;
+import com.example.demo.model.dto.DepartmentEditRequest;
+import com.example.demo.model.dto.TaskDTO;
 import com.example.demo.model.dto.WorkTimeDTO;
 import com.example.demo.service.User.IUserService;
 import com.example.demo.service.WorkTime.IWorkTimeService;
@@ -11,8 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/worktime")
@@ -45,43 +50,132 @@ public class WorkTimeController {
 
     //create (new)
     @PostMapping("")
-    public ResponseEntity<WorkTime> createWorkTime(@RequestBody WorkTimeDTO workTimeDTO) {
-        WorkTime newWorkTime = new WorkTime();
-        newWorkTime.setCheckinTime(workTimeDTO.getCheckinTime());
-        newWorkTime.setCheckoutTime(workTimeDTO.getCheckoutTime());
-        newWorkTime.setBreakTime(workTimeDTO.getBreakTime());
+    public ResponseEntity<?> createWorkTime(@RequestBody Map<String, Object> requestBody) {
+        try {
+            // Parse request body
+            LocalDate date = LocalDate.parse((String) requestBody.get("date"));
+            LocalTime checkinTime = LocalTime.parse((String) requestBody.get("checkinTime"));
+            LocalTime checkoutTime = LocalTime.parse((String) requestBody.get("checkoutTime"));
+            Float breakTime = Float.parseFloat(requestBody.get("breakTime").toString());
+            Map<String, Object> userMap = (Map<String, Object>) requestBody.get("user");
+            Long userId = Long.valueOf(userMap.get("id").toString());
 
-        //caculate workTime overTime
-        Duration duration = Duration.between(newWorkTime.getCheckinTime(), newWorkTime.getCheckoutTime());
-        float workTimeHours = duration.toMinutes() / 60.0f - newWorkTime.getBreakTime();
+            // Fetch User entity
+            Optional<User> optionalUser = userService.findById(userId);
+            if (optionalUser.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            }
+            User user = optionalUser.get();
 
-        //set workTime and overTime
-        newWorkTime.setWorkTime(workTimeHours);
-        newWorkTime.setOverTime(workTimeHours > 8 ? workTimeHours - 8 : 0);
+            // Calculate workTime and overTime
+            Duration duration = Duration.between(checkinTime, checkoutTime);
+            float workTimeHours = duration.toMinutes() / 60.0f - breakTime;
+            float overTimeHours = workTimeHours > 8 ? workTimeHours - 8 : 0;
 
-        // Fetch user from database using user ID
-/*        Optional<User> optionalUser = userService.findById(workTimeDTO.getUser().getId());
-        if (optionalUser.isEmpty()) {
-            return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+            // Create and save WorkTime
+            WorkTime workTime = WorkTime.builder()
+                    .date(date)
+                    .checkinTime(checkinTime)
+                    .checkoutTime(checkoutTime)
+                    .breakTime(breakTime)
+                    .workTime(workTimeHours)
+                    .overTime(overTimeHours)
+                    .user(user)
+                    .build();
+            WorkTime savedWorkTime = workTimeService.save(workTime);
+
+            // Construct response body
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", savedWorkTime.getId());
+            response.put("date", savedWorkTime.getDate().toString());
+            response.put("checkinTime", savedWorkTime.getCheckinTime().toString());
+            response.put("checkoutTime", savedWorkTime.getCheckoutTime().toString());
+            response.put("breakTime", savedWorkTime.getBreakTime());
+            response.put("workTime", savedWorkTime.getWorkTime());
+            response.put("overTime", savedWorkTime.getOverTime());
+            response.put("user", Map.of("id", user.getId()));
+
+            // Return 201 Created with response body
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+        } catch (Exception e) {
+            // Handle exceptions gracefully
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred: " + e.getMessage());
         }
-        newWorkTime.setUser(optionalUser.get());*/
-
-        //save new workTime
-        workTimeService.save(newWorkTime);
-        return new ResponseEntity<>(newWorkTime, HttpStatus.CREATED);
     }
 
-    //edit
+    //edit (new)
     @PutMapping("/{id}")
-    public ResponseEntity<WorkTime> editWorkTime(@PathVariable Long id, @RequestBody WorkTime workTime) {
-        Optional<WorkTime> workTimeOptional = workTimeService.findById(id);
-        if (!workTimeOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> editWorkTime(@PathVariable Long id, @RequestBody Map<String, Object> requestBody) {
+        try {
+            // Fetch the existing WorkTime record
+            Optional<WorkTime> optionalWorkTime = workTimeService.findById(id);
+            if (optionalWorkTime.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("WorkTime not found.");
+            }
+            WorkTime existingWorkTime = optionalWorkTime.get();
+
+            // Parse request body for editable fields
+            if (requestBody.containsKey("checkinTime")) {
+                existingWorkTime.setCheckinTime(LocalTime.parse((String) requestBody.get("checkinTime")));
+            }
+            if (requestBody.containsKey("checkoutTime")) {
+                existingWorkTime.setCheckoutTime(LocalTime.parse((String) requestBody.get("checkoutTime")));
+            }
+            if (requestBody.containsKey("breakTime")) {
+                existingWorkTime.setBreakTime(Float.parseFloat(requestBody.get("breakTime").toString()));
+            }
+
+            // Recalculate workTime and overTime
+            Duration duration = Duration.between(existingWorkTime.getCheckinTime(), existingWorkTime.getCheckoutTime());
+            float workTimeHours = duration.toMinutes() / 60.0f - existingWorkTime.getBreakTime();
+            existingWorkTime.setWorkTime(workTimeHours);
+            existingWorkTime.setOverTime(workTimeHours > 8 ? workTimeHours - 8 : 0);
+
+            // Save updated WorkTime record
+            WorkTime updatedWorkTime = workTimeService.save(existingWorkTime);
+
+            // Map WorkTime and Tasks to DTO
+            WorkTimeDTO workTimeDTO = new WorkTimeDTO();
+            workTimeDTO.setId(updatedWorkTime.getId());
+            workTimeDTO.setDate(updatedWorkTime.getDate());
+            workTimeDTO.setCheckinTime(updatedWorkTime.getCheckinTime());
+            workTimeDTO.setCheckoutTime(updatedWorkTime.getCheckoutTime());
+            workTimeDTO.setBreakTime(updatedWorkTime.getBreakTime());
+            workTimeDTO.setWorkTime(updatedWorkTime.getWorkTime());
+            workTimeDTO.setOverTime(updatedWorkTime.getOverTime());
+
+            // Map Tasks to TaskDTOs
+            Set<TaskDTO> taskDTOs = updatedWorkTime.getTasks().stream().map(task -> {
+                TaskDTO taskDTO = new TaskDTO();
+                taskDTO.setId(task.getId());
+                taskDTO.setTotalTime(task.getTotalTime());
+                taskDTO.setComment(task.getComment());
+                return taskDTO;
+            }).collect(Collectors.toSet());
+
+            // Add tasks to WorkTimeDTO
+            workTimeDTO.setTasks(taskDTOs);
+
+            // Return response
+            return ResponseEntity.ok(workTimeDTO);
+
+        } catch (Exception e) {
+            // Handle exceptions gracefully
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred: " + e.getMessage());
         }
-        workTime.setId(id);
-        workTimeService.save(workTime);
-        return new ResponseEntity<>(workTime, HttpStatus.OK);
     }
+
+    //edit (old)
+/*    @PutMapping("/{id}")
+    public ResponseEntity<WorkTimeDTO> editWorkTime(
+            @PathVariable("id") Long workTimeId,
+            @RequestBody WorkTimeEditRequest editRequest) {
+        WorkTimeDTO updatedWorkTime = workTimeService.editWorkTime(workTimeId, editRequest.getName(), editRequest.getJobTypeIds());
+        return ResponseEntity.ok(updatedWorkTime);
+    }*/
 
     //delete
     @DeleteMapping("/{id}")

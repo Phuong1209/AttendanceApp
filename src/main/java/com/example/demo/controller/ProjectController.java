@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Department;
-import com.example.demo.model.JobType;
 import com.example.demo.model.Project;
 import com.example.demo.model.Task;
 import com.example.demo.model.dto.*;
@@ -59,7 +57,7 @@ public class ProjectController {
     }
 
     //create (old)
-/*
+    /*
     @PostMapping("")
     public ResponseEntity<Project> createProject(@RequestBody Project project) {
         projectService.save(project);
