@@ -1,10 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.*;
-import com.example.demo.model.dto.DepartmentDTO;
-import com.example.demo.model.dto.DepartmentEditRequest;
-import com.example.demo.model.dto.TaskDTO;
-import com.example.demo.model.dto.WorkTimeDTO;
+import com.example.demo.model.dto.*;
 import com.example.demo.service.User.IUserService;
 import com.example.demo.service.WorkTime.IWorkTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,12 +146,18 @@ public class WorkTimeController {
             workTimeDTO.setWorkTime(updatedWorkTime.getWorkTime());
             workTimeDTO.setOverTime(updatedWorkTime.getOverTime());
 
+            // Map User to SimpleUserDTO
+            if (updatedWorkTime.getUser() != null) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setId(existingWorkTime.getUser().getId());
+                userDTO.setUserName(existingWorkTime.getUser().getUserName());
+                workTimeDTO.setUser(userDTO);
+            }
+
             // Map Tasks to TaskDTOs
             Set<TaskDTO> taskDTOs = updatedWorkTime.getTasks().stream().map(task -> {
                 TaskDTO taskDTO = new TaskDTO();
                 taskDTO.setId(task.getId());
-                taskDTO.setTotalTime(task.getTotalTime());
-                taskDTO.setComment(task.getComment());
                 return taskDTO;
             }).collect(Collectors.toSet());
 

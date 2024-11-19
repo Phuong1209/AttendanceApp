@@ -15,4 +15,5 @@ public class UserDTO {
     private String password;
     private Set<DepartmentDTO> departments;
     private Set<WorkTimeDTO> workTimes;
+
 }
