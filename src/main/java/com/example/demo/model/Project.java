@@ -28,11 +28,4 @@ public class Project implements Serializable {
     @JsonBackReference
     private Set<Task> tasks;
 
-
-
-
-
-
-
-
 }

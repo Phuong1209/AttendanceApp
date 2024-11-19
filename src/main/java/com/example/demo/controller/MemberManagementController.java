@@ -1,9 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.PositionDTO;
-import com.example.demo.dto.UserCSVDTO;
-import com.example.demo.dto.UserDTO;
+import com.example.demo.csv.UserCSVExporter;
+import com.example.demo.dto.*;
 //import com.example.demo.dto.UserExcelDTO;
 //import com.example.demo.excel.UserExcelExporter;
 import com.example.demo.model.Department;
@@ -13,6 +11,8 @@ import com.example.demo.model.WorkingTime;
 
 import com.example.demo.repository.DepartmentRepository;
 import com.example.demo.repository.PositionRepository;
+import com.example.demo.service.DepartmentService;
+import com.example.demo.service.IDepartmentService;
 import com.example.demo.service.MemberManagementService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -40,6 +41,8 @@ public class MemberManagementController {
     PositionRepository positionRepository;
     @Autowired
     DepartmentRepository departmentRepository;
+    @Autowired
+    DepartmentService departmentService;
 
     @GetMapping
 
@@ -156,46 +159,114 @@ public class MemberManagementController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         User existingUser = userOptional.get();
-        existingUser.setId(userDTO.getId());
-        existingUser.setUserName(userDTO.getUserName());
-        existingUser.setUserFullName(userDTO.getUserFullName());
-        existingUser.setUserPasswords(passwordEncoder.encode(userDTO.getPassword()));
-        //Set position of positionDTO for position
-        Set<PositionDTO> positionDTOS = userDTO.getPositions();
-        Set<Position> positions = new HashSet<>();
-        for (PositionDTO positionDTO : positionDTOS) {
+        if(userDTO.getId() != null){
+            existingUser.setId(userDTO.getId());
+        }
+        if(userDTO.getUserName() != null){
+            existingUser.setUserName(userDTO.getUserName());
+        }
+        if(userDTO.getUserFullName() != null){
+            existingUser.setUserFullName(userDTO.getUserFullName());
+        }
+        if (userDTO.getPassword() != null){
+            existingUser.setUserPasswords(passwordEncoder.encode(userDTO.getPassword()));
+        }
+        //Get old position list
+        Set<Position> oldPositions = existingUser.getPositions();
+
+        // 新しいポジションIDリストをDTOから取得
+        Set<Long> newPositionIds = userDTO.getPositions().stream()
+                .map(PositionDTO::getId)
+                .collect(Collectors.toSet());
+        Set<Position> newPositions = new HashSet<>();
+        for (Long positionId : newPositionIds) {
             Position position;
-            Optional<Position> optionalPosition = positionRepository.findById(positionDTO.getId());
+            Optional<Position> optionalPosition = positionRepository.findById(positionId);
             if (optionalPosition.isPresent()) {
-                position = optionalPosition.get();
+                newPositions.add(optionalPosition.get());
+            } else {
+                // ポジションが存在しない場合の処理（必要ならエラーを返す）
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            position = new Position();
-            position.setId(positionDTO.getId());
-            position.setPositionName(positionDTO.getPositionName());
-            positions.add(position);
-        }
-        existingUser.setPositions(positions);
+            //get list of positions to delete
+            Set<Position> positionsToRemove = new HashSet<>(oldPositions);
+            positionsToRemove.removeAll(newPositions);
 
-        //Set department of departmentDTOs for department
-        Set<DepartmentDTO> departmentDTOS = userDTO.getDepartments();
-        Set<Department> departments = new HashSet<>();
-        for (DepartmentDTO departmentDTO : departmentDTOS) {
-            Department department;
-            Optional<Department> optionalDepartment = departmentRepository.findById(departmentDTO.getId());
-            if (optionalDepartment.isPresent()) {
-                department = optionalDepartment.get();
+            //get list of positions to add
+            Set<Position> positionsToAdd = new HashSet<>(newPositions);
+            positionsToAdd.removeAll(oldPositions);
+
+            // Update the user's positions
+            existingUser.getPositions().removeAll(positionsToRemove);
+            existingUser.getPositions().addAll(positionsToAdd);
+
+            memberManagementService.save(existingUser);
+
+
+            //Set department of departmentDTOs for department
+
+            //get list of old departments
+            Set<Department> oldDepartments = existingUser.getDepartments();
+            //get new list of departmentIds from DTO
+            Set<Long> newDepartmentIds = userDTO.getDepartments().stream()
+                    .map(DepartmentDTO::getId)
+                    .collect(Collectors.toSet());
+            Set<Department> newDepartments = new HashSet<>();
+            for (Long departmentId : newDepartmentIds) {
+                Department department;
+                Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
+                if (optionalDepartment.isPresent()) {
+                    newDepartments.add(optionalDepartment.get());
+                } else {
+                        // ポジションが存在しない場合の処理（必要ならエラーを返す）
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    }
+
+//               // get list of positions to delete
+                Set<Department> departmentsToRemove = new HashSet<>(oldDepartments);
+               departmentsToRemove.removeAll(newDepartments);
+
+                //get list of positions to add
+                Set<Department> departmentsToAdd = new HashSet<>(newDepartments);
+                departmentsToAdd.removeAll(oldDepartments);
+
+                // Update the user's positions
+                existingUser.getDepartments().removeAll(departmentsToRemove);
+                existingUser.getDepartments().addAll(departmentsToAdd);
             }
-            department = new Department();
-            department.setId(departmentDTO.getId());
-            department.setDepartmentName(departmentDTO.getDepartmentName());
-            departments.add(department);
-        }
-        existingUser.setDepartments(departments);
 
-        memberManagementService.save(existingUser);
-        return new ResponseEntity<>(existingUser, HttpStatus.OK);
+            memberManagementService.save(existingUser);
+            return new ResponseEntity<>(existingUser, HttpStatus.OK);
+        }
+        return null;
     }
-
+//    @PatchMapping("/{id}/positions")
+//    public ResponseEntity<String> updateUserPositions(
+//            @PathVariable Long id,
+//            @RequestBody Set<Long> positionIds
+//    ) {
+//        Optional<User> optionalUser = memberManagementService.findById(id);
+//        if (optionalUser.isEmpty()) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        User user = optionalUser.get();
+//        Set<Position> positions = new HashSet<>();
+//
+//        for (Long positionId : positionIds) {
+//            Optional<Position> optionalPosition = memberManagementService.getPositionById(positionId); // Implement this method in your service
+//            if (optionalPosition.isPresent()) {
+//                positions.add(optionalPosition.get());
+//            } else {
+//                return ResponseEntity.badRequest().body("Position ID " + positionId + " not found");
+//            }
+//        }
+//
+//        user.setPositions(positions);
+//        memberManagementService.save(user);
+//
+//        return ResponseEntity.ok("User positions updated successfully");
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
@@ -235,7 +306,7 @@ public class MemberManagementController {
 //    }
 
 
-    @GetMapping("/export")
+    @GetMapping("/exportUserCSV")
     public void exportToCSV(HttpServletResponse response) throws IOException {
         response.setContentType("CSVpplication/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -244,7 +315,12 @@ public class MemberManagementController {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
         response.setHeader(headerKey, headerValue);
-        memberManagementService.generateCSV(response);
+
+        List<UserCSVDTO> listUsers = memberManagementService.getUsersCSV();
+
+        UserCSVExporter csvExporter = new UserCSVExporter(listUsers);
+
+        csvExporter.generateCSV(response);
     }
 }
 

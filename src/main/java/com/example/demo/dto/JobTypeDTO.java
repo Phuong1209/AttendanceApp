@@ -1,2 +1,16 @@
-package com.example.demo.dto;public class JobTypeDTO {
+package com.example.demo.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Set;
+
+@Getter
+@Setter
+
+public class JobTypeDTO {
+    private Long id;
+    private String name;
+    private Set<DepartmentDTO> departments;
+
 }

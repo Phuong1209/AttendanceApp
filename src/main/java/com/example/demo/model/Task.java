@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
     private LocalDateTime date;
     private float totalTime;
     private String comment;
