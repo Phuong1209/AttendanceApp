@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.model.dto.UserDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -14,7 +13,6 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@Data
 @Getter
 @Setter
 
@@ -45,9 +43,9 @@ public class User implements Serializable {
     private Set<WorkTime> workTimes;
 
     //constructor
-    public User(UserDTO userDTO) {
+/*    public User(UserDTO userDTO) {
         this.userName = userDTO.getUserName();
         this.fullName = userDTO.getFullName();
         this.password = userDTO.getPassword();
-    }
+    }*/
 }

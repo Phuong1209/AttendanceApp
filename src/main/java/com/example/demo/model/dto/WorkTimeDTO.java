@@ -1,6 +1,5 @@
 package com.example.demo.model.dto;
 
-import com.example.demo.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +18,6 @@ public class WorkTimeDTO {
     private Float breakTime;
     private Float workTime;
     private Float overTime;
+    private UserDTO user;
     private Set<TaskDTO> tasks;
 }

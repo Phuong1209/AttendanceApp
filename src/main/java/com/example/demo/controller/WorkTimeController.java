@@ -27,18 +27,21 @@ public class WorkTimeController {
     @Autowired
     private IUserService userService;
 
-
-    //show list
+    //show list (new)
     @GetMapping
-    public ResponseEntity<?> getAllWorkTimes() {
-        return ResponseEntity.ok().body(workTimeService.findAll());
+    public ResponseEntity<List<WorkTimeDTO>> getAllWorkTimes() {
+        List<WorkTimeDTO> workTimeDTOS = workTimeService.getAllWorkTime();
+        return ResponseEntity.ok(workTimeDTOS);
     }
 
-    //show by id
+    //show by id (new)
     @GetMapping("/{id}")
-    public ResponseEntity<WorkTime> getAllUserByWorkTime(@PathVariable Long id) {
-        Optional<WorkTime> workTimeOptional = workTimeService.findById(id);
-        return workTimeOptional.map(workTime -> new ResponseEntity<>(workTime, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<?> getWorkTimeById(@PathVariable Long id) {
+        WorkTimeDTO workTimeDTO = workTimeService.getWorkTimeById(id);
+        if (workTimeDTO == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("WorkTime not found.");
+        }
+        return ResponseEntity.ok(workTimeDTO);
     }
 
     //get task list
@@ -167,15 +170,6 @@ public class WorkTimeController {
                     .body("An error occurred: " + e.getMessage());
         }
     }
-
-    //edit (old)
-/*    @PutMapping("/{id}")
-    public ResponseEntity<WorkTimeDTO> editWorkTime(
-            @PathVariable("id") Long workTimeId,
-            @RequestBody WorkTimeEditRequest editRequest) {
-        WorkTimeDTO updatedWorkTime = workTimeService.editWorkTime(workTimeId, editRequest.getName(), editRequest.getJobTypeIds());
-        return ResponseEntity.ok(updatedWorkTime);
-    }*/
 
     //delete
     @DeleteMapping("/{id}")

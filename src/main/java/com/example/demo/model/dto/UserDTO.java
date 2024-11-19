@@ -10,10 +10,9 @@ import java.util.Set;
 
 public class UserDTO {
     private Long id;
-    private String fullName;
     private String userName;
+    private String fullName;
     private String password;
     private Set<DepartmentDTO> departments;
     private Set<WorkTimeDTO> workTimes;
-
 }

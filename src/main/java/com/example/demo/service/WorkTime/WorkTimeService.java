@@ -9,9 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -65,7 +64,7 @@ public class WorkTimeService implements IWorkTimeService {
     public List<WorkTimeDTO> getAllWorkTime() {
         List<WorkTime> workTimes = workTimeRepository.findAll();
         List<WorkTimeDTO> workTimeDTOS = new ArrayList<>();
-        for(WorkTime workTime : workTimes) {
+        for (WorkTime workTime : workTimes) {
             WorkTimeDTO workTimeDTO = new WorkTimeDTO();
             workTimeDTO.setId(workTime.getId());
             workTimeDTO.setDate(workTime.getDate());
@@ -74,84 +73,70 @@ public class WorkTimeService implements IWorkTimeService {
             workTimeDTO.setBreakTime(workTime.getBreakTime());
             workTimeDTO.setWorkTime(workTime.getWorkTime());
             workTimeDTO.setOverTime(workTime.getOverTime());
-            //workTimeDTO.setUser(workTime.getUser());
 
-            //get task list
+            // Map tasks to TaskDTO
             List<Task> tasks = taskRepository.findByWorkTime(workTime);
-            Set<TaskDTO> taskDTOS = new HashSet<>();
-            for(Task task : tasks) {
+            Set<TaskDTO> taskDTOS = tasks.stream().map(task -> {
                 TaskDTO taskDTO = new TaskDTO();
                 taskDTO.setId(task.getId());
                 taskDTO.setTotalTime(task.getTotalTime());
                 taskDTO.setComment(task.getComment());
-                taskDTOS.add(taskDTO);
-            }
+                return taskDTO;
+            }).collect(Collectors.toSet());
             workTimeDTO.setTasks(taskDTOS);
 
-            //add worktime to worktimeDTO
+            // Map user to UserDTO
+            if (workTime.getUser() != null) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setId(workTime.getUser().getId());
+                userDTO.setUserName(workTime.getUser().getUserName());
+                workTimeDTO.setUser(userDTO);
+            }
+
+            // Add to list
             workTimeDTOS.add(workTimeDTO);
         }
         return workTimeDTOS;
     }
 
-    //Edit
-    @Transactional
-    public WorkTimeDTO editWorkTime(Long workTimeId, LocalTime checkinTime, LocalTime checkoutTime, Float breakTime, Set<Long> newTaskIds) {
-        // Find the workTime by ID
-        Optional<WorkTime> optionalWorkTime = workTimeRepository.findById(workTimeId);
-        if (!optionalWorkTime.isPresent()) {
-            throw new NoSuchElementException("WorkTime not found with ID: " + workTimeId);
-        }
+    //find workTime by id
+    public WorkTimeDTO getWorkTimeById(Long id) {
+        Optional<WorkTime> workTimeOptional = workTimeRepository.findById(id);
+        if (workTimeOptional.isPresent()) {
+            WorkTime workTime = workTimeOptional.get();
+            WorkTimeDTO workTimeDTO = new WorkTimeDTO();
+            workTimeDTO.setId(workTime.getId());
+            workTimeDTO.setDate(workTime.getDate());
+            workTimeDTO.setCheckinTime(workTime.getCheckinTime());
+            workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
+            workTimeDTO.setBreakTime(workTime.getBreakTime());
+            workTimeDTO.setWorkTime(workTime.getWorkTime());
+            workTimeDTO.setOverTime(workTime.getOverTime());
 
-        WorkTime workTime = optionalWorkTime.get();
+            // Map tasks
+            List<Task> tasks = taskRepository.findByWorkTime(workTime);
+            Set<TaskDTO> taskDTOS = tasks.stream().map(task -> {
+                TaskDTO taskDTO = new TaskDTO();
+                taskDTO.setId(task.getId());
+                taskDTO.setTotalTime(task.getTotalTime());
+                taskDTO.setComment(task.getComment());
+                return taskDTO;
+            }).collect(Collectors.toSet());
+            workTimeDTO.setTasks(taskDTOS);
 
-        // Update project's attribute
-        workTime.setCheckinTime(checkinTime);
-        workTime.setCheckoutTime(checkoutTime);
-        workTime.setBreakTime(breakTime);
-
-        //caculate
-        Duration duration = Duration.between(workTime.getCheckinTime(), workTime.getCheckoutTime());
-        float workTimeHours = duration.toMinutes() / 60.0f - workTime.getBreakTime();
-
-        // Set workTime and overTime based on the calculations
-        workTime.setWorkTime(workTimeHours);
-        workTime.setOverTime(workTimeHours > 8 ? workTimeHours - 8 : 0);
-
-        // Update the workTime's tasks
-        if (newTaskIds != null && !newTaskIds.isEmpty()) {
-            // Fetch the new Task entities by their IDs
-            List<Task> newTasks = taskRepository.findAllById(newTaskIds);
-            if (newTasks.size() != newTaskIds.size()) {
-                throw new IllegalArgumentException("One or more JobType IDs are invalid.");
+            // Map user
+            if (workTime.getUser() != null) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setId(workTime.getUser().getId());
+                userDTO.setUserName(workTime.getUser().getUserName());
+                workTimeDTO.setUser(userDTO);
             }
-            workTime.setTasks(new HashSet<>(newTasks));
+
+            return workTimeDTO;
         }
-
-        // Save the updated workTime
-        WorkTime updatedWorkTime = workTimeRepository.save(workTime);
-
-        // Map the updated department to DepartmentDTO
-        WorkTimeDTO workTimeDTO = new WorkTimeDTO();
-        workTimeDTO.setId(updatedWorkTime.getId());
-        workTimeDTO.setCheckinTime(updatedWorkTime.getCheckinTime());
-        workTimeDTO.setCheckoutTime(updatedWorkTime.getCheckoutTime());
-        workTimeDTO.setBreakTime(updatedWorkTime.getBreakTime());
-        workTimeDTO.setWorkTime(updatedWorkTime.getWorkTime());
-        workTimeDTO.setOverTime(updatedWorkTime.getOverTime());
-
-        // Map tasks to TaskDTO
-        Set<TaskDTO> taskDTOS = new HashSet<>();
-        for (Task task : updatedWorkTime.getTasks()) {
-            TaskDTO taskDTO = new TaskDTO();
-            taskDTO.setId(task.getId());
-            taskDTO.setTotalTime(task.getTotalTime());
-            taskDTO.setComment(task.getComment());
-            taskDTOS.add(taskDTO);
-        }
-        workTimeDTO.setTasks(taskDTOS);
-
-        return workTimeDTO;
+        return null;
     }
+
+
 
 }

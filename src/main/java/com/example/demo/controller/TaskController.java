@@ -19,7 +19,14 @@ public class TaskController {
     @Autowired
     private ITaskService taskService;
 
-    //show list
+    //show list (new)
+    @GetMapping
+    public ResponseEntity<?> getAllTasks() {
+        return ResponseEntity.ok().body(taskService.findAll());
+    }
+
+    //show list (old)
+/*
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Task>> getAllTask() {
         List<Task> taskList = (List<Task>) taskService.findAll();
@@ -28,6 +35,7 @@ public class TaskController {
         }
         return new ResponseEntity<>(taskList, HttpStatus.OK);
     }
+*/
 
     //find by id
     @GetMapping("/{id}")
