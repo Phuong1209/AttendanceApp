@@ -126,4 +126,18 @@ public class UserService implements IUserService {
         return Collections.emptyList();
     }
 
+    //list position (adding)
+
+    public List<Position> getPositionByUser(Long userId) {
+/*        if(userId != null){
+            Optional<User>optionalUser = userRepository.findById(userId);
+            if(optionalUser.isPresent()) {
+                User foundUser=optionalUser.get();
+                List<WorkTime> workTimes = workTimeRepository.findByUser(foundUser);
+                log.info("Worktimes of user {}:{}",foundUser.getUserName(), workTimes);
+                return workTimes;
+            }
+        }*/
+        return Collections.emptyList();
+    }
 }

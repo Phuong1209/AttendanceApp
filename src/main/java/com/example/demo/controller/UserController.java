@@ -35,8 +35,6 @@ public class UserController {
     IPositionRepository positionRepository;
     @Autowired
     IDepartmentRepository departmentRepository;
-    @Autowired
-    IDepartmentService departmentService;
 
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
@@ -69,6 +67,8 @@ public class UserController {
         newUser.setUserName(userDTO.getUserName());
         newUser.setFullName(userDTO.getFullName());
         newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
+        //Set Possion
         Set<PositionDTO> positionDTOS = userDTO.getPositions();
         Set<Position> positions = new HashSet<>();
         for (PositionDTO positionDTO : positionDTOS) {
@@ -99,6 +99,7 @@ public class UserController {
             departments.add(department);
         }
         newUser.setDepartments(departments);
+
         userService.save(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
