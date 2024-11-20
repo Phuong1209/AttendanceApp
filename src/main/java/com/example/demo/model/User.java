@@ -1,11 +1,12 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,11 +25,6 @@ public class User implements Serializable {
     private String userName;
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "position_id")
-    @JsonBackReference
-    private Position position;
-
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(
             name="user_department",
@@ -38,14 +34,16 @@ public class User implements Serializable {
     @JsonManagedReference
     private Set<Department> departments;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name="user_position",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName ="id")},
+            inverseJoinColumns = {@JoinColumn(name = "position_id",referencedColumnName ="id")}
+    )
+    @JsonManagedReference
+    private Set<Position> positions;
+
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<WorkTime> workTimes;
-
-    //constructor
-/*    public User(UserDTO userDTO) {
-        this.userName = userDTO.getUserName();
-        this.fullName = userDTO.getFullName();
-        this.password = userDTO.getPassword();
-    }*/
 }

@@ -24,11 +24,10 @@ public class JobType implements Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "jobTypes")
-    @JsonIgnore
+    @JsonBackReference
     private Set<Department> departments;
 
     @OneToMany(mappedBy = "jobType",cascade = CascadeType.ALL)
-    //@JsonManagedReference("jobtype-task")
     @JsonIgnore
     private Set<Task> tasks;
 

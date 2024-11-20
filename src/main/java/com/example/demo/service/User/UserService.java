@@ -1,17 +1,20 @@
 package com.example.demo.service.User;
 
 import com.example.demo.model.Department;
+import com.example.demo.model.Position;
 import com.example.demo.model.User;
 import com.example.demo.model.WorkTime;
 import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.repository.IDepartmentRepository;
+import com.example.demo.repository.IPositionRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.repository.IWorkTimeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,6 +28,8 @@ public class UserService implements IUserService {
     private final IUserRepository userRepository;
     private final IWorkTimeRepository workTimeRepository;
     private final IDepartmentRepository departmentRepository;
+    private final IPositionRepository positionRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
@@ -40,8 +45,7 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public User save(User model) {
-        return userRepository.save(model);
+    public User save(User model) { return userRepository.save(model);
     }
 
     @Transactional

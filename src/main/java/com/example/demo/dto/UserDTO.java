@@ -14,6 +14,7 @@ public class UserDTO {
     private String fullName;
     private String password;
     private Set<DepartmentDTO> departments;
+    private Set<PositionDTO> positions;
     private Set<WorkTimeDTO> workTimes;
 
 }
