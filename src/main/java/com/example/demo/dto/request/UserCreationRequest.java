@@ -19,13 +19,11 @@ import java.util.Set;
 @Builder
 public class UserCreationRequest {
     @Size (min = 3, message = "USERNAME_INVALID")
-    private String username;
+    String username;
     @Size(min = 8, message = "PASSWORD_TOO_SHORT")
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).*$", message = "PASSWORD_INVALID")
-    private String user_passwords;
-    private String user_fullname;
-    private Set<Position> positions;
-    private Set<Department> departments;
-    private Set<WorkingTime> workingTimes;
-
+    String user_passwords;
+    String user_fullname;
+//    Set<Position> positions;
+//    Set<Department> departments;
 }

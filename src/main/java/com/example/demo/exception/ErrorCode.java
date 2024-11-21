@@ -20,6 +20,7 @@ public enum ErrorCode {
     AUTHENTICATION_FAILED(400, "Authentication Failed", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(401, "Unauthorized", HttpStatus.UNAUTHORIZED),
     ACCESS_DENIED(400, "Access Denied", HttpStatus.FORBIDDEN),
+    UNKNOWN_ERROR(500, "An unknown error occurred. Please try again later", HttpStatus.INTERNAL_SERVER_ERROR);
     ;
 
     private int code;

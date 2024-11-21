@@ -29,8 +29,8 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecurityConfig {
     @Value("${jwt.signerKey}")
     private String signerKey;
-    private final String[] PUBLIC_URLS = {"/users", "/auth/token", "/auth/introspect"};
-    private final String[] PRIVATE_URLS = {"/users"};
+    private final String[] PUBLIC_URLS = {"/auth/token", "/auth/introspect","/auth/register"};
+    private final String[] PRIVATE_URLS = {"/users","worktime/checkin"};
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
@@ -58,7 +58,7 @@ public class SecurityConfig {
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
-        converter.setAuthorityPrefix("POSITION_");
+        converter.setAuthorityPrefix("ROLE_");
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(converter);
         return jwtAuthenticationConverter;

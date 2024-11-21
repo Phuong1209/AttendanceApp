@@ -1,14 +1,16 @@
 package com.example.demo.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.example.demo.dto.response.ApiResponse;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-
-@ControllerAdvice
+@RestControllerAdvice
+//@ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
      ResponseEntity<ApiResponse> handleRuntimeException(RuntimeException e) {
@@ -50,4 +52,5 @@ public class GlobalExceptionHandler {
         apiResponse.setMessage(errorCode.getMessage());
         return ResponseEntity.badRequest().body(apiResponse);
     }
+
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PositionRequest {
-    String name;
-    String description;
+    Long id;
+    String positionName;
 //    Set<String> permission;
 }
