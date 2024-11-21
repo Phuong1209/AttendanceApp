@@ -66,6 +66,11 @@ public class WorkTimeController {
             Map<String, Object> userMap = (Map<String, Object>) requestBody.get("user");
             Long userId = Long.valueOf(userMap.get("id").toString());
 
+            // Validate that checkinTime and checkoutTime are in 10-minute intervals
+            if (!isValidTimeInterval(checkinTime) || !isValidTimeInterval(checkoutTime)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Times must be in 10-minute intervals.");
+            }
+
             // Fetch User entity
             Optional<User> optionalUser = userService.findById(userId);
             if (optionalUser.isEmpty()) {
@@ -110,6 +115,12 @@ public class WorkTimeController {
                     .body("An error occurred: " + e.getMessage());
         }
     }
+
+    // Helper method to check if the time is in 10-minute intervals
+    private boolean isValidTimeInterval(LocalTime time) {
+        return time.getMinute() % 10 == 0; // Check if minutes are divisible by 10
+    }
+
 
     //create
     /*@PostMapping("")
@@ -182,12 +193,20 @@ public class WorkTimeController {
             }
             WorkTime existingWorkTime = optionalWorkTime.get();
 
-            // Parse request body for editable fields
+            // Parse and validate editable fields
             if (requestBody.containsKey("checkinTime")) {
-                existingWorkTime.setCheckinTime(LocalTime.parse((String) requestBody.get("checkinTime")));
+                LocalTime checkinTime = LocalTime.parse((String) requestBody.get("checkinTime"));
+                if (!isValidTimeInterval(checkinTime)) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Checkin time must be in 10-minute intervals.");
+                }
+                existingWorkTime.setCheckinTime(checkinTime);
             }
             if (requestBody.containsKey("checkoutTime")) {
-                existingWorkTime.setCheckoutTime(LocalTime.parse((String) requestBody.get("checkoutTime")));
+                LocalTime checkoutTime = LocalTime.parse((String) requestBody.get("checkoutTime"));
+                if (!isValidTimeInterval(checkoutTime)) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Checkout time must be in 10-minute intervals.");
+                }
+                existingWorkTime.setCheckoutTime(checkoutTime);
             }
             if (requestBody.containsKey("breakTime")) {
                 existingWorkTime.setBreakTime(Float.parseFloat(requestBody.get("breakTime").toString()));
