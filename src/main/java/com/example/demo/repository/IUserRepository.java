@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface IUserRepository extends JpaRepository<User, Long> {
     List<User> findByDepartments(Department department);
+    //Security
     User findFirstByUserName(String username);
-    User findByUserName(String username);
 }

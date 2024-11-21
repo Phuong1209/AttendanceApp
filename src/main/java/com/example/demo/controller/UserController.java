@@ -1,14 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.PositionDTO;
-import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.*;
 import com.example.demo.model.Department;
 import com.example.demo.model.Position;
 import com.example.demo.model.User;
 import com.example.demo.model.WorkTime;
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IPositionRepository;
+import com.example.demo.repository.IWorkTimeRepository;
 import com.example.demo.service.Department.IDepartmentService;
 import com.example.demo.service.User.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +91,7 @@ public class UserController {
         }
         newUser.setPositions(positions);
 
-        //Set department of departmentDTOs for department
+        //Set Department list
         Set<DepartmentDTO> departmentDTOS = userDTO.getDepartments();
         Set<Department> departments = new HashSet<>();
         for (DepartmentDTO departmentDTO : departmentDTOS) {
@@ -112,25 +111,16 @@ public class UserController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
-
-    //create (old)
-/*    @PostMapping("")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        userService.save(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
-    }*/
-
-    //edit (old)
-/*    @PutMapping("/{id}")
-    public ResponseEntity<User> editUser(@PathVariable Long id, @RequestBody User user) {
-        Optional<User> jobTypeOptional = userService.findById(id);
-        if (!jobTypeOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        user.setId(id);
-        userService.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }*/
+    //edit
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> editUser(
+            @PathVariable("id") Long userId,
+            @RequestBody UserEditRequest editRequest) {
+        UserDTO updatedUser = userService.editUser(userId, editRequest.getUserName(),
+                                editRequest.getFullName(), editRequest.getPassword(),
+                                editRequest.getDepartmentIds(),editRequest.getPositionIds());
+        return ResponseEntity.ok(updatedUser);
+    }
 
     //delete
     @DeleteMapping("/{id}")
@@ -142,5 +132,6 @@ public class UserController {
         userService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 
 }
