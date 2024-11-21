@@ -1,24 +1,26 @@
 package com.example.demo.model;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
+import com.example.demo.dto.DepartmentDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name="department")
-public class Department {
+public class Department implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String department_name;
+    private String name;
 
     @ManyToMany
     @JoinTable(
@@ -26,12 +28,16 @@ public class Department {
             joinColumns = @JoinColumn(name = "department_id"),
             inverseJoinColumns = @JoinColumn(name = "jobtype_id")
     )
-    private Set<JobType> jobtypes;
+    @JsonManagedReference("department-jobtype")
+    private Set<JobType> jobTypes;
 
-    @ManyToMany(mappedBy = "departments")
+    @ManyToMany(mappedBy = "departments", fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<User> users;
 
-
-
+    //constructor
+    public Department(DepartmentDTO departmentDTO){
+        this.name = departmentDTO.getName();
+    }
 
 }

@@ -2,7 +2,7 @@ package com.example.demo.dto.request;
 
 import com.example.demo.model.Department;
 import com.example.demo.model.Position;
-import com.example.demo.model.WorkingTime;
+//import com.example.demo.model.WorkingTime;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

@@ -1,39 +1,41 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
+
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
 @Table(name = "task")
+@Getter
+@Setter
 
-public class Task {
+public class Task implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    private LocalDateTime date;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private float totalTime;
+    @Column(columnDefinition = "TEXT")
     private String comment;
+
     @ManyToOne
-    @JoinColumn(name = "working_time_id")
-    private WorkingTime workingTime;
+    @JoinColumn(name = "work_time_id")
+    @JsonBackReference
+    private WorkTime workTime;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "jobtype_id")
-    private JobType jobtype;
-
-
+    @JoinColumn(name = "job_type_id")
+    @JsonBackReference("jobtype-task")
+    private JobType jobType;
 
 }

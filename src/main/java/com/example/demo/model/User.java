@@ -1,41 +1,49 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
+@Table(name = "user")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String user_fullname;
-    private String user_passwords;
-    @ManyToMany
-    @JoinTable(
-            name="user_position",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name = "position_id")
-    )
-    private Set<Position> positions;
+    private String fullName;
+    private String userName;
+    private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(
-            name="department",
-            joinColumns = @JoinColumn(name="user_id"),
+            name="user_department",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )
+    @JsonManagedReference
     private Set<Department> departments;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<WorkingTime> workingTimes;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name="user_position",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "position_id")
+    )
+    @JsonManagedReference
+    private Set<Position> positions;
 
+    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<WorkTime> workTimes;
 }

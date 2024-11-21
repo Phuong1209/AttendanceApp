@@ -2,7 +2,7 @@ package com.example.demo.dto.request;
 
 import com.example.demo.model.Department;
 import com.example.demo.model.Position;
-import com.example.demo.model.WorkingTime;
+import com.example.demo.model.WorkTime;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,10 +17,10 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateRequest {
     Long id;
-    String username;
-    String user_passwords;
-    String user_fullname;
+    String userName;
+    String password;
+    String fullName;
     Set<Position> positions;
     Set<Department> departments;
-    Set<WorkingTime> workingTimes;
+    Set<WorkTime> workTimes;
 }

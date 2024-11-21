@@ -22,7 +22,7 @@ public class PositionService {
     PositionMapper positionMapper;
     public PositionResponse create(PositionRequest request){
         Position n = new Position();
-        n.setPositionname(request.getPositionName());
+        n.setName(request.getPositionName());
         Position savedPosition = positionRepository.save(n);
         PositionResponse positionResponse = positionMapper.toPositionResponse(savedPosition);
         return positionResponse;

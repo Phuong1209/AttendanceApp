@@ -23,12 +23,12 @@ public class ApplicationInitConfig {
     @Bean
     ApplicationRunner applicationRunner(IUserRepository iUserRepository) {
         return args -> {
-            if(iUserRepository.findByUsername("admin").isEmpty()){
+            if(iUserRepository.findByUserName("admin").isEmpty()){
                 var position = new HashSet<String>();
                 position.add(Position.ADMIN.name());
                 User user = User.builder()
-                        .username("admin")
-                        .user_passwords(passwordEncoder.encode("admin"))
+                        .userName("admin")
+                        .password(passwordEncoder.encode("admin"))
 //                        .roles(roles)
                         .build();
                 iUserRepository.save(user);

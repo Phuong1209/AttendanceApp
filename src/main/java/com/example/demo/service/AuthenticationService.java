@@ -60,9 +60,9 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
-        User user = userRepository.findByUsername(authenticationRequest.getUsername())
+        User user = userRepository.findByUserName(authenticationRequest.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        if (!passwordEncoder.matches(authenticationRequest.getUser_passwords(), user.getUser_passwords())) {
+        if (!passwordEncoder.matches(authenticationRequest.getUser_passwords(), user.getPassword())) {
             throw new AppException(ErrorCode.AUTHENTICATION_FAILED); // Return an error if passwords do not match
         }
 
@@ -76,7 +76,7 @@ public class AuthenticationService {
     private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getUsername())
+                .subject(user.getUserName())
                 .issuer("devteria.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
@@ -99,7 +99,7 @@ public class AuthenticationService {
 //        if (!CollectionUtils.isEmpty(user.getRoles())){
 //            user.getRoles().forEach(stringJoiner::add);
 //        }
-        user.getPositions().forEach(position -> stringJoiner.add(position.getPositionname()));
+        user.getPositions().forEach(position -> stringJoiner.add(position.getName()));
         return stringJoiner.toString();
     }
 
