@@ -4,6 +4,8 @@ import com.example.demo.dto.TaskDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
+import com.example.demo.repository.IUserRepository;
+import com.example.demo.security.SecurityUtil;
 import com.example.demo.service.User.IUserService;
 import com.example.demo.service.WorkTime.IWorkTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class WorkTimeController {
     private IWorkTimeService workTimeService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IUserRepository userRepository;
 
     //show list
     @GetMapping
@@ -50,7 +54,7 @@ public class WorkTimeController {
         return ResponseEntity.ok().body(tasks);
     }
 
-    //create (new)
+    //create (old)
     @PostMapping("")
     public ResponseEntity<?> createWorkTime(@RequestBody Map<String, Object> requestBody) {
         try {
@@ -107,7 +111,67 @@ public class WorkTimeController {
         }
     }
 
-    //edit (new)
+    //create
+    /*@PostMapping("")
+    public ResponseEntity<?> createWorkTime(@RequestBody Map<String, Object> requestBody) {
+        try {
+            // Fetch the logged-in user's username
+            String username = SecurityUtil.getSessionUser();
+            if (username == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+            }
+
+            // Fetch User entity by username
+            User user = userRepository.findByUserName(username);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            }
+
+            // Parse request body
+            LocalDate date = LocalDate.parse((String) requestBody.get("date"));
+            LocalTime checkinTime = LocalTime.parse((String) requestBody.get("checkinTime"));
+            LocalTime checkoutTime = LocalTime.parse((String) requestBody.get("checkoutTime"));
+            Float breakTime = Float.parseFloat(requestBody.get("breakTime").toString());
+
+            // Calculate workTime and overTime
+            Duration duration = Duration.between(checkinTime, checkoutTime);
+            float workTimeHours = duration.toMinutes() / 60.0f - breakTime;
+            float overTimeHours = workTimeHours > 8 ? workTimeHours - 8 : 0;
+
+            // Create and save WorkTime
+            WorkTime workTime = WorkTime.builder()
+                    .date(date)
+                    .checkinTime(checkinTime)
+                    .checkoutTime(checkoutTime)
+                    .breakTime(breakTime)
+                    .workTime(workTimeHours)
+                    .overTime(overTimeHours)
+                    .user(user)
+                    .build();
+            WorkTime savedWorkTime = workTimeService.save(workTime);
+
+            // Construct response body
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", savedWorkTime.getId());
+            response.put("date", savedWorkTime.getDate().toString());
+            response.put("checkinTime", savedWorkTime.getCheckinTime().toString());
+            response.put("checkoutTime", savedWorkTime.getCheckoutTime().toString());
+            response.put("breakTime", savedWorkTime.getBreakTime());
+            response.put("workTime", savedWorkTime.getWorkTime());
+            response.put("overTime", savedWorkTime.getOverTime());
+            response.put("user", Map.of("id", user.getId()));
+
+            // Return 201 Created with response body
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+        } catch (Exception e) {
+            // Handle exceptions gracefully
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred: " + e.getMessage());
+        }
+    }*/
+
+    //edit (old)
     @PutMapping("/{id}")
     public ResponseEntity<?> editWorkTime(@PathVariable Long id, @RequestBody Map<String, Object> requestBody) {
         try {
@@ -148,7 +212,7 @@ public class WorkTimeController {
             workTimeDTO.setWorkTime(updatedWorkTime.getWorkTime());
             workTimeDTO.setOverTime(updatedWorkTime.getOverTime());
 
-            // Map User to SimpleUserDTO
+            // Map User to UserDTO
             if (updatedWorkTime.getUser() != null) {
                 UserDTO userDTO = new UserDTO();
                 userDTO.setId(existingWorkTime.getUser().getId());

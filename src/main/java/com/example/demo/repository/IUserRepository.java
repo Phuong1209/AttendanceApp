@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface IUserRepository extends JpaRepository<User, Long> {
     List<User> findByDepartments(Department department);
     User findFirstByUserName(String username);
+    User findByUserName(String username);
 }
