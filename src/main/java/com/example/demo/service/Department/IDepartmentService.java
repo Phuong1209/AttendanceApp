@@ -16,9 +16,7 @@ import java.util.Set;
 @Repository
 public interface IDepartmentService extends IGeneralService<Department> {
     List<DepartmentDTO> getAllDepartment();
-
     List<User> getUserByDepartment(Long departmentId);
-
     List<JobType> getJobTypeByDepartment(Long departmentId);
 
     //summary
@@ -27,5 +25,6 @@ public interface IDepartmentService extends IGeneralService<Department> {
     //edit
     DepartmentDTO editDepartment(Long departmentId, String name, Set<Long> jobTypeIds);
 
+    //CSV
     void exportDepartmentSummaryToCSV(HttpServletResponse response, List<DepartmentSummaryDTO> summaries) throws IOException;
 }

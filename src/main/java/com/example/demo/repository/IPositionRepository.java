@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface IPositionRepository extends JpaRepository<Position, Long> {
+    Position findByName(String name);
     List<Position> findByUsers(User user);
-
 }

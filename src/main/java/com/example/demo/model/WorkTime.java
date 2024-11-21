@@ -19,6 +19,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Table(name = "work_time")
+@Getter
+@Setter
 
 public class WorkTime implements Serializable {
     @Id
