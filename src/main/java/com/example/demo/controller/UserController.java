@@ -7,21 +7,21 @@ import com.example.demo.dto.*;
 import com.example.demo.model.Department;
 import com.example.demo.model.Position;
 import com.example.demo.model.User;
-import com.example.demo.model.WorkingTime;
+import com.example.demo.model.WorkTime;
 
-import com.example.demo.repository.DepartmentRepository;
-import com.example.demo.repository.PositionRepository;
-import com.example.demo.service.DepartmentService;
-import com.example.demo.service.IDepartmentService;
-import com.example.demo.service.MemberManagementService;
+import com.example.demo.repository.IDepartmentRepository;
+import com.example.demo.repository.IPositionRepository;
+import com.example.demo.service.Department.DepartmentService;
+import com.example.demo.service.User.IUserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -32,46 +32,45 @@ import java.util.stream.Collectors;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/user/member")
-public class MemberManagementController {
+public class UserController {
     @Autowired
-    private MemberManagementService memberManagementService;
+    private IUserService userService;
+//    @Autowired
+//    PasswordEncoder passwordEncoder;
     @Autowired
-    PasswordEncoder passwordEncoder;
+    IPositionRepository positionRepository;
     @Autowired
-    PositionRepository positionRepository;
-    @Autowired
-    DepartmentRepository departmentRepository;
+    IDepartmentRepository departmentRepository;
     @Autowired
     DepartmentService departmentService;
 
     @GetMapping
 
     public ResponseEntity<?> getAllUsers() {
-        return ResponseEntity.ok().body(memberManagementService.findAll());
+        return ResponseEntity.ok().body(userService.findAll());
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getAllUserById(@PathVariable Long id) {
-        Optional<User> userOptional = memberManagementService.findById(id);
+        Optional<User> userOptional = userService.findById(id);
         return userOptional.map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("getPosition/{id}")
     public ResponseEntity<?> getPosition(@PathVariable Long id) {
-        List<Position> positions = memberManagementService.getPositionByUser(id);
+        List<Position> positions = userService.getPositionByUser(id);
         return ResponseEntity.ok().body(positions);
     }
 
     @GetMapping("getDepartment/{id}")
     public ResponseEntity<?> getDepartment(@PathVariable Long id) {
-        List<Department> departments = memberManagementService.getDepartmentByUser(id);
+        List<Department> departments = userService.getDepartmentByUser(id);
         return ResponseEntity.ok().body(departments);
     }
 
     @GetMapping("getWorkingTime/{id}")
     public ResponseEntity<?> getWorkingTime(@PathVariable Long id) {
-        List<WorkingTime> workingTimes = memberManagementService.getWorkingTimebyUser(id);
+        List<WorkTime> workingTimes = userService.getWorkTimeByUser(id);
         return ResponseEntity.ok().body(workingTimes);
     }
 
@@ -117,8 +116,8 @@ public class MemberManagementController {
     public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
         User newUser = new User();
         newUser.setUserName(userDTO.getUserName());
-        newUser.setUserFullName(userDTO.getUserFullName());
-        newUser.setUserPasswords(passwordEncoder.encode(userDTO.getPassword()));
+        newUser.setFullName(userDTO.getFullName());
+        newUser.setPassword(userDTO.getPassword());
         Set<PositionDTO> positionDTOS = userDTO.getPositions();
         Set<Position> positions = new HashSet<>();
         for (PositionDTO positionDTO : positionDTOS) {
@@ -128,7 +127,7 @@ public class MemberManagementController {
                 position = optionalPosition.get();
             } else {
                 position = new Position();
-                position.setPositionName(positionDTO.getPositionName());
+                position.setName(positionDTO.getPositionName());
             }
             positions.add(position);
         }
@@ -143,18 +142,18 @@ public class MemberManagementController {
                 department = optionalDepartment.get();
             } else {
                 department = new Department();
-                department.setDepartmentName(departmentDTO.getDepartmentName());
+                department.setName(departmentDTO.getName());
             }
             departments.add(department);
         }
         newUser.setDepartments(departments);
-        memberManagementService.save(newUser);
+        userService.save(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> editUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        Optional<User> userOptional = memberManagementService.findById(id);
+        Optional<User> userOptional = userService.findById(id);
         if (userOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -165,11 +164,11 @@ public class MemberManagementController {
         if(userDTO.getUserName() != null){
             existingUser.setUserName(userDTO.getUserName());
         }
-        if(userDTO.getUserFullName() != null){
-            existingUser.setUserFullName(userDTO.getUserFullName());
+        if(userDTO.getFullName() != null){
+            existingUser.setFullName(userDTO.getFullName());
         }
         if (userDTO.getPassword() != null){
-            existingUser.setUserPasswords(passwordEncoder.encode(userDTO.getPassword()));
+            existingUser.setPassword(userDTO.getPassword());
         }
         //Get old position list
         Set<Position> oldPositions = existingUser.getPositions();
@@ -200,8 +199,7 @@ public class MemberManagementController {
             existingUser.getPositions().removeAll(positionsToRemove);
             existingUser.getPositions().addAll(positionsToAdd);
 
-            memberManagementService.save(existingUser);
-
+            userService.save(existingUser);
 
             //Set department of departmentDTOs for department
 
@@ -235,47 +233,25 @@ public class MemberManagementController {
                 existingUser.getDepartments().addAll(departmentsToAdd);
             }
 
-            memberManagementService.save(existingUser);
+            userService.save(existingUser);
             return new ResponseEntity<>(existingUser, HttpStatus.OK);
         }
         return null;
     }
-//    @PatchMapping("/{id}/positions")
-//    public ResponseEntity<String> updateUserPositions(
-//            @PathVariable Long id,
-//            @RequestBody Set<Long> positionIds
-//    ) {
-//        Optional<User> optionalUser = memberManagementService.findById(id);
-//        if (optionalUser.isEmpty()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        User user = optionalUser.get();
-//        Set<Position> positions = new HashSet<>();
-//
-//        for (Long positionId : positionIds) {
-//            Optional<Position> optionalPosition = memberManagementService.getPositionById(positionId); // Implement this method in your service
-//            if (optionalPosition.isPresent()) {
-//                positions.add(optionalPosition.get());
-//            } else {
-//                return ResponseEntity.badRequest().body("Position ID " + positionId + " not found");
-//            }
-//        }
-//
-//        user.setPositions(positions);
-//        memberManagementService.save(user);
-//
-//        return ResponseEntity.ok("User positions updated successfully");
-//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
-        Optional<User> userOptional = memberManagementService.findById(id);
+        Optional<User> userOptional = userService.findById(id);
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        memberManagementService.remove(id);
+        userService.delete(userOptional.get());
         return new ResponseEntity<>(userOptional.get(), HttpStatus.NO_CONTENT);
+    }
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody @Valid UserRegisterDTO userRegisterDTO){
+        userService.register(userRegisterDTO);
+        return ResponseEntity.ok("Register success");
     }
 
 //    @GetMapping("/export")
@@ -297,31 +273,22 @@ public class MemberManagementController {
 //    }
 
 
-//    @GetMapping("/generate-csv-user")
-//    public void generateCSVUser(@RequestParam String param1, @RequestParam String param2) {
-//        // your CSV report generation logic here
-//        // using data from MongoDB with repository.findAll()
-//        // once you have your CSV report, you can save it to file
-//        // using FileWriter or any libraries like OpenCSV or Apache Commons CSV
+//    @GetMapping("/exportUserCSV")
+//    public void exportToCSV(HttpServletResponse response) throws IOException {
+//        response.setContentType("CSVpplication/octet-stream");
+//        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+//        String currentDateTime = dateFormatter.format(new Date());
+//
+//        String headerKey = "Content-Disposition";
+//        String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
+//        response.setHeader(headerKey, headerValue);
+//
+//        List<UserCSVDTO> listUsers = userService.getUsersCSV();
+//
+//        UserCSVExporter csvExporter = new UserCSVExporter(listUsers);
+//
+//        csvExporter.generateCSV(response);
 //    }
-
-
-    @GetMapping("/exportUserCSV")
-    public void exportToCSV(HttpServletResponse response) throws IOException {
-        response.setContentType("CSVpplication/octet-stream");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
-        response.setHeader(headerKey, headerValue);
-
-        List<UserCSVDTO> listUsers = memberManagementService.getUsersCSV();
-
-        UserCSVExporter csvExporter = new UserCSVExporter(listUsers);
-
-        csvExporter.generateCSV(response);
-    }
 }
 
 

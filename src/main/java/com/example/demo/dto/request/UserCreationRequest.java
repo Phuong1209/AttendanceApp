@@ -1,14 +1,10 @@
 package com.example.demo.dto.request;
 
-import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.PositionDTO;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 //import security.exception.ErrorCode;
 
-import java.time.LocalDate;
-import java.util.Set;
 
 @Getter
 @Setter

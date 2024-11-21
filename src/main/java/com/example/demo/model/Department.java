@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -22,7 +20,7 @@ public class Department implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String departmentName;
+    private String name;
 
     @ManyToMany
     @JoinTable(
@@ -30,18 +28,14 @@ public class Department implements Serializable {
             joinColumns = @JoinColumn(name = "department_id"),
             inverseJoinColumns = @JoinColumn(name = "jobtype_id")
     )
-    @JsonBackReference
-    private Set<JobType> jobtypes;
+    @JsonManagedReference("department-jobtype")
+    private Set<JobType> jobTypes;
 
     @ManyToMany(mappedBy = "departments", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<User> users;
 
     public Department(DepartmentDTO departmentDTO){
-        this.departmentName = departmentDTO.getDepartmentName();
+        this.name = departmentDTO.getName();
     }
-
-
-
-
 }

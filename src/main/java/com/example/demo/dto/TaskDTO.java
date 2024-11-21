@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
+
 public class TaskDTO {
     private Long id;
     private float totalTime;

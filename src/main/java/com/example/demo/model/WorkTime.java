@@ -2,42 +2,45 @@ package com.example.demo.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+        import lombok.*;
 
+        import java.io.Serializable;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
-
-@Table(name = "working_time")
 
 @Entity
 @Getter
 @Setter
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "work_time")
 
-public class WorkingTime implements Serializable {
+public class WorkTime implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
-    private LocalDateTime checkin_time;
-    private LocalDateTime checkout_time;
-    private Float breaktime;
-    private Float worktime;
-    private Float overtime;
+    private LocalTime checkinTime;
+    private LocalTime checkoutTime;
+    private Float breakTime;
+    private Float workTime;
+    private Float overTime;
 
-    @OneToMany(mappedBy = "workingTime", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JsonBackReference
+    @OneToMany(mappedBy = "workTime", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Set<Task> tasks;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+
 }
+
 
 

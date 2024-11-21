@@ -1,6 +1,5 @@
 package com.example.demo.repository;
 
-import com.example.demo.dto.UserDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MemberManagementRepository extends JpaRepository <User, Long> {
-    Optional<User> findByUserName(String username);
-    List<User> findByDepartments(Department department);
+public interface IDepartmentRepository extends JpaRepository <Department, Long> {
+    List<Department> findByUsers(User user);
 }

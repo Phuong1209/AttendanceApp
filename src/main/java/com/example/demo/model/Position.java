@@ -23,12 +23,12 @@ public class Position implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String positionName;
+    private String name;
     @ManyToMany(mappedBy="positions", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<User> users;
 
     public Position(PositionDTO positionDTO){
-        this.positionName = positionDTO.getPositionName();
+        this.name = positionDTO.getPositionName();
     }
 }

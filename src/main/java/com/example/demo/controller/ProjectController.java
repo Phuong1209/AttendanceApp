@@ -1,11 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.DepartmentSummaryDTO;
 import com.example.demo.dto.ProjectSummaryDTO;
 import com.example.demo.model.Project;
 import com.example.demo.model.Task;
-import com.example.demo.service.IProjectService;
-import com.example.demo.service.ProjectService;
+import com.example.demo.service.Project.ProjectService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +20,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/project")
+
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
@@ -49,6 +48,7 @@ public class ProjectController {
         projectService.save(project);
         return new ResponseEntity<>(project, HttpStatus.CREATED);
     }
+
     //edit
     @PutMapping("/{id}")
     public ResponseEntity<Project> editProject(@PathVariable Long id, @RequestBody Project project) {

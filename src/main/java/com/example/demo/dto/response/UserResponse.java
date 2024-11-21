@@ -1,8 +1,6 @@
 package com.example.demo.dto.response;
 
 
-import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.PositionDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
