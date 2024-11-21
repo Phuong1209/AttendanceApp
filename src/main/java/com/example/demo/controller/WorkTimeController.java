@@ -60,6 +60,12 @@ public class WorkTimeController {
         try {
             // Parse request body
             LocalDate date = LocalDate.parse((String) requestBody.get("date"));
+
+            // Validate date: cannot be more than today + 1
+            if (date.isAfter(LocalDate.now())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Date cannot be in the future beyond today or tomorrow.");
+            }
+
             LocalTime checkinTime = LocalTime.parse((String) requestBody.get("checkinTime"));
             LocalTime checkoutTime = LocalTime.parse((String) requestBody.get("checkoutTime"));
             Float breakTime = Float.parseFloat(requestBody.get("breakTime").toString());
@@ -194,6 +200,14 @@ public class WorkTimeController {
             WorkTime existingWorkTime = optionalWorkTime.get();
 
             // Parse and validate editable fields
+            if (requestBody.containsKey("date")) {
+                LocalDate date = LocalDate.parse((String) requestBody.get("date"));
+                // Validate date: cannot be more than today + 1
+                if (date.isAfter(LocalDate.now())) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Date cannot be in the future beyond today or tomorrow.");
+                }
+                existingWorkTime.setDate(date);
+            }
             if (requestBody.containsKey("checkinTime")) {
                 LocalTime checkinTime = LocalTime.parse((String) requestBody.get("checkinTime"));
                 if (!isValidTimeInterval(checkinTime)) {
