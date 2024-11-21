@@ -44,6 +44,11 @@ public class TaskService implements ITaskService {
         taskRepository.deleteById(id);
     }
 
+    @Override
+    public void delete(User user) {
+
+    }
+
     //get all task
     @Override
     public List<TaskDTO> getAllTask() {

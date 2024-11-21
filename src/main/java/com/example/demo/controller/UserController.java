@@ -103,7 +103,7 @@ public class UserController {
                 position = optionalPosition.get();
             } else {
                 position = new Position();
-                position.setName(positionDTO.getPositionName());
+                position.setName(positionDTO.getName());
             }
             positions.add(position);
         }

@@ -1,22 +1,16 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.DepartmentEditRequest;
 import com.example.demo.dto.DepartmentSummaryDTO;
 import com.example.demo.dto.JobTypeDTO;
+import com.example.demo.dto.request.IntrospectRequest;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
-import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.DepartmentEditRequest;
-import com.example.demo.dto.DepartmentSummaryDTO;
-import com.example.demo.dto.JobTypeDTO;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IUserRepository;
-import com.example.demo.service.Department.DepartmentService;
 import com.example.demo.service.Department.IDepartmentService;
 import jakarta.servlet.http.HttpServletResponse;
-import com.example.demo.repository.IJobTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -104,7 +98,7 @@ public class DepartmentController {
     @PutMapping("/{id}")
     public ResponseEntity<DepartmentDTO> editDepartment(
             @PathVariable("id") Long departmentId,
-            @RequestBody DepartmentEditRequest editRequest) {
+            @RequestBody IntrospectRequest.DepartmentEditRequest editRequest) {
         DepartmentDTO updatedDepartment = departmentService.editDepartment(departmentId, editRequest.getName(), editRequest.getJobTypeIds());
         return ResponseEntity.ok(updatedDepartment);
     }

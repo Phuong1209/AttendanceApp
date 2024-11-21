@@ -3,6 +3,8 @@ package com.example.demo.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,4 +14,21 @@ import lombok.experimental.FieldDefaults;
 
 public class IntrospectRequest {
     String token;
+
+    @Getter
+    @Setter
+
+    public static class DepartmentEditRequest {
+        private String name;
+        private Set<Long> jobTypeIds;
+    }
+
+    @Getter
+    @Setter
+
+    public static class ProjectEditRequest {
+        private String name;
+        private String code;
+        private Set<Long> taskIds;
+    }
 }

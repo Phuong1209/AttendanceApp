@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -83,7 +83,7 @@ public class UserService implements IUserService {
             for (Position position : positions) {
                 PositionDTO positionDTO = new PositionDTO();
                 positionDTO.setId(position.getId());
-                positionDTO.setPositionName(position.getName());
+                positionDTO.setName(position.getName());
                 positionDTOS.add(positionDTO);
             }
 

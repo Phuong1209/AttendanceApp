@@ -13,5 +13,4 @@ public interface IUserRepository extends JpaRepository <User, Long> {
     Optional<User> findByUserName(String username);
     List<User> findByDepartments(Department department);
     User findFirstByUserName(String username);
-    User findByUserName(String username);
 }

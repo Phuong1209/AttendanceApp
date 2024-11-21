@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ProjectDTO;
-import com.example.demo.dto.ProjectEditRequest;
 import com.example.demo.dto.ProjectSummaryDTO;
-import com.example.demo.dto.ProjectSummaryDTO;
+import com.example.demo.dto.request.IntrospectRequest;
 import com.example.demo.model.Project;
 import com.example.demo.model.Task;
 import com.example.demo.repository.ITaskRepository;
-import com.example.demo.service.Project.IProjectService;
 import com.example.demo.service.Project.ProjectService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +25,6 @@ import java.util.Optional;
 @RequestMapping("/project")
 
 public class ProjectController {
-    @Autowired
-    private IProjectService projectService;
     @Autowired
     private ProjectService projectService;
     @Autowired
@@ -70,7 +66,7 @@ public class ProjectController {
     @PutMapping("/{id}")
     public ResponseEntity<ProjectDTO> editProject(
             @PathVariable("id") Long projectId,
-            @RequestBody ProjectEditRequest editRequest) {
+            @RequestBody IntrospectRequest.ProjectEditRequest editRequest) {
         ProjectDTO updatedProject = projectService.editProject(projectId, editRequest.getName(), editRequest.getCode(), editRequest.getTaskIds());
         return ResponseEntity.ok(updatedProject);
     }
