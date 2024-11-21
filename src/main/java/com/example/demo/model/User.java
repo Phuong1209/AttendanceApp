@@ -37,8 +37,8 @@ public class User implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name="user_position",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName ="id")},
-            inverseJoinColumns = {@JoinColumn(name = "position_id",referencedColumnName ="id")}
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "position_id")
     )
     @JsonManagedReference
     private Set<Position> positions;

@@ -62,7 +62,7 @@ public class DepartmentController {
 
     //create
     @PostMapping("")
-    public ResponseEntity<Department> createUser(@RequestBody DepartmentDTO departmentDTO) {
+    public ResponseEntity<Department> createDepartment(@RequestBody DepartmentDTO departmentDTO) {
         Department newDepartment = new Department();
         newDepartment.setName(departmentDTO.getName());
 

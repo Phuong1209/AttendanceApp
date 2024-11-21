@@ -36,18 +36,20 @@ public class UserController {
     @Autowired
     IDepartmentRepository departmentRepository;
 
+    //show list
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
+    //show by Id
     @GetMapping("/{id}")
     public ResponseEntity<User> getAllUserById(@PathVariable Long id) {
         Optional<User> userOptional = userService.findById(id);
         return userOptional.map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    //get list department, worktime
+    //get list department, worktime, position
     @GetMapping("getDepartment/{id}")
     public ResponseEntity<?> getDepartment(@PathVariable Long id) {
         List<Department> departments = userService.getDepartmentByUser(id);
@@ -60,6 +62,12 @@ public class UserController {
         return ResponseEntity.ok().body(workTimes);
     }
 
+    @GetMapping("getPosition/{id}")
+    public ResponseEntity<?> getPosition(@PathVariable Long id) {
+        List<Position> positions = userService.getPositionByUser(id);
+        return ResponseEntity.ok().body(positions);
+    }
+
     //create
     @PostMapping("")
     public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
@@ -68,7 +76,7 @@ public class UserController {
         newUser.setFullName(userDTO.getFullName());
         newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-        //Set Possion
+        //Set Position list
         Set<PositionDTO> positionDTOS = userDTO.getPositions();
         Set<Position> positions = new HashSet<>();
         for (PositionDTO positionDTO : positionDTOS) {
