@@ -18,9 +18,13 @@ import java.util.List;
 
 @Repository
 public interface IUserService extends IGeneralService<User> {
+    //get list user
     List<UserDTO> getAllUser();
-    List<Position> getPositionByUser(Long userId);
+    //get list department by user
     List<Department> getDepartmentByUser(Long userId);
+    //get list position by user
+    List<Position> getPositionByUser(Long userId);
+    //get list worktime by user
     List<WorkTime> getWorkTimeByUser(Long userId);
 
     void register(UserRegisterDTO userRegisterDTO);
