@@ -27,7 +27,5 @@ public interface IUserService extends IGeneralService<User> {
     //get list worktime by user
     List<WorkTime> getWorkTimeByUser(Long userId);
 
-    void register(UserRegisterDTO userRegisterDTO);
-
 //    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

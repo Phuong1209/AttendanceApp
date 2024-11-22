@@ -26,20 +26,14 @@
 		<tag/>
 		<url/>
 	</scm>
-<<<<<<< HEAD
-    <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
-    </properties>
-=======
+
 	<properties>
 		<java.version>17</java.version>
 		<projectlombok-lombok.version>1.18.30</projectlombok-lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 	</properties>
->>>>>>> TA
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -53,7 +47,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>-->
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -94,22 +88,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-<<<<<<< HEAD
-		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct</artifactId>
-			<version>1.5.3.Final</version> <!-- Hoặc phiên bản mới nhất -->
-		</dependency>
-=======
 
->>>>>>> TA
+
+
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-processor</artifactId>
 			<version>1.5.3.Final</version>
 			<scope>provided</scope>
 		</dependency>
-<<<<<<< HEAD
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
@@ -131,8 +118,6 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 		</dependency>
-=======
->>>>>>> TA
 
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -155,24 +140,25 @@
 			<scope>test</scope>
 		</dependency>
 
-<<<<<<< HEAD
 
-<!--		<dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-		</dependency>-->
-=======
+		</dependency>
+
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>${mapstruct.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>0.11.5</version>
 		</dependency>
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
@@ -193,7 +179,6 @@
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
 
->>>>>>> TA
 	</dependencies>
 
 	<build>

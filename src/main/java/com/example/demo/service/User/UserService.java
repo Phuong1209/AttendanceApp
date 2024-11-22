@@ -1,8 +1,6 @@
 package com.example.demo.service.User;
 
-import com.example.demo.dto.*;
 import com.example.demo.model.Department;
-import com.example.demo.model.Position;
 import com.example.demo.model.User;
 import com.example.demo.model.WorkTime;
 import com.example.demo.dto.DepartmentDTO;
@@ -12,11 +10,8 @@ import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IPositionRepository;
 import com.example.demo.repository.IUserRepository;
-import com.example.demo.model.Department;
-import com.example.demo.model.WorkTime;
 import com.example.demo.repository.IWorkTimeRepository;
 import jakarta.transaction.Transactional;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,15 +22,10 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
 import com.example.demo.dto.response.UserResponse;
-import com.example.demo.model.User;
 import com.example.demo.enums.Position;
 import com.example.demo.exception.AppException;
 import com.example.demo.exception.ErrorCode;
 import com.example.demo.mapper.UserMapper;
-import com.example.demo.repository.IPositionRepository;
-import com.example.demo.repository.IUserRepository;
-import com.example.demo.repository.IDepartmentRepository;
-import jakarta.transaction.Transactional;
 
 import java.util.*;
 
@@ -136,9 +126,9 @@ public class UserService implements IUserService {
             userDTO.setPassword(user.getPassword());
 
             //get position list
-            List<Position> positions = positionRepository.findByUsers(user);
+            List<com.example.demo.model.Position> positions = positionRepository.findByUsers(user);
             Set<PositionDTO> positionDTOS = new HashSet<>();
-            for (Position position : positions) {
+            for (com.example.demo.model.Position position : positions) {
                 PositionDTO positionDTO = new PositionDTO();
                 positionDTO.setId(position.getId());
                 positionDTO.setName(position.getName());
@@ -182,12 +172,12 @@ public class UserService implements IUserService {
     //list position
     @Transactional
     @Override
-    public List<Position> getPositionByUser(Long userId) {
+    public List<com.example.demo.model.Position> getPositionByUser(Long userId) {
         if (userId != null) {
             Optional<User> optionalUser = userRepository.findById(userId);
             if (optionalUser.isPresent()) {
                 User foundUser = optionalUser.get();
-                List<Position> positions = positionRepository.findByUsers(foundUser);
+                List<com.example.demo.model.Position> positions = positionRepository.findByUsers(foundUser);
                 log.info("Position of user {}: {}", foundUser.getUserName(), positions);
                 return positions;
             }

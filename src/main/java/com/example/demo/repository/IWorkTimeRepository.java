@@ -79,5 +79,4 @@ public interface IWorkTimeRepository extends JpaRepository<WorkTime, Long> {
     Optional<WorkingTime> findLatestUnclosedByUserIdOrderByCheckin_timeDesc(@Param("userId") Long userId);
 */
 
-*/
 }
