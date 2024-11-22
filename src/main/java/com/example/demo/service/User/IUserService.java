@@ -22,6 +22,4 @@ public interface IUserService extends IGeneralService<User> {
     List<Position> getPositionByUser(Long userId);
     //get list worktime by user
     List<WorkTime> getWorkTimeByUser(Long userId);
-    //edit user
-    UserDTO editUser(Long userId, String userName, String fullName, String password, Set<Long> departmentIds, Set<Long> positionIds);
 }
