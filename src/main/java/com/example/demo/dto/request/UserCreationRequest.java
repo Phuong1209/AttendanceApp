@@ -24,6 +24,6 @@ public class UserCreationRequest {
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).*$", message = "PASSWORD_INVALID")
     String user_passwords;
     String user_fullname;
-//    Set<Position> positions;
-//    Set<Department> departments;
+    Set<Position> positions;
+    Set<Department> departments;
 }
