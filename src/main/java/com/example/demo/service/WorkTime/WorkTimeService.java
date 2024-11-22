@@ -1,6 +1,8 @@
 package com.example.demo.service.WorkTime;
 
 import com.example.demo.dto.TaskDTO;
+import com.example.demo.dto.WorkTimeDTO;
+import com.example.demo.dto.TaskDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
@@ -45,6 +47,11 @@ public class WorkTimeService implements IWorkTimeService {
     @Override
     public void remove(Long id) {
         workTimeRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(User user) {
+
     }
 
     //list task
@@ -138,7 +145,5 @@ public class WorkTimeService implements IWorkTimeService {
         }
         return null;
     }
-
-
 
 }

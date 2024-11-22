@@ -1,12 +1,12 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.UserDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,26 +24,32 @@ public class User implements Serializable {
     private String fullName;
     private String userName;
     private String password;
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name="user_position",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name = "position_id")
+    )
+    @JsonManagedReference
+    private Set<Position> positions;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(
-            name="user_department",
+            name = "user_department",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )
     @JsonManagedReference
     private Set<Department> departments;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name="user_position",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "position_id")
-    )
-    @JsonManagedReference
-    private Set<Position> positions;
-
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<WorkTime> workTimes;
+
+    //constructor
+    public User(UserDTO userDTO) {
+        this.userName = userDTO.getUserName();
+        this.fullName = userDTO.getFullName();
+        this.password = userDTO.getPassword();
+    }
 }

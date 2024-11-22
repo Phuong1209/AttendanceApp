@@ -5,11 +5,14 @@ import com.example.demo.model.*;
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IUserRepository;
+import com.opencsv.CSVWriter;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,6 +48,11 @@ public class DepartmentService implements IDepartmentService {
     @Override
     public void remove(Long id) {
         departmentRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(User user) {
+
     }
 
     //get list user of department
@@ -205,6 +213,34 @@ public class DepartmentService implements IDepartmentService {
             summaries.add(departmentSummary);
         }
         return summaries;
+    }
+    // Phương thức xuất CSV cho DepartmentSummaryDTO
+    public void exportDepartmentSummaryToCSV(HttpServletResponse response, List<DepartmentSummaryDTO> summaries) throws IOException {
+        // Cài đặt loại nội dung và tên tệp CSV cho phản hồi HTTP
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=department_summary.csv");
+
+        // Tạo đối tượng CSVWriter để ghi vào response
+        CSVWriter writer = new CSVWriter(response.getWriter());
+
+        // Viết tiêu đề cột vào file CSV
+        writer.writeNext(new String[] {"Department Name", "Job Type", "Total Time"});
+
+        // Duyệt qua danh sách summaries và thêm dữ liệu vào file CSV
+        for (DepartmentSummaryDTO departmentSummary : summaries) {
+            String departmentName = departmentSummary.getName();
+
+            // Duyệt qua danh sách JobTypeSummaryDTO trong DepartmentSummaryDTO
+            for (JobTypeSummaryDTO jobTypeSummary : departmentSummary.getJobTypeSummaries()) {
+                String jobTypeName = jobTypeSummary.getName();
+                Float totalTime = jobTypeSummary.getTotalTime();
+
+                // Ghi dữ liệu vào file CSV
+                writer.writeNext(new String[] {departmentName, jobTypeName, String.valueOf(totalTime)});
+            }
+        }
+        // Đóng CSVWriter sau khi hoàn thành
+        writer.close();
     }
 }
 

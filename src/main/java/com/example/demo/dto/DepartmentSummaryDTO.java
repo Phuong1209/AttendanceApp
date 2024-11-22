@@ -11,7 +11,4 @@ import java.util.List;
 public class DepartmentSummaryDTO {
     private String name;
     private List<JobTypeSummaryDTO> jobTypeSummaries;
-
 }
-
-

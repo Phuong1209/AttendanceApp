@@ -16,5 +16,4 @@ public class UserDTO {
     private Set<DepartmentDTO> departments;
     private Set<PositionDTO> positions;
     private Set<WorkTimeDTO> workTimes;
-
 }

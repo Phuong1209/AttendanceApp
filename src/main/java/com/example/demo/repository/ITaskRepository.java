@@ -12,5 +12,4 @@ public interface ITaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByWorkTime(WorkTime workTime);
     List<Task> findByProject(Project project);
     Optional<Task> findById(Long id);
-
 }

@@ -15,6 +15,3 @@ public class DepartmentDTO {
     private Set<JobTypeDTO> jobTypes;
 
 }
-
-
-

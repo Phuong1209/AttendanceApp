@@ -1,22 +1,37 @@
-/*
 package com.example.demo.controller;
 
+import com.example.demo.csv.UserCSVExporter;
 import com.example.demo.dto.*;
+//import com.example.demo.dto.UserExcelDTO;
+//import com.example.demo.excel.UserExcelExporter;
+import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.dto.PositionDTO;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.Position;
 import com.example.demo.model.User;
 import com.example.demo.model.WorkTime;
+
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IPositionRepository;
-import com.example.demo.repository.IWorkTimeRepository;
+import com.example.demo.service.Department.DepartmentService;
+import com.example.demo.repository.IDepartmentRepository;
+import com.example.demo.repository.IPositionRepository;
 import com.example.demo.service.Department.IDepartmentService;
 import com.example.demo.service.User.IUserService;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -29,12 +44,14 @@ import java.util.Set;
 public class UserController {
     @Autowired
     private IUserService userService;
-    //@Autowired
-    //PasswordEncoder passwordEncoder;
+//    @Autowired
+//    PasswordEncoder passwordEncoder;
     @Autowired
     IPositionRepository positionRepository;
     @Autowired
     IDepartmentRepository departmentRepository;
+    @Autowired
+    DepartmentService departmentService;
 
     //show list
     @GetMapping
@@ -50,22 +67,22 @@ public class UserController {
     }
 
     //get list department, worktime, position
+    @GetMapping("getPosition/{id}")
+    public ResponseEntity<?> getPosition(@PathVariable Long id) {
+        List<Position> positions = userService.getPositionByUser(id);
+        return ResponseEntity.ok().body(positions);
+    }
+
     @GetMapping("getDepartment/{id}")
     public ResponseEntity<?> getDepartment(@PathVariable Long id) {
         List<Department> departments = userService.getDepartmentByUser(id);
         return ResponseEntity.ok().body(departments);
     }
 
-    @GetMapping("getWorkTime/{id}")
-    public ResponseEntity<?> getWorkTime(@PathVariable Long id) {
-        List<WorkTime> workTimes = userService.getWorkTimeByUser(id);
-        return ResponseEntity.ok().body(workTimes);
-    }
-
-    @GetMapping("getPosition/{id}")
-    public ResponseEntity<?> getPosition(@PathVariable Long id) {
-        List<Position> positions = userService.getPositionByUser(id);
-        return ResponseEntity.ok().body(positions);
+    @GetMapping("getWorkingTime/{id}")
+    public ResponseEntity<?> getWorkingTime(@PathVariable Long id) {
+        List<WorkTime> workingTimes = userService.getWorkTimeByUser(id);
+        return ResponseEntity.ok().body(workingTimes);
     }
 
     //create
@@ -92,7 +109,7 @@ public class UserController {
         }
         newUser.setPositions(positions);
 
-        //Set Department list
+        //Set department of departmentDTOs for department
         Set<DepartmentDTO> departmentDTOS = userDTO.getDepartments();
         Set<Department> departments = new HashSet<>();
         for (DepartmentDTO departmentDTO : departmentDTOS) {
@@ -114,26 +131,106 @@ public class UserController {
 
     //edit
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> editUser(
-            @PathVariable("id") Long userId,
-            @RequestBody UserEditRequest editRequest) {
-        UserDTO updatedUser = userService.editUser(userId, editRequest.getUserName(),
-                                editRequest.getFullName(), editRequest.getPassword(),
-                                editRequest.getDepartmentIds(),editRequest.getPositionIds());
-        return ResponseEntity.ok(updatedUser);
-    }
-
-    //delete
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        Optional<User> jobTypeOptional = userService.findById(id);
-        if (!jobTypeOptional.isPresent()) {
+    public ResponseEntity<User> editUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        Optional<User> userOptional = userService.findById(id);
+        if (userOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        userService.remove(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        User existingUser = userOptional.get();
+        if(userDTO.getId() != null){
+            existingUser.setId(userDTO.getId());
+        }
+        if(userDTO.getUserName() != null){
+            existingUser.setUserName(userDTO.getUserName());
+        }
+        if(userDTO.getFullName() != null){
+            existingUser.setFullName(userDTO.getFullName());
+        }
+        if (userDTO.getPassword() != null){
+            existingUser.setPassword(userDTO.getPassword());
+        }
+        //Get old position list
+        Set<Position> oldPositions = existingUser.getPositions();
+
+        // 新しいポジションIDリストをDTOから取得
+        Set<Long> newPositionIds = userDTO.getPositions().stream()
+                .map(PositionDTO::getId)
+                .collect(Collectors.toSet());
+        Set<Position> newPositions = new HashSet<>();
+        for (Long positionId : newPositionIds) {
+            Position position;
+            Optional<Position> optionalPosition = positionRepository.findById(positionId);
+            if (optionalPosition.isPresent()) {
+                newPositions.add(optionalPosition.get());
+            } else {
+                // ポジションが存在しない場合の処理（必要ならエラーを返す）
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            //get list of positions to delete
+            Set<Position> positionsToRemove = new HashSet<>(oldPositions);
+            positionsToRemove.removeAll(newPositions);
+
+            //get list of positions to add
+            Set<Position> positionsToAdd = new HashSet<>(newPositions);
+            positionsToAdd.removeAll(oldPositions);
+
+            // Update the user's positions
+            existingUser.getPositions().removeAll(positionsToRemove);
+            existingUser.getPositions().addAll(positionsToAdd);
+
+            userService.save(existingUser);
+
+            //Set department of departmentDTOs for department
+
+            //get list of old departments
+            Set<Department> oldDepartments = existingUser.getDepartments();
+            //get new list of departmentIds from DTO
+            Set<Long> newDepartmentIds = userDTO.getDepartments().stream()
+                    .map(DepartmentDTO::getId)
+                    .collect(Collectors.toSet());
+            Set<Department> newDepartments = new HashSet<>();
+            for (Long departmentId : newDepartmentIds) {
+                Department department;
+                Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
+                if (optionalDepartment.isPresent()) {
+                    newDepartments.add(optionalDepartment.get());
+                } else {
+                        // ポジションが存在しない場合の処理（必要ならエラーを返す）
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    }
+
+//               // get list of positions to delete
+                Set<Department> departmentsToRemove = new HashSet<>(oldDepartments);
+               departmentsToRemove.removeAll(newDepartments);
+
+                //get list of positions to add
+                Set<Department> departmentsToAdd = new HashSet<>(newDepartments);
+                departmentsToAdd.removeAll(oldDepartments);
+
+                // Update the user's positions
+                existingUser.getDepartments().removeAll(departmentsToRemove);
+                existingUser.getDepartments().addAll(departmentsToAdd);
+            }
+
+            userService.save(existingUser);
+            return new ResponseEntity<>(existingUser, HttpStatus.OK);
+        }
+        return null;
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
+        Optional<User> userOptional = userService.findById(id);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        userService.delete(userOptional.get());
+        return new ResponseEntity<>(userOptional.get(), HttpStatus.NO_CONTENT);
+    }
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody @Valid UserRegisterDTO userRegisterDTO){
+        userService.register(userRegisterDTO);
+        return ResponseEntity.ok("Register success");
+    }
 
 }
-*/

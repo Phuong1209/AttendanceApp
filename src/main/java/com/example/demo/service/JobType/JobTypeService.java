@@ -1,6 +1,7 @@
 package com.example.demo.service.JobType;
 
 import com.example.demo.model.JobType;
+import com.example.demo.model.User;
 import com.example.demo.repository.IJobTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,11 @@ public class JobTypeService implements IJobTypeService {
     @Override
     public void remove(Long id) {
         jobTypeRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(User user) {
+
     }
 
    /* //Edit

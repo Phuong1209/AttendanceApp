@@ -2,7 +2,9 @@ package com.example.demo.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+        import lombok.*;
+
+        import java.io.Serializable;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,12 +13,12 @@ import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-@Table(name = "work_time")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "work_time")
 
 public class WorkTime implements Serializable {
     @Id
@@ -29,7 +31,7 @@ public class WorkTime implements Serializable {
     private Float workTime;
     private Float overTime;
 
-    @OneToMany(mappedBy = "workTime", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "workTime", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Task> tasks;
 

@@ -1,18 +1,34 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.*;
+import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.dto.DepartmentSummaryDTO;
+import com.example.demo.dto.JobTypeDTO;
+import com.example.demo.dto.request.IntrospectRequest;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
+import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.dto.DepartmentSummaryDTO;
+import com.example.demo.dto.JobTypeDTO;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.Department.IDepartmentService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,35 +71,6 @@ public class DepartmentController {
         return ResponseEntity.ok().body(jobTypes);
     }
 
-    //create (old)
-/*    @PostMapping("")
-    public ResponseEntity<Department> createDepartment(@RequestBody DepartmentDTO departmentDTO) {
-        Department newDepartment = new Department();
-        newDepartment.setName(departmentDTO.getName());
-
-        //create jobtype list
-        Set<JobTypeDTO> jobTypeDTOS = departmentDTO.getJobTypes();
-        Set<JobType> jobTypes = new HashSet<>();
-        for (JobTypeDTO jobTypeDTO : jobTypeDTOS) {
-            JobType jobType;
-            Optional<JobType> optionalJobType = jobTypeRepository.findById(jobTypeDTO.getId());
-            if (optionalJobType.isPresent()) {
-                jobType = optionalJobType.get();
-            } else {
-                jobType = new JobType();
-                jobType.setName(jobTypeDTO.getName());
-            }
-            jobTypes.add(jobType);
-        }
-
-        //set list to created department
-        newDepartment.setJobTypes(jobTypes);
-
-        //save new department
-        departmentService.save(newDepartment);
-        return new ResponseEntity<>(newDepartment, HttpStatus.CREATED);
-    }*/
-
     //create (new)
     @PostMapping("")
     public ResponseEntity<?> createDepartment(@RequestBody DepartmentDTO departmentDTO) {
@@ -119,15 +106,6 @@ public class DepartmentController {
                     .body("An error occurred: " + e.getMessage());
         }
     }
-
-    //edit (old)
-   /* @PutMapping("/{id}")
-    public ResponseEntity<DepartmentDTO> editDepartment(
-            @PathVariable("id") Long departmentId,
-            @RequestBody DepartmentEditRequest editRequest) {
-        DepartmentDTO updatedDepartment = departmentService.editDepartment(departmentId, editRequest.getName(), editRequest.getJobTypeIds());
-        return ResponseEntity.ok(updatedDepartment);
-    }*/
 
     //edit (new)
     @PutMapping("/{id}")
@@ -223,5 +201,17 @@ public class DepartmentController {
         List<DepartmentSummaryDTO> summaries = departmentService.getSummaryByDepartment();
         return ResponseEntity.ok(summaries);
     }
+    @GetMapping("/exportCSV")
+    public void generateCSV(HttpServletResponse response) throws IOException {
+        List<DepartmentSummaryDTO> summaries = departmentService.getSummaryByDepartment();
+        response.setContentType("CSVpplication/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
 
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".csv";
+        response.setHeader(headerKey, headerValue);
+
+        departmentService.exportDepartmentSummaryToCSV(response,summaries);
+    }
 }

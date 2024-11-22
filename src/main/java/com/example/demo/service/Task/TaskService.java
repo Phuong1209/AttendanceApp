@@ -5,6 +5,7 @@ import com.example.demo.dto.ProjectDTO;
 import com.example.demo.dto.TaskDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.Task;
+import com.example.demo.model.User;
 import com.example.demo.repository.ITaskRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,11 @@ public class TaskService implements ITaskService {
     @Override
     public void remove(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(User user) {
+
     }
 
     //get all task

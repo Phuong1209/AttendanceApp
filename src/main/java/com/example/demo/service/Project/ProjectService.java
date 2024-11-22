@@ -6,11 +6,14 @@ import com.example.demo.dto.ProjectSummaryDTO;
 import com.example.demo.dto.TaskDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
+import com.opencsv.CSVWriter;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,6 +46,11 @@ public class ProjectService implements IProjectService {
     @Override
     public void remove(Long id) {
         projectRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(User user) {
+
     }
 
     //get list task of project
@@ -180,6 +188,35 @@ public class ProjectService implements IProjectService {
             summaries.add(projectSummary);
         }
         return summaries;
+    }
+
+    // Phương thức xuất CSV cho ProjectSummaryDTO
+    public void exportProjectSummaryToCSV(HttpServletResponse response, List<ProjectSummaryDTO> summaries) throws IOException {
+        // Cài đặt loại nội dung và tên tệp CSV cho phản hồi HTTP
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=project_summary.csv");
+
+        // Tạo đối tượng CSVWriter để ghi vào response
+        CSVWriter writer = new CSVWriter(response.getWriter());
+
+        // Viết tiêu đề cột vào file CSV
+        writer.writeNext(new String[] {"Project Name", "Job Type", "Total Time"});
+
+        // Duyệt qua danh sách summaries và thêm dữ liệu vào file CSV
+        for (ProjectSummaryDTO projectSummary : summaries) {
+            String projectName = projectSummary.getName();
+
+            // Duyệt qua danh sách JobTypeSummaryDTO trong DepartmentSummaryDTO
+            for (JobTypeSummaryDTO jobTypeSummary : projectSummary.getJobTypeSummaries()) {
+                String jobTypeName = jobTypeSummary.getName();
+                Float totalTime = jobTypeSummary.getTotalTime();
+
+                // Ghi dữ liệu vào file CSV
+                writer.writeNext(new String[] {projectName, jobTypeName, String.valueOf(totalTime)});
+            }
+        }
+        // Đóng CSVWriter sau khi hoàn thành
+        writer.close();
     }
 
 }

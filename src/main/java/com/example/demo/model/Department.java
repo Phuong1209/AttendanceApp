@@ -15,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Table(name="department")
+
 public class Department implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +31,7 @@ public class Department implements Serializable {
     @JsonManagedReference("department-jobtype")
     private Set<JobType> jobTypes;
 
-    @ManyToMany(mappedBy = "departments", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "departments", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<User> users;
 
