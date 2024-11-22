@@ -21,7 +21,7 @@ import java.util.*;
 
 public class UserService implements IUserService {
 
-    private final IUserRepository userRepository;
+/*    private final IUserRepository userRepository;
     private final IWorkTimeRepository workTimeRepository;
     private final IDepartmentRepository departmentRepository;
     private final IPositionRepository positionRepository;
@@ -45,11 +45,11 @@ public class UserService implements IUserService {
     }
 
     //delete (old)
-    /*@Transactional
+    *//*@Transactional
     @Override
     public void remove(Long id) {
         userRepository.deleteById(id);
-    }*/
+    }*//*
 
     @Transactional
     @Override
@@ -255,7 +255,7 @@ public class UserService implements IUserService {
         userDTO.setPositions(positionDTOS);
 
         return userDTO;
-    }
+    }*/
 
 
 }

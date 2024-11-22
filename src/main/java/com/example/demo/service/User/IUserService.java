@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Repository
 public interface IUserService extends IGeneralService<User> {
-    //get list user
+/*    //get list user
     List<UserDTO> getAllUser();
     //get list department by user
     List<Department> getDepartmentByUser(Long userId);
@@ -23,5 +23,6 @@ public interface IUserService extends IGeneralService<User> {
     //get list worktime by user
     List<WorkTime> getWorkTimeByUser(Long userId);
     //edit user
-    UserDTO editUser(Long userId, String userName, String fullName, String password, Set<Long> departmentIds, Set<Long> positionIds);
+    UserDTO editUser(Long userId, String userName, String fullName, String password, Set<Long> departmentIds, Set<Long> positionIds);*/
+
 }
