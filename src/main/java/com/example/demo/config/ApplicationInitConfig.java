@@ -29,7 +29,6 @@ public class ApplicationInitConfig {
                 User user = User.builder()
                         .userName("admin")
                         .password(passwordEncoder.encode("admin"))
-//                        .roles(roles)
                         .build();
                 iUserRepository.save(user);
 
