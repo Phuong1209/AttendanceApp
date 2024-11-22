@@ -28,13 +28,13 @@ public class DepartmentController {
     @Autowired
     private IUserRepository userRepository;
 
-    //show list department
+    //show list
     @GetMapping
     public ResponseEntity<?> getAllDepartments() {
         return ResponseEntity.ok().body(departmentService.findAll());
     }
 
-    //show department by id
+    //show by id
     @GetMapping("/{id}")
     public ResponseEntity<Department> getAllDepartmentById(@PathVariable Long id) {
         Optional<Department> departmentOptional = departmentService.findById(id);
@@ -223,24 +223,5 @@ public class DepartmentController {
         List<DepartmentSummaryDTO> summaries = departmentService.getSummaryByDepartment();
         return ResponseEntity.ok(summaries);
     }
-
-    //create (old)
-/*    @PostMapping("")
-    public ResponseEntity<Department> createDepartment(@RequestBody Department department) {
-        departmentService.save(department);
-        return new ResponseEntity<>(department, HttpStatus.CREATED);
-    }*/
-
-/*    //edit (old)
-    @PutMapping("/{id}")
-    public ResponseEntity<Department> editDepartment(@PathVariable Long id, @RequestBody Department department) {
-        Optional<Department> departmentOptional = departmentService.findById(id);
-        if (!departmentOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        department.setId(id);
-        departmentService.save(department);
-        return new ResponseEntity<>(department, HttpStatus.OK);
-    }*/
 
 }
