@@ -1,16 +1,17 @@
 package com.example.demo.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
-import org.apache.poi.ss.formula.functions.T;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse {
+public class ApiResponse <T>{
     private int code;
     private String message;
     private T result;
