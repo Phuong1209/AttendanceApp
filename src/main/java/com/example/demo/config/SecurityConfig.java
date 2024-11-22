@@ -1,3 +1,4 @@
+/*
 package com.example.demo.config;
 
 import com.example.demo.service.CustomUserDetailsService;
@@ -50,4 +51,4 @@ public class SecurityConfig {
     public void configure(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-}
+}*/

@@ -14,7 +14,7 @@ import com.example.demo.service.User.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -29,8 +29,8 @@ import java.util.Set;
 public class UserController {
     @Autowired
     private IUserService userService;
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    //@Autowired
+    //PasswordEncoder passwordEncoder;
     @Autowired
     IPositionRepository positionRepository;
     @Autowired
@@ -74,7 +74,7 @@ public class UserController {
         User newUser = new User();
         newUser.setUserName(userDTO.getUserName());
         newUser.setFullName(userDTO.getFullName());
-        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        newUser.setPassword(userDTO.getPassword());
 
         //Set Position list
         Set<PositionDTO> positionDTOS = userDTO.getPositions();

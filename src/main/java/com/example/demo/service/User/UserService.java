@@ -14,7 +14,7 @@ import com.example.demo.repository.IWorkTimeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,7 +29,7 @@ public class UserService implements IUserService {
     private final IWorkTimeRepository workTimeRepository;
     private final IDepartmentRepository departmentRepository;
     private final IPositionRepository positionRepository;
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswodEncoder passwordEncoder;
 
     @Transactional
     @Override
