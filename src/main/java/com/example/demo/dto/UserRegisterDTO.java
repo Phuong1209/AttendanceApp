@@ -15,8 +15,8 @@ public class UserRegisterDTO {
     private String password;
     @NotNull
     private String fullName;
-    @NotNull
-    private Set<DepartmentDTO> departments;
-    @NotNull
-    private Set<PositionDTO> positions;
+//    @NotNull
+//    private Set<DepartmentDTO> departments;
+//    @NotNull
+//    private Set<PositionDTO> positions;
 }

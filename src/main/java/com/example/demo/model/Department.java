@@ -31,7 +31,7 @@ public class Department implements Serializable {
     @JsonManagedReference("department-jobtype")
     private Set<JobType> jobTypes;
 
-    @ManyToMany(mappedBy = "departments", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "departments", fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<User> users;
 

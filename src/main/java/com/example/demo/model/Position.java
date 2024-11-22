@@ -24,7 +24,7 @@ public class Position implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany(mappedBy="positions", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy="positions", fetch = FetchType.LAZY)
     @JsonBackReference
     private Set<User> users;
 

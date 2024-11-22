@@ -245,7 +245,7 @@ public class UserController {
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        userService.delete(userOptional.get());
+        userService.remove(id);
         return new ResponseEntity<>(userOptional.get(), HttpStatus.NO_CONTENT);
     }
     @PostMapping("/register")

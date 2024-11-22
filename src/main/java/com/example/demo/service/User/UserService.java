@@ -10,6 +10,7 @@ import com.example.demo.repository.IPositionRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.repository.IWorkTimeRepository;
 //import com.example.demo.security.MyUserPrincipal;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +53,31 @@ public class UserService implements IUserService {
     @Transactional
     @Override
     public void remove(Long id) {
-        userRepository.deleteById(id);
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            // Clear associations with departments
+            if (user.getDepartments() != null) {
+                for (Department department : user.getDepartments()) {
+                    department.getUsers().remove(user);
+                }
+                user.getDepartments().clear();
+            }
+
+            // Clear associations with positions
+            if (user.getPositions() != null) {
+                for (com.example.demo.model.Position position : user.getPositions()) {
+                    position.getUsers().remove(user);
+                }
+                user.getPositions().clear();
+            }
+
+            // Delete the user
+            userRepository.delete(user);
+        } else {
+            throw new EntityNotFoundException("User with ID " + id + " not found");
+        }
     }
 
     @Transactional
