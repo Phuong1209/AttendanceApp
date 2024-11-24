@@ -31,7 +31,6 @@ public class ApplicationInitConfig {
                         .password(passwordEncoder.encode("admin"))
                         .build();
                 iUserRepository.save(user);
-
             }
         };
     }
