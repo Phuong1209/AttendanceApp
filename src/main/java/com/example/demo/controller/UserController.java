@@ -112,7 +112,7 @@ public class UserController {
         User newUser = new User();
         newUser.setUserName(userDTO.getUserName());
         newUser.setFullName(userDTO.getFullName());
-        newUser.setPassword(userDTO.getPassword());
+        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         //Set Position list
         Set<PositionDTO> positionDTOS = userDTO.getPositions();

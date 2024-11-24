@@ -159,4 +159,15 @@ public class TaskController {
         }
     }
 
+    //delete
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        Optional<Task> taskOptional = taskService.findById(id);
+        if (!taskOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        taskService.remove(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
