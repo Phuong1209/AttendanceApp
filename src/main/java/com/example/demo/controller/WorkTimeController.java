@@ -54,7 +54,7 @@ public class WorkTimeController {
         return ResponseEntity.ok().body(tasks);
     }
 
-    //create (old)
+    //create
     @PostMapping("")
     public ResponseEntity<?> createWorkTime(@RequestBody Map<String, Object> requestBody) {
         try {
@@ -86,8 +86,9 @@ public class WorkTimeController {
 
             // Calculate workTime and overTime
             Duration duration = Duration.between(checkinTime, checkoutTime);
-            float workTimeHours = duration.toMinutes() / 60.0f - breakTime;
-            float overTimeHours = workTimeHours > 8 ? workTimeHours - 8 : 0;
+            float totalWorkTimeHours = duration.toMinutes() / 60.0f - breakTime;
+            float overTimeHours = totalWorkTimeHours > 8 ? totalWorkTimeHours - 8 : 0;
+            float workTimeHours = totalWorkTimeHours > 8 ? 8 : totalWorkTimeHours;
 
             // Create and save WorkTime
             WorkTime workTime = WorkTime.builder()
@@ -127,7 +128,7 @@ public class WorkTimeController {
         return time.getMinute() % 10 == 0; // Check if minutes are divisible by 10
     }
 
-    //edit (old)
+    //edit
     @PutMapping("/{id}")
     public ResponseEntity<?> editWorkTime(@PathVariable Long id, @RequestBody Map<String, Object> requestBody) {
         try {
