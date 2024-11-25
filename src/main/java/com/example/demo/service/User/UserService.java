@@ -17,6 +17,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,7 +43,7 @@ public class UserService implements IUserService {
     private final IPositionRepository positionRepository;
     PasswordEncoder passwordEncoder;
     UserMapper userMapper;
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse createRequest(UserCreationRequest request){
         if(userRepository.existsByUserName(request.getUsername())){
             throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
@@ -52,7 +54,7 @@ public class UserService implements IUserService {
         position.add(Position.USER.name());
         return userMapper.toUserResponse(userRepository.save(user));
     }
-//    @PostAuthorize("returnObject.userName == authentication.name")
+//    @PostAuthorize("returnObject.userName == authentication.name or hasRole('ADMIN')")
     public UserResponse getMyInfo(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(username).orElseThrow(
@@ -60,17 +62,17 @@ public class UserService implements IUserService {
         );
         return userMapper.toUserResponse(user);
     }
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUsers(){
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse).toList();
     }
-//    @PostAuthorize("returnObject.userName == authentication.name")
+    @PostAuthorize("returnObject.userName == authentication.name or hasRole('ADMIN')")
     public UserResponse getUserById(Long id){
         return userMapper.toUserResponse(userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
-//    @PostAuthorize("returnObject.userName == authentication.name")
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse updateUser(Long userId, UserUpdateRequest request) {
     User user = userRepository.findById(userId)
             .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
@@ -79,7 +81,7 @@ public class UserService implements IUserService {
     user.setPositions(new HashSet<>(positionRepository.findAllById(Collections.singleton(userId))));
     return userMapper.toUserResponse(userRepository.save(user));
     }
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
@@ -104,6 +106,7 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void remove(Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
@@ -133,6 +136,7 @@ public class UserService implements IUserService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(User user) {
 //        List<WorkingTime> workingTimes = workingTimeRepository.findByUser(user);
 //        workingTimeRepository.deleteAll(workingTimes);
@@ -140,6 +144,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDTO> getAllUser() {
         List<User> users = userRepository.findAll();
         List<UserDTO> userDTOS = new ArrayList<>();
@@ -197,6 +202,7 @@ public class UserService implements IUserService {
     //list position
     @Transactional
     @Override
+    @PostAuthorize("returnObject.userName == authentication.name or hasRole('ADMIN')")
     public List<com.example.demo.model.Position> getPositionByUser(Long userId) {
         if (userId != null) {
             Optional<User> optionalUser = userRepository.findById(userId);
@@ -211,6 +217,7 @@ public class UserService implements IUserService {
     }
 
     //list department
+    @PostAuthorize("returnObject.userName == authentication.name or hasRole('ADMIN')")
     public List<Department> getDepartmentByUser(Long userId) {
         if(userId != null){
             Optional<User>optionalUser = userRepository.findById(userId);
@@ -225,6 +232,7 @@ public class UserService implements IUserService {
     }
 
     //list worktime
+    @PostAuthorize("returnObject.userName == authentication.name or hasRole('ADMIN')")
     public List<WorkTime> getWorkTimeByUser(Long userId) {
         if(userId != null){
             Optional<User>optionalUser = userRepository.findById(userId);
