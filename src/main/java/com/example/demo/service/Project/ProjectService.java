@@ -97,6 +97,60 @@ public class ProjectService implements IProjectService {
         return projectDTOS;
     }
 
+    //Edit
+    @Transactional
+    public ProjectDTO editProject(Long projectId, String newName, String newCode,Set<Long> newTaskIds) {
+        // Find the project by ID
+        Optional<Project> optionalProject = projectRepository.findById(projectId);
+        if (!optionalProject.isPresent()) {
+            throw new NoSuchElementException("Project not found with ID: " + projectId);
+        }
+
+        Project project = optionalProject.get();
+
+        // Update project's name
+        if (newName != null && !newName.trim().isEmpty()) {
+            project.setName(newName);
+        }
+
+        // Update project's code
+        if (newCode != null && !newCode.trim().isEmpty()) {
+            project.setCode(newCode);
+        }
+
+        // Update the project's tasks
+        if (newTaskIds != null && !newTaskIds.isEmpty()) {
+            // Fetch the new Task entities by their IDs
+            List<Task> newTasks = taskRepository.findAllById(newTaskIds);
+            if (newTasks.size() != newTaskIds.size()) {
+                throw new IllegalArgumentException("One or more JobType IDs are invalid.");
+            }
+            project.setTasks(new HashSet<>(newTasks));
+        }
+
+        // Save the updated project
+        Project updatedProject = projectRepository.save(project);
+
+        // Map the updated department to DepartmentDTO
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.setId(updatedProject.getId());
+        projectDTO.setName(updatedProject.getName());
+        projectDTO.setCode(updatedProject.getCode());
+
+        // Map tasks to TaskDTO
+        Set<TaskDTO> taskDTOS = new HashSet<>();
+        for (Task task : updatedProject.getTasks()) {
+            TaskDTO taskDTO = new TaskDTO();
+            taskDTO.setId(task.getId());
+            taskDTO.setTotalTime(task.getTotalTime());
+            taskDTO.setComment(task.getComment());
+            taskDTOS.add(taskDTO);
+        }
+        projectDTO.setTasks(taskDTOS);
+
+        return projectDTO;
+    }
+
     //Summarize by Project
     public List<ProjectSummaryDTO> getSummaryByProject() {
         List<ProjectSummaryDTO> summaries = new ArrayList<>();

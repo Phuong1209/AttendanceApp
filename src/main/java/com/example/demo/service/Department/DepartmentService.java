@@ -90,8 +90,8 @@ public class DepartmentService implements IDepartmentService {
         List<DepartmentDTO> departmentDTOS = new ArrayList<>();
         for(Department department : departments) {
             DepartmentDTO departmentDTO = new DepartmentDTO();
-            departmentDTO.setName(department.getName());
             departmentDTO.setId(department.getId());
+            departmentDTO.setName(department.getName());
 
             //get user list
             List<User> users = userRepository.findByDepartments(department);

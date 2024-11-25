@@ -8,6 +8,7 @@ import com.example.demo.dto.request.UserUpdateRequest;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.model.User;
 
+@Mapper(componentModel = "spring")
 public interface UserMapper {
     User toUser(UserCreationRequest request);
 

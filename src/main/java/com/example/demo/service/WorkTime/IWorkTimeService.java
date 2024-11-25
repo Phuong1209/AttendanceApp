@@ -3,6 +3,7 @@ package com.example.demo.service.WorkTime;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.Task;
 import com.example.demo.model.WorkTime;
+import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.service.IGeneralService;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public interface IWorkTimeService extends IGeneralService<WorkTime> {
     List<WorkTimeDTO> getAllWorkTime();
     List<Task> getTaskByWorkTime(Long workTimeId);
+    WorkTimeDTO getWorkTimeById(Long workTimeid);
 
     /*Code TA
     WorkTime checkin(Long userId, LocalDateTime checkinTime);      // Check-in user

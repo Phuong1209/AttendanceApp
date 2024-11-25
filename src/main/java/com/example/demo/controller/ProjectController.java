@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ProjectDTO;
 import com.example.demo.dto.ProjectSummaryDTO;
+import com.example.demo.dto.request.IntrospectRequest;
 import com.example.demo.model.Project;
 import com.example.demo.model.Task;
+import com.example.demo.repository.ITaskRepository;
 import com.example.demo.service.Project.ProjectService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +27,17 @@ import java.util.Optional;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private ITaskRepository taskRepository;
 
+
+    //show list
     @GetMapping
     public ResponseEntity<?> getAllProjects() {
         return ResponseEntity.ok().body(projectService.findAll());
     }
 
+    //show by id
     @GetMapping("/{id}")
     public ResponseEntity<Project> getAllProjectById(@PathVariable Long id) {
         Optional<Project> projectOptional = projectService.findById(id);
@@ -42,23 +50,25 @@ public class ProjectController {
         return ResponseEntity.ok().body(tasks);
     }
 
-    //create
+    //create (new)
     @PostMapping("")
-    public ResponseEntity<Project> createProject(@RequestBody Project project) {
-        projectService.save(project);
-        return new ResponseEntity<>(project, HttpStatus.CREATED);
+    public ResponseEntity<Project> createProject(@RequestBody ProjectDTO projectDTO) {
+        Project newProject = new Project();
+        newProject.setName(projectDTO.getName());
+        newProject.setCode(projectDTO.getCode());
+
+        //save new project
+        projectService.save(newProject);
+        return new ResponseEntity<>(newProject, HttpStatus.CREATED);
     }
 
-    //edit
+    //edit (new)
     @PutMapping("/{id}")
-    public ResponseEntity<Project> editProject(@PathVariable Long id, @RequestBody Project project) {
-        Optional<Project> projectOptional = projectService.findById(id);
-        if (!projectOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        project.setId(id);
-        projectService.save(project);
-        return new ResponseEntity<>(project, HttpStatus.OK);
+    public ResponseEntity<ProjectDTO> editProject(
+            @PathVariable("id") Long projectId,
+            @RequestBody IntrospectRequest.ProjectEditRequest editRequest) {
+        ProjectDTO updatedProject = projectService.editProject(projectId, editRequest.getName(), editRequest.getCode(), editRequest.getTaskIds());
+        return ResponseEntity.ok(updatedProject);
     }
 
     //delete

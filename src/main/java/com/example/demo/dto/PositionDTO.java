@@ -1,6 +1,5 @@
 package com.example.demo.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,5 +8,5 @@ import lombok.Setter;
 
 public class PositionDTO {
     private Long id;
-    private String positionName;
+    private String name;
 }

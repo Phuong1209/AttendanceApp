@@ -2,6 +2,9 @@ package com.example.demo.service.WorkTime;
 
 import com.example.demo.dto.TaskDTO;
 import com.example.demo.dto.WorkTimeDTO;
+import com.example.demo.dto.TaskDTO;
+import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.ITaskRepository;
 import com.example.demo.repository.IWorkTimeRepository;
@@ -11,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -50,38 +54,6 @@ public class WorkTimeService implements IWorkTimeService {
 
     }
 
-    @Override
-    public List<WorkTimeDTO> getAllWorkTime() {
-        List<WorkTime> workTimes = workTimeRepository.findAll();
-        List<WorkTimeDTO> workTimeDTOS = new ArrayList<>();
-        for(WorkTime workTime : workTimes) {
-            WorkTimeDTO workTimeDTO = new WorkTimeDTO();
-            workTimeDTO.setId(workTime.getId());
-            workTimeDTO.setDate(workTime.getDate());
-            workTimeDTO.setCheckinTime(workTime.getCheckinTime());
-            workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
-            workTimeDTO.setBreakTime(workTime.getBreakTime());
-            workTimeDTO.setWorkTime(workTime.getWorkTime());
-            workTimeDTO.setOverTime(workTime.getOverTime());
-
-            //get task list
-            List<Task> tasks = taskRepository.findByWorkTime(workTime);
-            Set<TaskDTO> taskDTOS = new HashSet<>();
-            for(Task task : tasks) {
-                TaskDTO taskDTO = new TaskDTO();
-                taskDTO.setId(task.getId());
-                taskDTO.setTotalTime(task.getTotalTime());
-                taskDTO.setComment(task.getComment());
-                taskDTOS.add(taskDTO);
-            }
-            workTimeDTO.setTasks(taskDTOS);
-
-            //add user to user DTO
-            workTimeDTOS.add(workTimeDTO);
-        }
-        return workTimeDTOS;
-    }
-
     //list task
     public List<Task> getTaskByWorkTime(Long workTimeId) {
         if(workTimeId != null){
@@ -94,6 +66,84 @@ public class WorkTimeService implements IWorkTimeService {
             }
         }
         return Collections.emptyList();
+    }
+
+    //get all workTime
+    @Override
+    public List<WorkTimeDTO> getAllWorkTime() {
+        List<WorkTime> workTimes = workTimeRepository.findAll();
+        List<WorkTimeDTO> workTimeDTOS = new ArrayList<>();
+        for (WorkTime workTime : workTimes) {
+            WorkTimeDTO workTimeDTO = new WorkTimeDTO();
+            workTimeDTO.setId(workTime.getId());
+            workTimeDTO.setDate(workTime.getDate());
+            workTimeDTO.setCheckinTime(workTime.getCheckinTime());
+            workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
+            workTimeDTO.setBreakTime(workTime.getBreakTime());
+            workTimeDTO.setWorkTime(workTime.getWorkTime());
+            workTimeDTO.setOverTime(workTime.getOverTime());
+
+            // Map tasks to TaskDTO
+            List<Task> tasks = taskRepository.findByWorkTime(workTime);
+            Set<TaskDTO> taskDTOS = tasks.stream().map(task -> {
+                TaskDTO taskDTO = new TaskDTO();
+                taskDTO.setId(task.getId());
+                taskDTO.setTotalTime(task.getTotalTime());
+                taskDTO.setComment(task.getComment());
+                return taskDTO;
+            }).collect(Collectors.toSet());
+            workTimeDTO.setTasks(taskDTOS);
+
+            // Map user
+            if (workTime.getUser() != null) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setId(workTime.getUser().getId());
+                userDTO.setUserName(workTime.getUser().getUserName());
+                workTimeDTO.setUser(userDTO);
+            }
+
+            // Add to list
+            workTimeDTOS.add(workTimeDTO);
+        }
+        return workTimeDTOS;
+    }
+
+    //find workTime by id
+    public WorkTimeDTO getWorkTimeById(Long id) {
+        Optional<WorkTime> workTimeOptional = workTimeRepository.findById(id);
+        if (workTimeOptional.isPresent()) {
+            WorkTime workTime = workTimeOptional.get();
+            WorkTimeDTO workTimeDTO = new WorkTimeDTO();
+            workTimeDTO.setId(workTime.getId());
+            workTimeDTO.setDate(workTime.getDate());
+            workTimeDTO.setCheckinTime(workTime.getCheckinTime());
+            workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
+            workTimeDTO.setBreakTime(workTime.getBreakTime());
+            workTimeDTO.setWorkTime(workTime.getWorkTime());
+            workTimeDTO.setOverTime(workTime.getOverTime());
+
+            // Map tasks
+            List<Task> tasks = taskRepository.findByWorkTime(workTime);
+            Set<TaskDTO> taskDTOS = tasks.stream().map(task -> {
+                TaskDTO taskDTO = new TaskDTO();
+                taskDTO.setId(task.getId());
+                taskDTO.setTotalTime(task.getTotalTime());
+                taskDTO.setComment(task.getComment());
+                return taskDTO;
+            }).collect(Collectors.toSet());
+            workTimeDTO.setTasks(taskDTOS);
+
+            // Map user
+            if (workTime.getUser() != null) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setId(workTime.getUser().getId());
+                userDTO.setUserName(workTime.getUser().getUserName());
+                workTimeDTO.setUser(userDTO);
+            }
+
+            return workTimeDTO;
+        }
+        return null;
     }
 
 }

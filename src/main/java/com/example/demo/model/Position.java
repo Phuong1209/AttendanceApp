@@ -29,6 +29,6 @@ public class Position implements Serializable {
     private Set<User> users;
 
     public Position(PositionDTO positionDTO){
-        this.name = positionDTO.getPositionName();
+        this.name = positionDTO.getName();
     }
 }
