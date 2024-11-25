@@ -5,23 +5,13 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
 public class IntrospectRequest {
     String token;
-
-    @Getter
-    @Setter
-
-    public static class DepartmentEditRequest {
-        private String name;
-        private Set<Long> jobTypeIds;
-    }
 
     @Getter
     @Setter

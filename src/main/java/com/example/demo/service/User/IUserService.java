@@ -15,7 +15,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public interface IUserService extends IGeneralService<User> {
@@ -28,11 +27,5 @@ public interface IUserService extends IGeneralService<User> {
     //get list worktime by user
     List<WorkTime> getWorkTimeByUser(Long userId);
 
-    void register(UserRegisterDTO userRegisterDTO);
-
-    //UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
-
-    //edit user
-    //UserDTO editUser(Long userId, String userName, String fullName, String password, Set<Long> departmentIds, Set<Long> positionIds);*/
-
+//    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

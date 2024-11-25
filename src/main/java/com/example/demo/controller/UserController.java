@@ -21,11 +21,20 @@ import com.example.demo.service.Department.IDepartmentService;
 import com.example.demo.service.User.IUserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import com.example.demo.dto.request.UserCreationRequest;
+import com.example.demo.dto.request.UserUpdateRequest;
+import com.example.demo.dto.response.ApiResponse;
+import com.example.demo.dto.response.UserResponse;
+import com.example.demo.service.User.UserService;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -41,17 +50,29 @@ import java.util.Set;
 @CrossOrigin("*")
 @RequestMapping("/user")
 
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserController {
+
+    UserService userService1;
+    //P
     @Autowired
     private IUserService userService;
-//    @Autowired
-//    PasswordEncoder passwordEncoder;
     @Autowired
     IPositionRepository positionRepository;
     @Autowired
     IDepartmentRepository departmentRepository;
     @Autowired
     DepartmentService departmentService;
+    PasswordEncoder passwordEncoder;
+
+    @GetMapping("/myInfo")
+    public ApiResponse<UserResponse> getMyInfo(){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService1.getMyInfo())
+                .build();
+    }
 
     //show list
     @GetMapping
@@ -91,7 +112,7 @@ public class UserController {
         User newUser = new User();
         newUser.setUserName(userDTO.getUserName());
         newUser.setFullName(userDTO.getFullName());
-        newUser.setPassword(userDTO.getPassword());
+        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         //Set Position list
         Set<PositionDTO> positionDTOS = userDTO.getPositions();
@@ -224,13 +245,8 @@ public class UserController {
         if (!userOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        userService.delete(userOptional.get());
+        userService.remove(id);
         return new ResponseEntity<>(userOptional.get(), HttpStatus.NO_CONTENT);
-    }
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody @Valid UserRegisterDTO userRegisterDTO){
-        userService.register(userRegisterDTO);
-        return ResponseEntity.ok("Register success");
     }
 
 }
