@@ -4,13 +4,9 @@ import com.example.demo.dto.*;
 import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.dto.DepartmentSummaryDTO;
 import com.example.demo.dto.JobTypeDTO;
-import com.example.demo.dto.request.IntrospectRequest;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
-import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.DepartmentSummaryDTO;
-import com.example.demo.dto.JobTypeDTO;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.Department.IDepartmentService;
@@ -195,12 +191,21 @@ public class DepartmentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //summarize
+    //summarize JobType
     @GetMapping("/summarize")
     public ResponseEntity<List<DepartmentSummaryDTO>> getSummaryByDepartment() {
         List<DepartmentSummaryDTO> summaries = departmentService.getSummaryByDepartment();
         return ResponseEntity.ok(summaries);
     }
+
+    //summarize project
+    @GetMapping("/summarize3")
+    public ResponseEntity<List<DepartmentSummaryDTO3>> getSummaryByDepartment3() {
+        List<DepartmentSummaryDTO3> summaries = departmentService.getSummaryByDepartment3();
+        return ResponseEntity.ok(summaries);
+    }
+
+    //CSV
     @GetMapping("/exportCSV")
     public void generateCSV(HttpServletResponse response) throws IOException {
         List<DepartmentSummaryDTO> summaries = departmentService.getSummaryByDepartment();

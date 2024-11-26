@@ -1,6 +1,7 @@
 package com.example.demo.service.Department;
 
 import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.dto.DepartmentSummaryDTO3;
 import com.example.demo.dto.DepartmentSummaryDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
@@ -23,6 +24,8 @@ public interface IDepartmentService extends IGeneralService<Department> {
     List<JobType> getJobTypeByDepartment(Long departmentId);
     //summary by department
     List<DepartmentSummaryDTO> getSummaryByDepartment();
+    //summary department+project
+    List<DepartmentSummaryDTO3> getSummaryByDepartment3();
     //edit department
     DepartmentDTO editDepartment(Long departmentId, String name, Set<Long> jobTypeIds);
 
