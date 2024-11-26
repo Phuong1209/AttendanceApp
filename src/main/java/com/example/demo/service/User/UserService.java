@@ -43,9 +43,10 @@ public class UserService implements IUserService {
     private final IPositionRepository positionRepository;
     PasswordEncoder passwordEncoder;
     UserMapper userMapper;
-//    @PreAuthorize("hasRole('ADMIN')")
-    public UserResponse createRequest(UserCreationRequest request){
-        if(userRepository.existsByUserName(request.getUsername())){
+
+    //    @PreAuthorize("hasRole('ADMIN')")
+    public UserResponse createRequest(UserCreationRequest request) {
+        if (userRepository.existsByUserName(request.getUsername())) {
             throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
         }
         User user = userMapper.toUser(request);
@@ -54,34 +55,39 @@ public class UserService implements IUserService {
         position.add(Position.USER.name());
         return userMapper.toUserResponse(userRepository.save(user));
     }
-//    @PostAuthorize("returnObject.userName == authentication.name")
-    public UserResponse getMyInfo(){
+
+    //    @PostAuthorize("returnObject.userName == authentication.name")
+    public UserResponse getMyInfo() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(username).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_FOUND)
         );
         return userMapper.toUserResponse(user);
     }
-//    @PreAuthorize("hasRole('ADMIN')")
-    public List<UserResponse> getAllUsers(){
+
+    //    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse).toList();
     }
-//    @PostAuthorize("returnObject.userName == authentication.name")
-    public UserResponse getUserById(Long id){
+
+    //    @PostAuthorize("returnObject.userName == authentication.name")
+    public UserResponse getUserById(Long id) {
         return userMapper.toUserResponse(userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
-//    @PostAuthorize("returnObject.userName == authentication.name")
+
+    //    @PostAuthorize("returnObject.userName == authentication.name")
     public UserResponse updateUser(Long userId, UserUpdateRequest request) {
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-    userMapper.updateUser(user, request);
-    user.setPassword(passwordEncoder.encode(request.getPassword()));
-    user.setPositions(new HashSet<>(positionRepository.findAllById(Collections.singleton(userId))));
-    return userMapper.toUserResponse(userRepository.save(user));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        userMapper.updateUser(user, request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPositions(new HashSet<>(positionRepository.findAllById(Collections.singleton(userId))));
+        return userMapper.toUserResponse(userRepository.save(user));
     }
-//    @PreAuthorize("hasRole('ADMIN')")
+
+    //    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
@@ -145,7 +151,7 @@ public class UserService implements IUserService {
     public List<UserDTO> getAllUser() {
         List<User> users = userRepository.findAll();
         List<UserDTO> userDTOS = new ArrayList<>();
-        for(User user : users) {
+        for (User user : users) {
             UserDTO userDTO = new UserDTO();
             userDTO.setUserName(user.getUserName());
             userDTO.setFullName(user.getFullName());
@@ -167,7 +173,7 @@ public class UserService implements IUserService {
             //get department list
             List<Department> departments = departmentRepository.findByUsers(user);
             Set<DepartmentDTO> departmentDTOS = new HashSet<>();
-            for(Department department: departments) {
+            for (Department department : departments) {
                 DepartmentDTO departmentDTO = new DepartmentDTO();
                 departmentDTO.setId(department.getId());
                 departmentDTO.setName(department.getName());
@@ -179,7 +185,7 @@ public class UserService implements IUserService {
             //get worktime list
             List<WorkTime> workTimes = workTimeRepository.findByUser(user);
             Set<WorkTimeDTO> workTimeDTOS = new HashSet<>();
-            for(WorkTime workTime : workTimes) {
+            for (WorkTime workTime : workTimes) {
                 WorkTimeDTO workTimeDTO = new WorkTimeDTO();
                 workTimeDTO.setId(workTime.getId());
                 workTimeDTO.setDate(workTime.getDate());
@@ -198,6 +204,7 @@ public class UserService implements IUserService {
         }
         return userDTOS;
     }
+
     //list position
     @Transactional
     @Override
@@ -216,12 +223,12 @@ public class UserService implements IUserService {
 
     //list department
     public List<Department> getDepartmentByUser(Long userId) {
-        if(userId != null){
-            Optional<User>optionalUser = userRepository.findById(userId);
-            if(optionalUser.isPresent()) {
-                User foundUser=optionalUser.get();
-                List<Department>departments = departmentRepository.findByUsers(foundUser);
-                log.info("Department of user {}:{}",foundUser.getUserName(),departments);
+        if (userId != null) {
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if (optionalUser.isPresent()) {
+                User foundUser = optionalUser.get();
+                List<Department> departments = departmentRepository.findByUsers(foundUser);
+                log.info("Department of user {}:{}", foundUser.getUserName(), departments);
                 return departments;
             }
         }
@@ -230,18 +237,18 @@ public class UserService implements IUserService {
 
     //list worktime
     public List<WorkTime> getWorkTimeByUser(Long userId) {
-        if(userId != null){
-            Optional<User>optionalUser = userRepository.findById(userId);
-            if(optionalUser.isPresent()) {
-                User foundUser=optionalUser.get();
+        if (userId != null) {
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if (optionalUser.isPresent()) {
+                User foundUser = optionalUser.get();
                 List<WorkTime> workTimes = workTimeRepository.findByUser(foundUser);
-                log.info("Worktimes of user {}:{}",foundUser.getUserName(), workTimes);
+                log.info("Worktimes of user {}:{}", foundUser.getUserName(), workTimes);
                 return workTimes;
             }
         }
         return Collections.emptyList();
     }
-    }
+}
 
 ////    @Override
 ////    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

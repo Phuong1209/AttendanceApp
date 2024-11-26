@@ -66,12 +66,6 @@ public class TaskService implements ITaskService {
                 WorkTimeDTO workTimeDTO = new WorkTimeDTO();
                 workTimeDTO.setId(task.getWorkTime().getId());
                 workTimeDTO.setDate(task.getWorkTime().getDate());
-                //code P bé
-                workTimeDTO.setCheckinTime(task.getWorkTime().getCheckinTime());
-                workTimeDTO.setCheckoutTime(task.getWorkTime().getCheckoutTime());
-                workTimeDTO.setOverTime(task.getWorkTime().getOverTime());
-                workTimeDTO.setBreakTime(task.getWorkTime().getBreakTime());
-
                 taskDTO.setWorkTime(workTimeDTO);
             }
 
