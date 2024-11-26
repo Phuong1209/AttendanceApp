@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class ProjectSummaryDTO {
-    private String name;
-    private float totalTime;
+public class ProjectSummaryDTO3 {
+    String name;
+    Float totalTime;
 }
