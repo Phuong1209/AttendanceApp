@@ -1,11 +1,13 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.dto.request.UserCreationRequest;
-import com.example.demo.mapper.UserMapper;
+import com.example.demo.dto.JobTypeDTO;
+import com.example.demo.dto.ProjectDTO;
+import com.example.demo.dto.TaskDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
-import com.example.demo.model.User;
+import com.example.demo.model.Project;
+import com.example.demo.model.Task;
 import com.example.demo.service.Department.IDepartmentService;
 import com.example.demo.service.JobType.IJobTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -43,21 +46,47 @@ public class JobTypeController {
 
     //create
     @PostMapping("")
-    public ResponseEntity<JobType> createJobType(@RequestBody JobType jobType) {
-        jobTypeService.save(jobType);
-        return new ResponseEntity<>(jobType, HttpStatus.CREATED);
+    public ResponseEntity<JobType> createJobType(@RequestBody JobTypeDTO jobTypeDTO) {
+        JobType newJobType = new JobType();
+        newJobType.setName(jobTypeDTO.getName());
+
+        //save new jobType
+        jobTypeService.save(newJobType);
+        return new ResponseEntity<>(newJobType, HttpStatus.CREATED);
     }
 
     //edit
     @PutMapping("/{id}")
-    public ResponseEntity<JobType> editJobType(@PathVariable Long id, @RequestBody JobType jobType) {
-        Optional<JobType> jobTypeOptional = jobTypeService.findById(id);
-        if (!jobTypeOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> editTask(@PathVariable Long id, @RequestBody Map<String, Object> requestBody) {
+        try {
+            // Fetch the existing WorkTime record
+            Optional<JobType> optionalJobType = jobTypeService.findById(id);
+            if (optionalJobType.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("JobType not found.");
+            }
+            JobType existingJobType = optionalJobType.get();
+
+            // Parse request body for editable fields
+            if (requestBody.containsKey("name")) {
+                existingJobType.setName(String.valueOf((String) requestBody.get("name")));
+            }
+
+            // Save updated JobType
+            JobType updatedJobType = jobTypeService.save(existingJobType);
+
+            // Map JobType to DTO
+            JobTypeDTO jobTypeDTO = new JobTypeDTO();
+            jobTypeDTO.setId(updatedJobType.getId());
+            jobTypeDTO.setName(updatedJobType.getName());
+
+            // Return response
+            return ResponseEntity.ok(jobTypeDTO);
+
+        } catch (Exception e) {
+            // Handle exceptions gracefully
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred: " + e.getMessage());
         }
-        jobType.setId(id);
-        jobTypeService.save(jobType);
-        return new ResponseEntity<>(jobType, HttpStatus.OK);
     }
 
     //delete

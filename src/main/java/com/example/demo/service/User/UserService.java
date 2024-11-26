@@ -11,7 +11,6 @@ import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IPositionRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.repository.IWorkTimeRepository;
-import com.example.demo.security.MyUserPrincipal;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -19,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.demo.dto.request.UserCreationRequest;
@@ -31,6 +28,8 @@ import com.example.demo.exception.AppException;
 import com.example.demo.exception.ErrorCode;
 import com.example.demo.mapper.UserMapper;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Slf4j
@@ -174,6 +173,7 @@ public class UserService implements IUserService {
                 departmentDTO.setName(department.getName());
                 departmentDTOS.add(departmentDTO);
             }
+            //add department list to user
             userDTO.setDepartments(departmentDTOS);
 
             //get worktime list
@@ -183,13 +183,14 @@ public class UserService implements IUserService {
                 WorkTimeDTO workTimeDTO = new WorkTimeDTO();
                 workTimeDTO.setId(workTime.getId());
                 workTimeDTO.setDate(workTime.getDate());
-                workTimeDTO.setCheckinTime(workTime.getCheckinTime());
-                workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
+                workTimeDTO.setCheckinTime(LocalTime.from(workTime.getCheckinTime()));
+                workTimeDTO.setCheckoutTime(LocalTime.from(workTime.getCheckoutTime()));
                 workTimeDTO.setBreakTime(workTime.getBreakTime());
                 workTimeDTO.setWorkTime(workTime.getWorkTime());
                 workTimeDTO.setOverTime(workTime.getOverTime());
                 workTimeDTOS.add(workTimeDTO);
             }
+            //add worktime list to user
             userDTO.setWorkTimes(workTimeDTOS);
 
             //add user to user DTO
@@ -240,22 +241,22 @@ public class UserService implements IUserService {
         }
         return Collections.emptyList();
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUserName(username);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User is not exist!");
-        }
-        return new MyUserPrincipal(user.get());
-    }
-//    @Transactional
-//    @Override
-//    public void register(UserRegisterDTO userRegisterDTO){
-//        User newUser = new User();
-//        newUser.setUserName(userRegisterDTO.getUserName());
-//        newUser.setPassword(userRegisterDTO.getPassword());
-//        newUser.setFullName(userRegisterDTO.getFullName());
-//        userRepository.save(newUser);
     }
 
+////    @Override
+////    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+////        Optional<User> user = userRepository.findByUserName(username);
+////        if (user.isEmpty()) {
+////            throw new UsernameNotFoundException("User is not exist!");
+////        }
+////        return new MyUserPrincipal(user.get());
+////    }
+////    @Transactional
+////    @Override
+////    public void register(UserRegisterDTO userRegisterDTO){
+////        User newUser = new User();
+////        newUser.setUserName(userRegisterDTO.getUserName());
+////        newUser.setPassword(userRegisterDTO.getPassword());
+////        newUser.setFullName(userRegisterDTO.getFullName());
+////        userRepository.save(newUser);
+//    }

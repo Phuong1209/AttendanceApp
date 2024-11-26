@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -77,8 +78,8 @@ public class WorkTimeService implements IWorkTimeService {
             WorkTimeDTO workTimeDTO = new WorkTimeDTO();
             workTimeDTO.setId(workTime.getId());
             workTimeDTO.setDate(workTime.getDate());
-            workTimeDTO.setCheckinTime(workTime.getCheckinTime());
-            workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
+            workTimeDTO.setCheckinTime(LocalTime.from(workTime.getCheckinTime()));
+            workTimeDTO.setCheckoutTime(LocalTime.from(workTime.getCheckoutTime()));
             workTimeDTO.setBreakTime(workTime.getBreakTime());
             workTimeDTO.setWorkTime(workTime.getWorkTime());
             workTimeDTO.setOverTime(workTime.getOverTime());
@@ -116,8 +117,8 @@ public class WorkTimeService implements IWorkTimeService {
             WorkTimeDTO workTimeDTO = new WorkTimeDTO();
             workTimeDTO.setId(workTime.getId());
             workTimeDTO.setDate(workTime.getDate());
-            workTimeDTO.setCheckinTime(workTime.getCheckinTime());
-            workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
+            workTimeDTO.setCheckinTime(LocalTime.from(workTime.getCheckinTime()));
+            workTimeDTO.setCheckoutTime(LocalTime.from(workTime.getCheckoutTime()));
             workTimeDTO.setBreakTime(workTime.getBreakTime());
             workTimeDTO.setWorkTime(workTime.getWorkTime());
             workTimeDTO.setOverTime(workTime.getOverTime());
