@@ -172,7 +172,7 @@ public class DepartmentService implements IDepartmentService {
         return departmentDTO;
     }
 
-    //Summarize by Department
+    //Summarize JobType by Department
     public List<DepartmentSummaryDTO> getSummaryByDepartment() {
         List<Department> departments = departmentRepository.findAll();
         List<DepartmentSummaryDTO> summaries = new ArrayList<>();
@@ -214,6 +214,51 @@ public class DepartmentService implements IDepartmentService {
         }
         return summaries;
     }
+
+    //Summarize Pj by department
+    public List<DepartmentSummaryDTO3> getSummaryByDepartment3() {
+        List<Department> departments = departmentRepository.findAll();
+        List<DepartmentSummaryDTO3> summaries = new ArrayList<>();
+
+        for (Department department : departments) {
+            DepartmentSummaryDTO3 departmentSummary3 = new DepartmentSummaryDTO3();
+            departmentSummary3.setName(department.getName());
+
+            // Map to accumulate total time for each JobType within the department
+            Map<String, Float> projectTotalTimeMap = new HashMap<>();
+
+            // For each user in the department, retrieve all their tasks and calculate total times per JobType
+            for (User user : department.getUsers()) {
+                for (WorkTime workTime : user.getWorkTimes()) {
+                    for (Task task : workTime.getTasks()) {
+                        Project project = task.getProject();
+                        if (project != null) {
+                            String projectName = project.getName();
+                            float currentTotal = projectTotalTimeMap.getOrDefault(projectName, 0f);
+                            projectTotalTimeMap.put(projectName, currentTotal + task.getTotalTime());
+                        }
+                    }
+                }
+            }
+
+            // Convert the project map to a list of ProjectSummaryDTO3
+            List<ProjectSummaryDTO3> projectSummaries = projectTotalTimeMap.entrySet()
+                    .stream()
+                    .map(entry -> {
+                        ProjectSummaryDTO3 projectSummary = new ProjectSummaryDTO3();
+                        projectSummary.setName(entry.getKey());
+                        projectSummary.setTotalTime(entry.getValue());
+                        return projectSummary;
+                    })
+                    .collect(Collectors.toList());
+
+            departmentSummary3.setProjectSummaries(projectSummaries);
+            summaries.add(departmentSummary3);
+        }
+        return summaries;
+    }
+
+
     // Phương thức xuất CSV cho DepartmentSummaryDTO
     public void exportDepartmentSummaryToCSV(HttpServletResponse response, List<DepartmentSummaryDTO> summaries) throws IOException {
         // Cài đặt loại nội dung và tên tệp CSV cho phản hồi HTTP
