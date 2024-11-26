@@ -80,7 +80,6 @@ public class TaskController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Task limit for the day exceeded.");
             }
 
-
             // Fetch Project entity
             Optional<Project> optionalProject = projectService.findById(projectId);
             if (optionalProject.isEmpty()) {
