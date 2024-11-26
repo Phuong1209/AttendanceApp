@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,5 +29,5 @@ public interface IUserService extends IGeneralService<User> {
     //get list worktime by user
     List<WorkTime> getWorkTimeByUser(Long userId);
 
-//    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

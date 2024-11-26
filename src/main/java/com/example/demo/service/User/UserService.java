@@ -11,6 +11,7 @@ import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IPositionRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.repository.IWorkTimeRepository;
+import com.example.demo.security.MyUserPrincipal;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -18,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.demo.dto.request.UserCreationRequest;
@@ -237,6 +240,15 @@ public class UserService implements IUserService {
         }
         return Collections.emptyList();
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByUserName(username);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("User is not exist!");
+        }
+        return new MyUserPrincipal(user.get());
+    }
 //    @Transactional
 //    @Override
 //    public void register(UserRegisterDTO userRegisterDTO){
@@ -246,13 +258,4 @@ public class UserService implements IUserService {
 //        newUser.setFullName(userRegisterDTO.getFullName());
 //        userRepository.save(newUser);
     }
-
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        Optional<User> user = userRepository.findByUserName(username);
-//        if (user.isEmpty()) {
-//            throw new UsernameNotFoundException("User is not exist!");
-//        }
-//        return new MyUserPrincipal(user.get());
-//    }
 

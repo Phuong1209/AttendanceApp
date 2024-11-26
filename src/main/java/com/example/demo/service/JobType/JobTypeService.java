@@ -64,5 +64,4 @@ public class JobTypeService implements IJobTypeService {
 
         return jobTypeDTO;
     }*/
-
 }
