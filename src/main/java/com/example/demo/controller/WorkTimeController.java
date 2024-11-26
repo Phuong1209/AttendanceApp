@@ -70,7 +70,7 @@ public class WorkTimeController {
             Map<String, Object> userMap = (Map<String, Object>) requestBody.get("user");
             Long userId = Long.valueOf(userMap.get("id").toString());
 
-            // Validate that checkinTime and checkoutTime are in 10-minute intervals
+            // Validate 10-minute intervals
             if (!isValidTimeInterval(checkinTime.toLocalTime()) || !isValidTimeInterval(checkoutTime.toLocalTime())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Times must be in 10-minute intervals.");
             }
@@ -172,19 +172,14 @@ public class WorkTimeController {
             LocalDateTime checkinTime = LocalDateTime.parse((String) requestBody.get("checkinTime"));
             LocalDateTime checkoutTime = LocalDateTime.parse((String) requestBody.get("checkoutTime"));
 
-            //Validate checkinTime 10-minutes
-            if (!isValidTimeInterval(LocalTime.from(checkinTime))) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Checkin time must be in 10-minute intervals.");
-                }
+            //Validate 10-minutes intervals
+            if (!isValidTimeInterval(LocalTime.from(checkinTime)) || !isValidTimeInterval(checkoutTime.toLocalTime())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Times must be in 10-minute intervals.");
+            }
 
             // Validate that checkinTime's date matches the date field
             if (!checkinTime.toLocalDate().equals(existingWorkTime.getDate())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Check-in time's date must match the date field.");
-            }
-
-            //Validate 10-minutes
-            if (!isValidTimeInterval(LocalTime.from(checkoutTime))) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Checkout time must be in 10-minute intervals.");
             }
 
             // Validate that checkoutTime is after checkinTime
