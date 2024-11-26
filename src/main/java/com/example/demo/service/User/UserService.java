@@ -28,6 +28,8 @@ import com.example.demo.exception.AppException;
 import com.example.demo.exception.ErrorCode;
 import com.example.demo.mapper.UserMapper;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Slf4j
@@ -181,8 +183,8 @@ public class UserService implements IUserService {
                 WorkTimeDTO workTimeDTO = new WorkTimeDTO();
                 workTimeDTO.setId(workTime.getId());
                 workTimeDTO.setDate(workTime.getDate());
-                workTimeDTO.setCheckinTime(workTime.getCheckinTime());
-                workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
+                workTimeDTO.setCheckinTime(LocalTime.from(workTime.getCheckinTime()));
+                workTimeDTO.setCheckoutTime(LocalTime.from(workTime.getCheckoutTime()));
                 workTimeDTO.setBreakTime(workTime.getBreakTime());
                 workTimeDTO.setWorkTime(workTime.getWorkTime());
                 workTimeDTO.setOverTime(workTime.getOverTime());
