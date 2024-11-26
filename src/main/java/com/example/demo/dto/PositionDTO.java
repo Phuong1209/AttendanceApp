@@ -9,4 +9,5 @@ import lombok.Setter;
 public class PositionDTO {
     private Long id;
     private String name;
+
 }
