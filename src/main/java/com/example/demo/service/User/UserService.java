@@ -23,10 +23,10 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
 import com.example.demo.dto.response.UserResponse;
-import com.example.demo.enums.Position;
-import com.example.demo.exception.AppException;
-import com.example.demo.exception.ErrorCode;
-import com.example.demo.mapper.UserMapper;
+//import com.example.demo.enums.Position;
+//import com.example.demo.exception.AppException;
+//import com.example.demo.exception.ErrorCode;
+//import com.example.demo.mapper.UserMapper;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,14 +35,16 @@ import java.util.*;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService implements IUserService {
     private final IUserRepository userRepository;
     private final IWorkTimeRepository workTimeRepository;
     private final IDepartmentRepository departmentRepository;
     private final IPositionRepository positionRepository;
     PasswordEncoder passwordEncoder;
-    UserMapper userMapper;
+
+    //Comment tạm để test UI
+/*    //UserMapper userMapper;
 
     //    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse createRequest(UserCreationRequest request) {
@@ -90,7 +92,7 @@ public class UserService implements IUserService {
     //    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
-    }
+    }*/
 
     @Transactional
     @Override

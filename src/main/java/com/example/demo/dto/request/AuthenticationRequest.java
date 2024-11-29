@@ -1,3 +1,4 @@
+/*
 package com.example.demo.dto.request;
 
 import lombok.*;
@@ -12,3 +13,4 @@ public class AuthenticationRequest {
     String username;
     String user_passwords;
 }
+*/

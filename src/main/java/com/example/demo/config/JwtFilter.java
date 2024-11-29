@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.service.BlacklistService;
+//import com.example.demo.service.BlacklistService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
+/*@Component
 public class JwtFilter extends OncePerRequestFilter {
 
     private final BlacklistService blacklistService;
@@ -39,4 +39,4 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         return null;
     }
-}
+}*/

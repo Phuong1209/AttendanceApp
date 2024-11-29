@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.uicontroller;
 
 import com.example.demo.model.Department;
 import com.example.demo.service.Department.IDepartmentService;

@@ -52,4 +52,8 @@ public class User implements Serializable {
         this.fullName = userDTO.getFullName();
         this.password = userDTO.getPassword();
     }
+
+    //test security
+    public User(String userName, String password, Object collect) {
+    }
 }

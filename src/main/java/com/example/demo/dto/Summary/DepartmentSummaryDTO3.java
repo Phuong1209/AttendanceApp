@@ -1,6 +1,5 @@
-package com.example.demo.dto;
+package com.example.demo.dto.Summary;
 
-import com.example.demo.model.Project;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -56,7 +56,7 @@ import java.util.Set;
 public class UserController {
 
     UserService userService1;
-    //P
+
     @Autowired
     private IUserService userService;
     @Autowired
@@ -65,14 +65,16 @@ public class UserController {
     IDepartmentRepository departmentRepository;
     @Autowired
     DepartmentService departmentService;
-    PasswordEncoder passwordEncoder;
+/*    @Autowired
+    PasswordEncoder passwordEncoder;*/
 
-    @GetMapping("/myInfo")
+    //Tạm ẩn để test UI
+/*    @GetMapping("/myInfo")
     public ApiResponse<UserResponse> getMyInfo(){
         return ApiResponse.<UserResponse>builder()
                 .result(userService1.getMyInfo())
                 .build();
-    }
+    }*/
 
     //show list
     @GetMapping
@@ -112,7 +114,7 @@ public class UserController {
         User newUser = new User();
         newUser.setUserName(userDTO.getUserName());
         newUser.setFullName(userDTO.getFullName());
-        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        //newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         //Set Position list
         Set<PositionDTO> positionDTOS = userDTO.getPositions();

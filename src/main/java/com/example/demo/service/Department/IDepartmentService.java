@@ -1,8 +1,8 @@
 package com.example.demo.service.Department;
 
 import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.DepartmentSummaryDTO3;
-import com.example.demo.dto.DepartmentSummaryDTO;
+import com.example.demo.dto.Summary.DepartmentSummaryDTO3;
+import com.example.demo.dto.Summary.DepartmentSummaryDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;

@@ -2,8 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.*;
 import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.DepartmentSummaryDTO;
+import com.example.demo.dto.Summary.DepartmentSummaryDTO;
 import com.example.demo.dto.JobTypeDTO;
+import com.example.demo.dto.Summary.DepartmentSummaryDTO3;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
@@ -37,8 +38,6 @@ public class DepartmentController {
     private IDepartmentService departmentService;
     @Autowired
     private IJobTypeRepository jobTypeRepository;
-    @Autowired
-    private IUserRepository userRepository;
 
     //show list
     @GetMapping
