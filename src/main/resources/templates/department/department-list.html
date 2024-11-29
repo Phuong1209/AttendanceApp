@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/style.css"/>
+  <title>勤怠管理システム</title>
+</head>
+<body>
+  <h1>部署管理</h1>
+  <table class="list-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>部署名</th>
+        <th>メンバーリスト</th>
+        <th>作業内容リスト</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody th:each="department:${departments}">
+      <tr>
+        <td th:text="${department.id}"></td>
+        <td th:text="${department.name}"></td>
+        <td><button>メンバリストを表示</button></td>
+        <td><button>作業リストを表示</button></td>
+        <td><button>修正</button><button>削除</button></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

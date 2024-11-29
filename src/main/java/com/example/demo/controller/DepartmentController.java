@@ -46,11 +46,11 @@ public class DepartmentController {
     }
 
     //show by id
-    @GetMapping("/{id}")
+/*    @GetMapping("/{id}")
     public ResponseEntity<Department> getAllDepartmentById(@PathVariable Long id) {
         Optional<Department> departmentOptional = departmentService.findById(id);
         return departmentOptional.map(department -> new ResponseEntity<>(department, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+    }*/
 
     //create (new)
 /*    @PostMapping("")
@@ -166,7 +166,7 @@ public class DepartmentController {
     }*/
 
     //delete
-    @DeleteMapping("/{id}")
+/*    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
         Optional<Department> departmentOptional = departmentService.findById(id);
         if (!departmentOptional.isPresent()) {
@@ -174,7 +174,7 @@ public class DepartmentController {
         }
         departmentService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    }*/
 
     //summarize JobType
     @GetMapping("/summarize")

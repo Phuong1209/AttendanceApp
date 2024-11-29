@@ -27,32 +27,6 @@ import java.util.stream.Collectors;
 public class DepartmentService implements IDepartmentService {
 
     private final IDepartmentRepository departmentRepository;
-    private final IUserRepository userRepository;
-    private final IJobTypeRepository jobTypeRepository;
-
-    @Transactional
-    @Override
-    public Iterable<Department> findAll() {
-        return departmentRepository.findAll();
-    }
-
-    @Transactional
-    @Override
-    public Optional<Department> findById(Long id) {
-        return departmentRepository.findById(id);
-    }
-
-    @Transactional
-    @Override
-    public Department save(Department model) {
-        return departmentRepository.save(model);
-    }
-
-    @Transactional
-    @Override
-    public void remove(Long id) {
-        departmentRepository.deleteById(id);
-    }
 
     //get all department
     @Override
@@ -247,10 +221,38 @@ public class DepartmentService implements IDepartmentService {
         writer.close();
     }
 
-    //Don't care about this
+ /* //Don't care about this
     @Override
     public void delete(User user) {
     }
+
+
+    @Transactional
+    @Override
+    public Iterable<Department> findAll() {
+        return departmentRepository.findAll();
+    }
+
+    @Transactional
+    @Override
+    public Optional<Department> findById(Long id) {
+        return departmentRepository.findById(id);
+    }
+
+    @Transactional
+    @Override
+    public Department save(Department model) {
+        return departmentRepository.save(model);
+    }
+
+    @Transactional
+    @Override
+    public void remove(Long id) {
+        departmentRepository.deleteById(id);
+    }
+*/
+
+
 
 }
 

@@ -1,6 +1,6 @@
-package com.example.demo.uicontroller;
+package com.example.demo.ControllerUI;
 
-import com.example.demo.model.Department;
+import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.service.Department.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +18,10 @@ public class DepartmentUIController {
 
     //Show Department List
     @GetMapping({"","/"})
-    public String showDepartmentList(Model model) {
-        List<Department> departments = (List<Department>) departmentService.findAll();
+    public String listDepartment(Model model) {
+        List<DepartmentDTO> departments = departmentService.getAllDepartment();
         model.addAttribute("departments", departments);
-        return "department/index";
+        return "department/department-list";
     }
 
 }

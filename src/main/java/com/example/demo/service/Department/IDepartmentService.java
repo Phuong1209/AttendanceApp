@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface IDepartmentService extends IGeneralService<Department> {
+public interface IDepartmentService {
     //get list department
     List<DepartmentDTO> getAllDepartment();
     //summary by department
