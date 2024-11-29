@@ -1,129 +1,61 @@
-body {
+h1 {
     text-align: center;
 }
 
-.list{
+.list-table{
     border-collapse: collapse;
-    margin-top: 100px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 20px auto;
     font-size: 17px;
-    min-width: 600px;
+    min-width: 400px;
     border-radius: 5px 5px 0 0;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
-.list thead tr {
-    background-color: #00655c;
-    color: white;
+.list-table thead tr {
+    background-color: #000449;
+    color:white;
     text-align: left;
     font-weight: bold;
 }
 
-.list th,
-.list td {
+.list-table th,
+.list-table td {
     padding: 10px 13px;
 }
 
-.list tbody tr{
-    border-bottom: 1px solid lightgrey;
+.list-table tbody tr{
+    border-bottom:1px solid lightgrey;
 }
 
-.list tbody tr:nth-of-type(even){
+.list-table tbody tr:nth-of-type(even){
     background-color: #f3f3f3;
 }
 
-/*
-!*
-body {
-    background: #ffc8d0;
-    color: deeppink;
-    font-size: 80pt;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 250px;
-}*!
-
-.card{
-    color:#222222;
-    background: lightgray;
-    width: 300px;
-    margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
-
-    border: 5px solid black;
-    border-radius: 10px;
-
-    padding:30px;
-}
-
-.main{
-    margin-top: 100px;
-    text-align: center;
-}
-
-.logo-img{
-    display: block;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 150px;
-}
-
-.search-input {
-    display: block;
-    width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-
-    line-height: 24px;
-    margin-top: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
-
-    border: 1px solid #dfe1e5;
-    border-radius: 24px;
-}
-
-.btn-warpper{
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-}
-
 .btn {
-    background: #ecd6d6;
-    padding: 10px;
-    font-size: 15px;
-    border-radius: 5px;
+    background: lightgrey;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 10px;
     border: none;
-    margin-left: 15px;
 }
 
-
-!*
-body{
-    margin: 8px;
-}
-
-.red{
+.btn-red{
     background: red;
-    height: 100px;
+    color: white;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    margin-left: 10px;
 }
 
-.blue{
-    background: darkblue;
-    height: 100px;
-    margin-bottom: 20px;
-    margin-top: 20px;
+.btn-blue{
+    background: #000449;
+    color: white;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    margin-left: 10px;
 }
 
-.green{
-    background: darkgreen;
-    height: 100px;
-}
-*!
-*/
