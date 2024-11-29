@@ -1,4 +1,5 @@
 package com.example.demo.model;
+//import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.dto.DepartmentDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -35,7 +36,7 @@ public class Department implements Serializable {
     @JsonBackReference
     private Set<User> users;
 
-    //constructor
+    //constructor (to get list department)
     public Department(DepartmentDTO departmentDTO){
         this.name = departmentDTO.getName();
     }

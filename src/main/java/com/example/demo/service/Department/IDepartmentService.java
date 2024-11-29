@@ -18,10 +18,6 @@ import java.util.Set;
 public interface IDepartmentService extends IGeneralService<Department> {
     //get list department
     List<DepartmentDTO> getAllDepartment();
-    //get list user of department
-    List<User> getUserByDepartment(Long departmentId);
-    //get list jobType of department
-    List<JobType> getJobTypeByDepartment(Long departmentId);
     //summary by department
     List<DepartmentSummaryDTO> getSummaryByDepartment();
     //summary department+project

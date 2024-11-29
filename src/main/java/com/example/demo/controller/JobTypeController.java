@@ -56,7 +56,7 @@ public class JobTypeController {
     }
 
     //edit
-    @PutMapping("/{id}")
+/*    @PutMapping("/{id}")
     public ResponseEntity<?> editTask(@PathVariable Long id, @RequestBody Map<String, Object> requestBody) {
         try {
             // Fetch the existing WorkTime record
@@ -87,7 +87,7 @@ public class JobTypeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred: " + e.getMessage());
         }
-    }
+    }*/
 
     //delete
     @DeleteMapping("/{id}")

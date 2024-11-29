@@ -42,7 +42,7 @@ public class DepartmentController {
     //show list
     @GetMapping
     public ResponseEntity<?> getAllDepartments() {
-        return ResponseEntity.ok().body(departmentService.findAll());
+        return ResponseEntity.ok().body(departmentService.getAllDepartment());
     }
 
     //show by id
@@ -52,22 +52,8 @@ public class DepartmentController {
         return departmentOptional.map(department -> new ResponseEntity<>(department, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    //get list user of department
-    @GetMapping("getUser/{id}")
-    public ResponseEntity<?> getUser(@PathVariable Long id) {
-        List<User> users = departmentService.getUserByDepartment(id);
-        return ResponseEntity.ok().body(users);
-    }
-
-    //get list jobtype of department
-    @GetMapping("getJobType/{id}")
-    public ResponseEntity<?> getJobType(@PathVariable Long id) {
-        List<JobType> jobTypes = departmentService.getJobTypeByDepartment(id);
-        return ResponseEntity.ok().body(jobTypes);
-    }
-
     //create (new)
-    @PostMapping("")
+/*    @PostMapping("")
     public ResponseEntity<?> createDepartment(@RequestBody DepartmentDTO departmentDTO) {
         try {
             Department newDepartment = new Department();
@@ -100,10 +86,10 @@ public class DepartmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred: " + e.getMessage());
         }
-    }
+    }*/
 
     //edit (new)
-    @PutMapping("/{id}")
+/*    @PutMapping("/{id}")
     public ResponseEntity<?> editDepartment(@PathVariable Long id, @RequestBody Map<String, Object> requestBody) {
         try {
             // Fetch the department by ID
@@ -177,7 +163,7 @@ public class DepartmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred: " + e.getMessage());
         }
-    }
+    }*/
 
     //delete
     @DeleteMapping("/{id}")
