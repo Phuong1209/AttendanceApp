@@ -4,56 +4,49 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css"/>
     <title>勤怠管理システム</title>
+    <script src="https://kit.fontawesome.com/24bd1a3804.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<h1>部署管理</h1>
-<table class="list-table">
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>部署名</th>
-        <th>メンバーリスト</th>
-        <th>作業内容リスト</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>1</td>
-        <td>Name1</td>
-        <td><button class="btn">メンバリストを表示</button></td>
-        <td><button class="btn">作業リストを表示</button></td>
-        <td><button class="btn-blue">修正</button><button class="btn-red">削除</button></td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>Name1</td>
-        <td><button class="btn">メンバリストを表示</button></td>
-        <td><button class="btn">作業リストを表示</button></td>
-        <td><button class="btn-blue">修正</button><button class="btn-red">削除</button></td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>Name2</td>
-        <td><button class="btn">メンバリストを表示</button></td>
-        <td><button class="btn">作業リストを表示</button></td>
-        <td><button class="btn-blue">修正</button><button class="btn-red">削除</button></td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>Name3</td>
-        <td><button class="btn">メンバリストを表示</button></td>
-        <td><button class="btn">作業リストを表示</button></td>
-        <td><button class="btn-blue">修正</button><button class="btn-red">削除</button></td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>Name4</td>
-        <td><button class="btn">メンバリストを表示</button></td>
-        <td><button class="btn">作業リストを表示</button></td>
-        <td><button class="btn-blue">修正</button><button class="btn-red">削除</button></td>
-    </tr>
-    </tbody>
-</table>
+
+<div class="wrapper">
+    <div class="top_navbar">
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="top_menu">
+            <div class="logo">勤怠管理システム</div>
+            <a href="/logout">ログアウト</a>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a href="/department/department-list" class="active">
+                <span class="icon"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
+                <span class="title">部署管理</span>
+            </a></li>
+            <li><a href="/worktime/worktime-list">
+                <span class="icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></span>
+                <span class="title">勤怠時間管理</span>
+            </a></li>
+        </ul>
+    </div>
+
+    <div class="main_container">
+        <div class="item">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Proin tortor purus platea sit eu id nisi litora libero. Neque vulputate consequat ac amet augue blandit maximus aliquet congue. Pharetra vestibulum posuere ornare faucibus fusce dictumst orci aenean eu facilisis ut volutpat commodo senectus purus himenaeos fames primis convallis nisi.
+        </div>
+        <div class="item">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Proin tortor purus platea sit eu id nisi litora libero. Neque vulputate consequat ac amet augue blandit maximus aliquet congue. Pharetra vestibulum posuere ornare faucibus fusce dictumst orci aenean eu facilisis ut volutpat commodo senectus purus himenaeos fames primis convallis nisi.
+        </div>
+        <div class="item">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Proin tortor purus platea sit eu id nisi litora libero. Neque vulputate consequat ac amet augue blandit maximus aliquet congue. Pharetra vestibulum posuere ornare faucibus fusce dictumst orci aenean eu facilisis ut volutpat commodo senectus purus himenaeos fames primis convallis nisi.
+        </div>
+    </div>
+
+</div>
+
 </body>
 </html>
