@@ -36,7 +36,7 @@ public class SecurityConfigP {
                 .and()
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/departmentui")
+                        .defaultSuccessUrl("/departments")
                         .loginProcessingUrl("/login")
                         .failureUrl("/login?error=true")
                         .permitAll()

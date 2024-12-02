@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css"/>
     <title>勤怠管理システム</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://kit.fontawesome.com/24bd1a3804.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+                $(".hamburger").click(function(){
+                    $(".wrapper").toggleClass("collapse");
+                });
+            });
+    </script>
 </head>
 <body>
 
@@ -23,11 +31,11 @@
 
     <div class="sidebar">
         <ul>
-            <li><a href="/department/department-list" class="active">
+            <li><a href="/departments" class="active">
                 <span class="icon"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
                 <span class="title">部署管理</span>
             </a></li>
-            <li><a href="/worktime/worktime-list">
+            <li><a href="/worktimes">
                 <span class="icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></span>
                 <span class="title">勤怠時間管理</span>
             </a></li>

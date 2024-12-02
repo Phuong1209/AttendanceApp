@@ -1,3 +1,162 @@
+/*Top menu*/
+*{
+    margin:0;
+    list-style:none;
+    padding:0;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+body{
+    background:#e1ecf2;
+}
+
+.wrapper{
+    margin: 10 px;
+}
+
+.wrapper .top_navbar{
+    width: 100%;
+    height: 60px;
+    display: flex;
+}
+
+.wrapper .top_navbar .hamburger{
+    min-width: 70px;
+    height: 100%;
+    background: #123559;
+    padding: 15px 17px;
+    cursor: pointer;
+}
+
+.wrapper .top_navbar .hamburger div{
+    width: 18px;
+    height: 2px;
+    background: #fff;
+    margin: 5px 9px;
+}
+
+.wrapper .top_navbar .top_menu{
+    width: 100%;
+    background: #fff;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.wrapper .top_navbar .top_menu .logo{
+    color: #123559;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.wrapper .top_navbar .top_menu a{
+    background: lightgrey;
+    color: black;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+.wrapper .top_navbar .top_menu a:hover{
+    text-decoration: underline;
+}
+
+/*Sidebar*/
+.wrapper .sidebar{
+    position: fixed;
+    top: 60px;
+    background: #123559;
+    width: 172px;
+    height: calc(100% - 60px);
+    transition: all 0.3s ease;
+}
+
+.wrapper .sidebar ul li a{
+    display: block;
+    padding: 15px;
+    position: relative;
+    margin-bottom: 1px;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.wrapper .sidebar ul li a:before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: #fff;
+    display: none;
+}
+
+.wrapper .sidebar ul li a span.icon{
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.wrapper .sidebar ul li a span.title{
+    display: inline-block;
+}
+
+.wrapper .sidebar ul li a:hover,
+.wrapper .sidebar ul li a.active{
+    background: #2C5682;
+    color: #fff;
+}
+
+.wrapper .sidebar ul li a:hover:before,
+.wrapper .sidebar ul li a.active:before{
+    display: block;
+}
+
+/*Content*/
+.wrapper .main_container{
+    width: calc(100% - 172px);
+    margin-top: 10px;
+    margin-left: 172px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.wrapper .main_container .item{
+    background: #fff;
+    margin-bottom: 10px;
+    padding: 15px;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+/*Collapse*/
+.wrapper.collapse .sidebar{
+    width: 70px;
+}
+
+.wrapper.collapse .sidebar ul li a{
+    text-align: center;
+}
+
+.wrapper.collapse .sidebar ul li a span.icon{
+    margin: 0;
+}
+
+.wrapper.collapse .sidebar ul li a span.title{
+    display: none;
+}
+
+.wrapper.collapse .main_container{
+    width: calc(100% - 70px);
+    margin-left: 70px;
+}
+
+
+
 /*Table
 h1 {
     text-align: center;
@@ -60,138 +219,3 @@ h1 {
     margin-left: 10px;
 }*/
 
-/*Top menu*/
-*{
-    margin:0;
-    list-style:none;
-    padding:0;
-    text-decoration: none;
-    box-sizing: border-box;
-}
-
-body{
-    background:#e1ecf2;
-}
-
-.wrapper{
-    margin: 10 px;
-}
-
-.wrapper .top_navbar{
-    width: 100%;
-    height: 60px;
-    display: flex;
-/*
-    position: fixed;
-*/
-}
-
-.wrapper .top_navbar .hamburger{
-    min-width: 172px;
-    height: 100%;
-    background: #123559;
-    padding: 15px 17px;
-    cursor: pointer;
-}
-
-.wrapper .top_navbar .hamburger div{
-    width: 18px;
-    height: 2px;
-    background: #fff;
-    margin: 5px 9px;
-}
-
-.wrapper .top_navbar .top_menu{
-    width: 100%;
-    background: #fff;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-}
-
-.wrapper .top_navbar .top_menu .logo{
-    color: #123559;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.wrapper .top_navbar .top_menu a{
-    background: lightgrey;
-    color: black;
-    padding: 8px;
-    font-size: 14px;
-    border-radius: 10px;
-}
-
-.wrapper .top_navbar .top_menu a:hover{
-    text-decoration: underline;
-}
-
-/*Sidebar*/
-.wrapper .sidebar{
-    position: fixed;
-    top: 60px;
-    background: #123559;
-    width: 172px;
-    height: calc(100% - 60px);
-    transition: all 0.3s ease;
-}
-
-.wrapper .sidebar ul li a{
-    display: block;
-    padding: 10px;
-    position: relative;
-    margin-bottom: 1px;
-    color: #fff;
-}
-
-.wrapper .sidebar ul li a:before{
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 3px;
-    height: 100%;
-    background: #fff;
-    display: none;
-}
-
-.wrapper .sidebar ul li a span.icon{
-    display: inline-block;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.wrapper .sidebar ul li a span.title{
-    display: inline-block;
-}
-
-.wrapper .sidebar ul li a:hover,
-.wrapper .sidebar ul li a.active{
-    background: #2C5682;
-    color: #fff;
-}
-
-.wrapper .sidebar ul li a:hover:before,
-.wrapper .sidebar ul li a.active:before{
-    display: block;
-}
-
-.wrapper .main_container{
-    width: calc(100% - 172px);
-    margin-top: 10px;
-    margin-left: 172px;
-    padding: 15px;
-    transition: all 0.3s ease;
-}
-
-.wrapper .main_container .item{
-    background: #fff;
-    margin-bottom: 10px;
-    padding: 15px;
-    font-size: 16px;
-    line-height: 22px;
-}
