@@ -57,6 +57,11 @@ public class DepartmentService implements IDepartmentService {
         return departmentDTO;
     }
 
+    //Save Department
+    public Department saveDepartment(Department department){
+        return departmentRepository.save(department);
+    }
+
     //Edit
     @Transactional
     public DepartmentDTO editDepartment(Long departmentId, String newName, Set<Long> newJobTypeIds) {

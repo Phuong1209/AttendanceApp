@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashSet;
@@ -34,6 +36,12 @@ public class DepartmentUIController {
         Department department = new Department();
         model.addAttribute("department", department);
         return "department/department-create";
+    }
+
+    @PostMapping("/create")
+    public String saveDepartment(@ModelAttribute("department") Department department){
+        departmentService.saveDepartment(department);
+        return "redirect:/departments";
     }
 
 /*    //Create Department

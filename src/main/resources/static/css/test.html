@@ -41,20 +41,27 @@
     </div>
 
     <div class="main_container">
-        <h1>部署作成</h1>
-        <form action="#" class="form_create">
-            <div class="wrapper_details">
-                <div class="input_field">
-                    <span class="details">部署名</span>
-                    <input type="text" placeholder=" 部署名">
-                </div>
-                <div class="input_field">
-                    <span class="details">作業内容</span>
-                    <input type="text" placeholder=" 作業内容">
-                </div>
-                <input type="submit" value="作成" class="btn-blue">
-            </div>
-        </form>
+        <h1>部署管理</h1>
+        <table class="list-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>部署名</th>
+                <!--        <th>メンバーリスト</th>
+                        <th>作業内容リスト</th>-->
+                <th></th>
+            </tr>
+            </thead>
+            <tbody th:each="department, stat : ${departments}">
+            <tr>
+                <td th:text="${stat.index+1}"></td>
+                <td th:text="${department.name}"></td>
+                <!--        <td><button class="btn">メンバリストを見る</button></td>
+                        <td><button class="btn">作業リストを見る</button></td>-->
+                <td><a class="btn-blue">修正</a><a class="btn-red">削除</a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>

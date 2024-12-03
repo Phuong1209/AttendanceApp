@@ -16,11 +16,12 @@ import java.util.Set;
 
 @Repository
 public interface IDepartmentService {
-    //get list department
     List<DepartmentDTO> getAllDepartment();
+    Department saveDepartment(Department department);
+
     //summary by department
     List<DepartmentSummaryDTO> getSummaryByDepartment();
-    //summary department+project
+    //summary department-project
     List<DepartmentSummaryDTO3> getSummaryByDepartment3();
     //edit department
     DepartmentDTO editDepartment(Long departmentId, String name, Set<Long> jobTypeIds);

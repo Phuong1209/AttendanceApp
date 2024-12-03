@@ -116,12 +116,42 @@
     margin-left: 172px;
     padding: 15px;
     transition: all 0.3s ease;
+    text-align: center;
+}
+
+/*Form*/
+.form_create{
+    margin: 30px auto;
+    width: auto;
+    justify-content: center;
+    text-align: center;
+}
+
+.form_create .input_field{
+    margin: 20px auto 25px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.input_field input{
+    width: 300px;
+    height: 30px;
+    outline: none;
+    margin-left: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 7px;
+}
+
+.input_field label{
+    margin-top: 4px;
 }
 
 /*Table*/
 h1 {
     text-align: center;
     color: #123559;
+    margin-bottom: 40px;
 }
 
 .list-table{
@@ -181,37 +211,15 @@ h1 {
     margin-left: 10px;
 }
 
-/*Form*/
-.form_create{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 50px 30px;
-}
-
-.form_create .wrapper_details{
-    display: flex;
-    flex-wrap: wrap;
-    width: calc(100% - 40px);
-    justify-content: center;
-}
-
-.form_create .wrapper_details .input_field{
-    display: flex;
-    width: 100%;
-    margin-bottom: 30px;
-    margin-left: 220px;
-}
-
-.form_create .wrapper_details .input_field .details{
-    font-weight: 500;
-    font-size: 16px;
-    margin-right: 10px;
-    margin-top: 4px;
-}
-
-.form_create .wrapper_details .input_field input{
-    height: 30px;
+.btn-blue-right{
+    background: #123559;
+    color: white;
+    padding: 5px 14px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    text-align: right;
+    margin: 20px;
 }
 
 /*Collapse*/
