@@ -1,31 +1,57 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:fragment="head">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/style.css"/>
     <title>勤怠管理システム</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://kit.fontawesome.com/24bd1a3804.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+                $(".hamburger").click(function(){
+                    $(".wrapper").toggleClass("collapse");
+                });
+            });
+    </script>
 </head>
-
 <body>
 <div class="wrapper">
-    <div class="top_navbar">
+    <div class="sidebar" th:fragment="sidebar">
         <div class="hamburger">
             <div></div>
             <div></div>
             <div></div>
         </div>
-        <div class="top_menu">
-            <div class="logo">勤怠管理システム</div>
-            <ul>
-                <li><a href="/logout">ログアウト</a></li>
-            </ul>
-        </div>
-
+        <ul>
+            <li><a href="/departments" class="active">
+                <span class="icon"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
+                <span class="title">部署管理</span>
+            </a></li>
+            <li><a href="/worktimes">
+                <span class="icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></span>
+                <span class="title">勤怠時間管理</span>
+            </a></li>
+        </ul>
     </div>
+
+    <div class="top_menu" th:fragment="top_menu">
+        <div class="system_name">勤怠管理システム</div>
+        <a href="/logout">ログアウト</a>
+    </div>
+
+    <div class="main_container">
+        <div class="item">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Proin tortor purus platea sit eu id nisi litora libero. Neque vulputate consequat ac amet augue blandit maximus aliquet congue. Pharetra vestibulum posuere ornare faucibus fusce dictumst orci aenean eu facilisis ut volutpat commodo senectus purus himenaeos fames primis convallis nisi.
+        </div>
+        <div class="item">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Proin tortor purus platea sit eu id nisi litora libero. Neque vulputate consequat ac amet augue blandit maximus aliquet congue. Pharetra vestibulum posuere ornare faucibus fusce dictumst orci aenean eu facilisis ut volutpat commodo senectus purus himenaeos fames primis convallis nisi.
+        </div>
+        <div class="item">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Proin tortor purus platea sit eu id nisi litora libero. Neque vulputate consequat ac amet augue blandit maximus aliquet congue. Pharetra vestibulum posuere ornare faucibus fusce dictumst orci aenean eu facilisis ut volutpat commodo senectus purus himenaeos fames primis convallis nisi.
+        </div>
+    </div>
+
 </div>
 
-
 </body>
-
 </html>

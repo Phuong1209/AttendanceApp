@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css"/>
@@ -17,19 +17,12 @@
 <body>
 
 <div class="wrapper">
-    <div class="top_navbar">
+    <div class="sidebar">
         <div class="hamburger">
             <div></div>
             <div></div>
             <div></div>
         </div>
-        <div class="top_menu">
-            <div class="logo">勤怠管理システム</div>
-            <a href="/logout">ログアウト</a>
-        </div>
-    </div>
-
-    <div class="sidebar">
         <ul>
             <li><a href="/departments" class="active">
                 <span class="icon"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
@@ -42,16 +35,26 @@
         </ul>
     </div>
 
+    <div class="top_menu">
+        <div class="system_name">勤怠管理システム</div>
+        <a href="/logout">ログアウト</a>
+    </div>
+
     <div class="main_container">
-        <div class="item">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Proin tortor purus platea sit eu id nisi litora libero. Neque vulputate consequat ac amet augue blandit maximus aliquet congue. Pharetra vestibulum posuere ornare faucibus fusce dictumst orci aenean eu facilisis ut volutpat commodo senectus purus himenaeos fames primis convallis nisi.
-        </div>
-        <div class="item">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Proin tortor purus platea sit eu id nisi litora libero. Neque vulputate consequat ac amet augue blandit maximus aliquet congue. Pharetra vestibulum posuere ornare faucibus fusce dictumst orci aenean eu facilisis ut volutpat commodo senectus purus himenaeos fames primis convallis nisi.
-        </div>
-        <div class="item">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Proin tortor purus platea sit eu id nisi litora libero. Neque vulputate consequat ac amet augue blandit maximus aliquet congue. Pharetra vestibulum posuere ornare faucibus fusce dictumst orci aenean eu facilisis ut volutpat commodo senectus purus himenaeos fames primis convallis nisi.
-        </div>
+        <h1>部署作成</h1>
+        <form action="#" class="form_create">
+            <div class="wrapper_details">
+                <div class="input_field">
+                    <span class="details">部署名</span>
+                    <input type="text" placeholder=" 部署名">
+                </div>
+                <div class="input_field">
+                    <span class="details">作業内容</span>
+                    <input type="text" placeholder=" 作業内容">
+                </div>
+                <input type="submit" value="作成" class="btn-blue">
+            </div>
+        </form>
     </div>
 
 </div>

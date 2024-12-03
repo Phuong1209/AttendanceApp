@@ -29,6 +29,13 @@ public class DepartmentUIController {
         return "department/department-list";
     }
 
+    @GetMapping("/create")
+    public String createDepartmentForm(Model model){
+        Department department = new Department();
+        model.addAttribute("department", department);
+        return "department/department-create";
+    }
+
 /*    //Create Department
     //1. Show Create form
     @GetMapping("/create")
