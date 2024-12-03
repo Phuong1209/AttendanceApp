@@ -41,25 +41,53 @@
     </div>
 
     <div class="main_container">
-        <div class="container">
-            <div class="select-btn">
-                <span class="btn-text">作業内容を選択</span>
-                <span class="arrow-dwn">
-                    <i class="fas fa-chevron-down"></i>
-                </span>
+        <h1>部署作成</h1>
+        <form role="form" method="POST" class="form_create" th:action="@{/departments/create}" th:object="${department}">
+            <div class="input_field">
+                <label for="name">部署名</label>
+                <input
+                        type="text"
+                        id="name"
+                        placeholder="部署名"
+                        th:field="*{name}">
             </div>
-
-            <ul class="list-item">
-                <li class="item">
-                    <span class="checkbox">
-                        <i class="fa-solid fa-check check-icon"></i>
+            <div class="input_field">
+                <label>作業内容 </label>
+                <div class="selection_multiple">
+                    <div class="select-btn">
+                        <span class="btn-text">作業内容を選択</span>
+                        <span class="arrow-dwn">
+                        <i class="fas fa-chevron-down"></i>
                     </span>
-                    <span class="item-text">HTML & CSS</span>
-                </li>
-            </ul>
+                    </div>
 
-        </div>
+                    <ul class="list-items">
+                        <li class="item">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                            <span class="item-text">HTML & CSS</span>
+                        </li>
+                        <li class="item">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                            <span class="item-text">Boostrap</span>
+                        </li>
+                        <li class="item">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                            <span class="item-text">JavaScript</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <input type="submit" value="作成" class="btn-blue">
+        </form>
     </div>
+
+    <script src="/static/js/scripts.js"></script>
 </div>
 
 </body>

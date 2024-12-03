@@ -9,10 +9,7 @@ import com.example.demo.service.Department.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -41,12 +38,17 @@ public class DepartmentUIController {
 
         //show list jobtype
         List<JobType> jobTypes = jobTypeRepository.findAll();
-        model.addAttribute("jobTypes", jobTypes);//
+        model.addAttribute("jobTypes", jobTypes);
         return "department/department-create";
     }
 
     @PostMapping("/create")
-    public String saveDepartment(@ModelAttribute("department") Department department){
+    public String saveDepartment(@ModelAttribute("department") Department department,
+                                 @RequestParam("jobTypes") List<Long> jobTypes){
+
+        List<JobType> selectedJobTypes = jobTypeRepository.findAllById(jobTypes);
+        department.setJobTypes(new HashSet<>(selectedJobTypes));
+
         departmentService.saveDepartment(department);
         return "redirect:/departments";
     }
