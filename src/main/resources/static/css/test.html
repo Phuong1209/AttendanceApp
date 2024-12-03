@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css"/>
+    <title>勤怠管理システム</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://kit.fontawesome.com/24bd1a3804.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+                $(".hamburger").click(function(){
+                    $(".wrapper").toggleClass("collapse");
+                });
+            });
+    </script>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="sidebar">
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul>
+            <li><a href="/departments" class="active">
+                <span class="icon"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
+                <span class="title">部署管理</span>
+            </a></li>
+            <li><a href="/worktimes">
+                <span class="icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></span>
+                <span class="title">勤怠時間管理</span>
+            </a></li>
+        </ul>
+    </div>
+
+    <div class="top_menu">
+        <div class="system_name">勤怠管理システム</div>
+        <a href="/logout">ログアウト</a>
+    </div>
+
+    <div class="main_container">
+        <h1>部署作成</h1>
+        <form action="#" class="form_create">
+            <div class="wrapper_details">
+                <div class="input_field">
+                    <span class="details">部署名</span>
+                    <input type="text" placeholder=" 部署名">
+                </div>
+                <div class="input_field">
+                    <span class="details">作業内容</span>
+                    <input type="text" placeholder=" 作業内容">
+                </div>
+                <input type="submit" value="作成" class="btn-blue">
+            </div>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
