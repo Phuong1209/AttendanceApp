@@ -29,12 +29,13 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecurityConfig {
     @Value("${jwt.signerKey}")
     private String signerKey;
-    private final String[] PUBLIC_URLS = {"/auth/token", "/auth/introspect","/auth/register"};
+    private final String[] PUBLIC_URLS = {"/auth/token", "/auth/introspect","/auth/register","/departmentui"};
     private final String[] PRIVATE_URLS = {"/users","worktime/checkin"};
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
                 request.requestMatchers(HttpMethod.POST, PUBLIC_URLS).permitAll()
+                        .requestMatchers(HttpMethod.GET,"/userui").permitAll()
                         .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(auth2 ->
                 auth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())

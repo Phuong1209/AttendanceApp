@@ -1,5 +1,10 @@
 package com.example.demo.service.User;
 
+import com.example.demo.dto.request.UserUpdateRequest;
+import com.example.demo.dto.response.UserResponse;
+import com.example.demo.exception.AppException;
+import com.example.demo.exception.ErrorCode;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.Department;
 import com.example.demo.model.User;
 import com.example.demo.model.WorkTime;
@@ -20,13 +25,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.demo.dto.request.UserCreationRequest;
-import com.example.demo.dto.request.UserUpdateRequest;
-import com.example.demo.dto.response.UserResponse;
-import com.example.demo.enums.Position;
-import com.example.demo.exception.AppException;
-import com.example.demo.exception.ErrorCode;
-import com.example.demo.mapper.UserMapper;
+//import com.example.demo.dto.request.UserCreationRequest;
+//import com.example.demo.dto.request.UserUpdateRequest;
+//import com.example.demo.dto.response.UserResponse;
+//import com.example.demo.enums.Position;
+//import com.example.demo.exception.AppException;
+//import com.example.demo.exception.ErrorCode;
+//import com.example.demo.mapper.UserMapper;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -45,16 +50,17 @@ public class UserService implements IUserService {
     UserMapper userMapper;
 
     //    @PreAuthorize("hasRole('ADMIN')")
-    public UserResponse createRequest(UserCreationRequest request) {
-        if (userRepository.existsByUserName(request.getUsername())) {
-            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
-        }
-        User user = userMapper.toUser(request);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        HashSet<String> position = new HashSet<>();
-        position.add(Position.USER.name());
-        return userMapper.toUserResponse(userRepository.save(user));
-    }
+//    public UserResponse createRequest(UserCreationRequest request) {
+//        if (userRepository.existsByUserName(request.getUsername())) {
+//            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
+//        }
+//        User user = userMapper.toUser(request);
+////        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setPassword(user.getPassword());
+//        HashSet<String> position = new HashSet<>();
+//        position.add(Position.USER.name());
+//        return userMapper.toUserResponse(userRepository.save(user));
+//    }
 
     //    @PostAuthorize("returnObject.userName == authentication.name")
     public UserResponse getMyInfo() {
@@ -82,7 +88,8 @@ public class UserService implements IUserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         userMapper.updateUser(user, request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+//        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(request.getPassword());
         user.setPositions(new HashSet<>(positionRepository.findAllById(Collections.singleton(userId))));
         return userMapper.toUserResponse(userRepository.save(user));
     }

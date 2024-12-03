@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.ProjectDTO;
 import com.example.demo.dto.ProjectSummaryDTO;
-import com.example.demo.dto.request.IntrospectRequest;
+//import com.example.demo.dto.request.IntrospectRequest;
 import com.example.demo.model.Project;
 import com.example.demo.model.Task;
 import com.example.demo.repository.ITaskRepository;
@@ -64,12 +64,12 @@ public class ProjectController {
 
     //edit
     @PutMapping("/{id}")
-    public ResponseEntity<ProjectDTO> editProject(
-            @PathVariable("id") Long projectId,
-            @RequestBody IntrospectRequest.ProjectEditRequest editRequest) {
-        ProjectDTO updatedProject = projectService.editProject(projectId, editRequest.getName(), editRequest.getCode(), editRequest.getTaskIds());
-        return ResponseEntity.ok(updatedProject);
-    }
+//    public ResponseEntity<ProjectDTO> editProject(
+//            @PathVariable("id") Long projectId,
+//            @RequestBody IntrospectRequest.ProjectEditRequest editRequest) {
+//        ProjectDTO updatedProject = projectService.editProject(projectId, editRequest.getName(), editRequest.getCode(), editRequest.getTaskIds());
+//        return ResponseEntity.ok(updatedProject);
+//    }
 
     //delete
     @DeleteMapping("/{id}")

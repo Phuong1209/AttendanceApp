@@ -7,6 +7,8 @@ import com.example.demo.dto.*;
 import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.dto.PositionDTO;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.response.ApiResponse;
+import com.example.demo.dto.response.UserResponse;
 import com.example.demo.model.Department;
 import com.example.demo.model.Position;
 import com.example.demo.model.User;
@@ -29,11 +31,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.dto.request.UserCreationRequest;
-import com.example.demo.dto.request.UserUpdateRequest;
-import com.example.demo.dto.response.ApiResponse;
-import com.example.demo.dto.response.UserResponse;
+//import com.example.demo.dto.request.UserCreationRequest;
+//import com.example.demo.dto.request.UserUpdateRequest;
+//import com.example.demo.dto.response.ApiResponse;
+//import com.example.demo.dto.response.UserResponse;
 import com.example.demo.service.User.UserService;
 
 import java.io.IOException;
@@ -65,7 +68,7 @@ public class UserController {
     IDepartmentRepository departmentRepository;
     @Autowired
     DepartmentService departmentService;
-    PasswordEncoder passwordEncoder;
+//    PasswordEncoder passwordEncoder;
 
     @GetMapping("/myInfo")
     public ApiResponse<UserResponse> getMyInfo(){
@@ -112,7 +115,8 @@ public class UserController {
         User newUser = new User();
         newUser.setUserName(userDTO.getUserName());
         newUser.setFullName(userDTO.getFullName());
-        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+//        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        newUser.setPassword(userDTO.getPassword());
 
         //Set Position list
         Set<PositionDTO> positionDTOS = userDTO.getPositions();
