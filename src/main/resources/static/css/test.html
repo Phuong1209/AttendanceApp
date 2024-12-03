@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
+<head th:fragment="head">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"/>
     <title>勤怠管理システム</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://kit.fontawesome.com/24bd1a3804.js" crossorigin="anonymous"></script>
@@ -15,9 +16,8 @@
     </script>
 </head>
 <body>
-
 <div class="wrapper">
-    <div class="sidebar">
+    <div class="sidebar" th:fragment="sidebar">
         <div class="hamburger">
             <div></div>
             <div></div>
@@ -35,35 +35,31 @@
         </ul>
     </div>
 
-    <div class="top_menu">
+    <div class="top_menu" th:fragment="top_menu">
         <div class="system_name">勤怠管理システム</div>
         <a href="/logout">ログアウト</a>
     </div>
 
     <div class="main_container">
-        <h1>部署管理</h1>
-        <table class="list-table">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>部署名</th>
-                <!--        <th>メンバーリスト</th>
-                        <th>作業内容リスト</th>-->
-                <th></th>
-            </tr>
-            </thead>
-            <tbody th:each="department, stat : ${departments}">
-            <tr>
-                <td th:text="${stat.index+1}"></td>
-                <td th:text="${department.name}"></td>
-                <!--        <td><button class="btn">メンバリストを見る</button></td>
-                        <td><button class="btn">作業リストを見る</button></td>-->
-                <td><a class="btn-blue">修正</a><a class="btn-red">削除</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+        <div class="container">
+            <div class="select-btn">
+                <span class="btn-text">作業内容を選択</span>
+                <span class="arrow-dwn">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+            </div>
 
+            <ul class="list-item">
+                <li class="item">
+                    <span class="checkbox">
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </span>
+                    <span class="item-text">HTML & CSS</span>
+                </li>
+            </ul>
+
+        </div>
+    </div>
 </div>
 
 </body>

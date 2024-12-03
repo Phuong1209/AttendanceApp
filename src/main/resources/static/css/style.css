@@ -247,3 +247,40 @@ h1 {
 .wrapper.collapse .top_menu .system_name{
     margin-left: 70px;
 }
+
+/*MultiSelect*/
+.container{
+    position: relative;
+    max-width: 320px;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid lightgrey;
+}
+
+.select-btn{
+    display: flex;
+    height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.select-btn .btn-text{
+    font-size: 14px;
+    color: #333;
+}
+
+.select-btn .arrow-dwn{
+    display: flex;
+    height: 21px;
+    width: 21px;
+    color: #2C5682;
+    font-size: 13px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+}

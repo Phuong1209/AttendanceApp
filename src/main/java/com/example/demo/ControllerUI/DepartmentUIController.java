@@ -4,6 +4,7 @@ import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
+import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.service.Department.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,8 @@ import java.util.Set;
 public class DepartmentUIController {
     @Autowired
     private IDepartmentService departmentService;
+    @Autowired
+    private IJobTypeRepository jobTypeRepository;
 
     //Show Department List
     @GetMapping({"","/"})
@@ -35,6 +38,10 @@ public class DepartmentUIController {
     public String createDepartmentForm(Model model){
         Department department = new Department();
         model.addAttribute("department", department);
+
+        //show list jobtype
+        List<JobType> jobTypes = jobTypeRepository.findAll();
+        model.addAttribute("jobTypes", jobTypes);//
         return "department/department-create";
     }
 
