@@ -18,7 +18,7 @@ public class UserResponse {
     Long id;
     String userName;
     String password;
-    String fullName;
+    String Fullname;
     Set<Position> positions;
     Set<Department> departments;
     Set<WorkTime> workTimes;

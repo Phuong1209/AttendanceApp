@@ -27,5 +27,4 @@ public class Project implements Serializable {
     @OneToMany(mappedBy = "project")
     @JsonManagedReference
     private Set<Task> tasks;
-
 }

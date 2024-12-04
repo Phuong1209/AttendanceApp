@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"/>
+    <title>勤怠管理システム</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://kit.fontawesome.com/24bd1a3804.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+                $(".hamburger").click(function(){
+                    $(".wrapper").toggleClass("collapse");
+                });
+            });
+    </script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="sidebar" th:fragment="sidebar">
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul>
+            <li><a href="/departments" class="active">
+                <span class="icon"><i class="fa-solid fa-building" aria-hidden="true"></i></span>
+                <span class="title">部署管理</span>
+            </a></li>
+            <li><a href="/worktimes">
+                <span class="icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></span>
+                <span class="title">勤怠時間管理</span>
+            </a></li>
+        </ul>
+    </div>
+
+    <div class="top_menu" th:fragment="top_menu">
+        <div class="system_name">勤怠管理システム</div>
+        <a href="/logout">ログアウト</a>
+    </div>
+
+    <div class="main_container">
+        <h1>部署作成</h1>
+        <form role="form" method="POST" class="form_create" th:action="@{/departments/create}" th:object="${department}">
+            <div class="input_field">
+                <label for="name">部署名</label>
+                <input
+                        type="text"
+                        id="name"
+                        placeholder="部署名"
+                        th:field="*{name}">
+            </div>
+            <div class="input_field">
+                <label>作業内容 </label>
+                <div class="selection_multiple">
+                    <div class="select-btn">
+                        <span class="btn-text">作業内容を選択</span>
+                        <span class="arrow-dwn">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                    </div>
+
+                    <ul class="list-items">
+                        <li class="item">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                            <span class="item-text">HTML & CSS</span>
+                        </li>
+                        <li class="item">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                            <span class="item-text">Boostrap</span>
+                        </li>
+                        <li class="item">
+                        <span class="checkbox">
+                            <i class="fa-solid fa-check check-icon"></i>
+                        </span>
+                            <span class="item-text">JavaScript</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <input type="submit" value="作成" class="btn-blue">
+        </form>
+    </div>
+
+    <script src="/static/js/scripts.js"></script>
+</div>
+
+</body>
+</html>

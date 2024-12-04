@@ -2,15 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.*;
 import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.DepartmentSummaryDTO;
+import com.example.demo.dto.Summary.DepartmentSummaryDTO;
 import com.example.demo.dto.JobTypeDTO;
-//import com.example.demo.dto.request.IntrospectRequest;
+import com.example.demo.dto.Summary.DepartmentSummaryDTO3;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
-import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.DepartmentSummaryDTO;
-import com.example.demo.dto.JobTypeDTO;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.Department.IDepartmentService;
@@ -41,38 +38,22 @@ public class DepartmentController {
     private IDepartmentService departmentService;
     @Autowired
     private IJobTypeRepository jobTypeRepository;
-    @Autowired
-    private IUserRepository userRepository;
 
     //show list
     @GetMapping
     public ResponseEntity<?> getAllDepartments() {
-        return ResponseEntity.ok().body(departmentService.findAll());
+        return ResponseEntity.ok().body(departmentService.getAllDepartment());
     }
 
     //show by id
-    @GetMapping("/{id}")
+/*    @GetMapping("/{id}")
     public ResponseEntity<Department> getAllDepartmentById(@PathVariable Long id) {
         Optional<Department> departmentOptional = departmentService.findById(id);
         return departmentOptional.map(department -> new ResponseEntity<>(department, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    //get list user of department
-    @GetMapping("getUser/{id}")
-    public ResponseEntity<?> getUser(@PathVariable Long id) {
-        List<User> users = departmentService.getUserByDepartment(id);
-        return ResponseEntity.ok().body(users);
-    }
-
-    //get list jobtype of department
-    @GetMapping("getJobType/{id}")
-    public ResponseEntity<?> getJobType(@PathVariable Long id) {
-        List<JobType> jobTypes = departmentService.getJobTypeByDepartment(id);
-        return ResponseEntity.ok().body(jobTypes);
-    }
+    }*/
 
     //create (new)
-    @PostMapping("")
+/*    @PostMapping("")
     public ResponseEntity<?> createDepartment(@RequestBody DepartmentDTO departmentDTO) {
         try {
             Department newDepartment = new Department();
@@ -105,10 +86,10 @@ public class DepartmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred: " + e.getMessage());
         }
-    }
+    }*/
 
     //edit (new)
-    @PutMapping("/{id}")
+/*    @PutMapping("/{id}")
     public ResponseEntity<?> editDepartment(@PathVariable Long id, @RequestBody Map<String, Object> requestBody) {
         try {
             // Fetch the department by ID
@@ -182,10 +163,10 @@ public class DepartmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred: " + e.getMessage());
         }
-    }
+    }*/
 
     //delete
-    @DeleteMapping("/{id}")
+/*    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
         Optional<Department> departmentOptional = departmentService.findById(id);
         if (!departmentOptional.isPresent()) {
@@ -193,14 +174,23 @@ public class DepartmentController {
         }
         departmentService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    }*/
 
-    //summarize
+    //summarize JobType
     @GetMapping("/summarize")
     public ResponseEntity<List<DepartmentSummaryDTO>> getSummaryByDepartment() {
         List<DepartmentSummaryDTO> summaries = departmentService.getSummaryByDepartment();
         return ResponseEntity.ok(summaries);
     }
+
+    //summarize project
+    @GetMapping("/summarize3")
+    public ResponseEntity<List<DepartmentSummaryDTO3>> getSummaryByDepartment3() {
+        List<DepartmentSummaryDTO3> summaries = departmentService.getSummaryByDepartment3();
+        return ResponseEntity.ok(summaries);
+    }
+
+    //CSV
     @GetMapping("/exportCSV")
     public void generateCSV(HttpServletResponse response) throws IOException {
         List<DepartmentSummaryDTO> summaries = departmentService.getSummaryByDepartment();

@@ -13,6 +13,20 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigP {
+/*    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }*/
+
+/*
+    @Bean
+    public static PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+*/
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(c -> c.disable())
@@ -33,4 +47,7 @@ public class SecurityConfigP {
 
         return http.build();
     }
+/*    public void configure(AuthenticationManagerBuilder builder) throws Exception {
+        builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }*/
 }

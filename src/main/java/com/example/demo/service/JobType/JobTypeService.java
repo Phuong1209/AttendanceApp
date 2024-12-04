@@ -38,31 +38,4 @@ public class JobTypeService implements IJobTypeService {
 
     }
 
-   /* //Edit
-    @Transactional
-    public JobTypeDTO editJobType(Long jobTypeId, String newName) {
-        // Find the jobType by ID
-        Optional<JobType> optionalJobType = jobTypeRepository.findById(jobTypeId);
-        if (!optionalJobType.isPresent()) {
-            throw new NoSuchElementException("JobType not found with ID: " + jobTypeId);
-        }
-
-        JobType jobType = optionalJobType.get();
-
-        // Update the jobType's name
-        if (newName != null && !newName.trim().isEmpty()) {
-            jobType.setName(newName);
-        }
-
-        // Save the updated jobType
-        JobType updatedJobType = jobTypeRepository.save(jobType);
-
-        // Map the updated department to DepartmentDTO
-        JobTypeDTO jobTypeDTO = new JobTypeDTO();
-        jobTypeDTO.setId(updatedJobType.getId());
-        jobTypeDTO.setName(updatedJobType.getName());
-
-        return jobTypeDTO;
-    }*/
-
 }

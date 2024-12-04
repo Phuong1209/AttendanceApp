@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.ProjectDTO;
 import com.example.demo.dto.ProjectEditRequest;
-import com.example.demo.dto.ProjectSummaryDTO;
+import com.example.demo.dto.Summary.ProjectSummaryDTO;
 //import com.example.demo.dto.request.IntrospectRequest;
 import com.example.demo.model.Project;
 import com.example.demo.model.Task;
@@ -51,7 +51,7 @@ public class ProjectController {
         return ResponseEntity.ok().body(tasks);
     }
 
-    //create (new)
+    //create
     @PostMapping("")
     public ResponseEntity<Project> createProject(@RequestBody ProjectDTO projectDTO) {
         Project newProject = new Project();
@@ -63,7 +63,7 @@ public class ProjectController {
         return new ResponseEntity<>(newProject, HttpStatus.CREATED);
     }
 
-    //edit (new)
+    //edit
     @PutMapping("/{id}")
     public ResponseEntity<ProjectDTO> editProject(
             @PathVariable("id") Long projectId,

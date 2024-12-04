@@ -16,4 +16,5 @@ public class AuthUIController {
     public String loginPage(){
         return "login";
     }
+
 }
