@@ -18,4 +18,7 @@ public class JobTypeDTO {
         this.name = name;
     }
 
+    //constructor (map edit Department)
+    public JobTypeDTO(Long id) {
+    }
 }

@@ -1,4 +1,46 @@
 <!--
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>部署管理</h1>
+        <p class="department-name"><strong th:text="'Department: ' + ${departmentName}"></strong></p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Username</th>
+                <th>名前</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="user, iterStat : ${users}">
+                <td th:text="${iterStat.count}"></td>
+                <td th:text="${user.userName}"></td>
+                <td th:text="${user.fullName}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <br>
+
+        <div style="text-align: center;">
+            <a class="btn btn-outline-primary" href="/departments" role="button">Back</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+&lt;!&ndash;
 <!doctype html>
 <html lang="en">
 <head>
@@ -46,4 +88,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
-</html>-->
+</html>&ndash;&gt;
+-->

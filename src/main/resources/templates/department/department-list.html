@@ -9,14 +9,14 @@
   <div th:replace="~{layout :: top_menu}"></div>
   <div class="main_container">
     <h1>部署管理</h1>
-    <a class="btn-blue-right" href="http://localhost:8080/departments/create">新規部署作成</a>
+    <a class="btn-blue" href="http://localhost:8080/departments/create">新規部署作成</a>
     <table class="list-table">
       <thead>
         <tr>
           <th>#</th>
           <th>部署名</th>
-  <!--        <th>メンバーリスト</th>
-          <th>作業内容リスト</th>-->
+  <!--    <th>メンバーリスト</th>-->
+          <th>作業内容リスト</th>
           <th></th>
         </tr>
       </thead>
@@ -24,9 +24,9 @@
         <tr>
           <td th:text="${stat.index+1}"></td>
           <td th:text="${department.name}"></td>
-  <!--        <td><button class="btn">メンバリストを見る</button></td>
-          <td><button class="btn">作業リストを見る</button></td>-->
-          <td><a class="btn-blue">修正</a><a class="btn-red">削除</a></td>
+  <!--        <td><button class="btn">メンバリストを見る</button></td>-->
+          <td><a class="btn" th:href="@{/departments/{departmentId}(departmentId=${department.id})/jobtypes}">作業リストを見る</a></td>
+          <td><a class="btn-blue" th:href="@{/departments/{departmentId}(departmentId=${department.id})}">修正</a><a class="btn-red">削除</a></td>
         </tr>
       </tbody>
     </table>

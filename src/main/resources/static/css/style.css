@@ -305,7 +305,7 @@ h1 {
 .btn-red{
     background: red;
     color: white;
-    padding: 5px 14px;
+    padding: 7px 14px;
     font-size: 14px;
     border-radius: 10px;
     border: none;
@@ -315,7 +315,7 @@ h1 {
 .btn-blue{
     background: #123559;
     color: white;
-    padding: 5px 14px;
+    padding: 7px 14px;
     font-size: 14px;
     border-radius: 10px;
     border: none;

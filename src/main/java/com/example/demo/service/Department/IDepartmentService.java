@@ -8,6 +8,7 @@ import com.example.demo.model.JobType;
 import com.example.demo.model.User;
 import com.example.demo.service.IGeneralService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -18,6 +19,11 @@ import java.util.Set;
 public interface IDepartmentService {
     List<DepartmentDTO> getAllDepartment();
     Department saveDepartment(Department department);
+    DepartmentDTO findById(long departmentId);
+    void updateDepartment(DepartmentDTO departmentDto);
+
+    //show list jobType
+    Set<JobType> findJobTypesByDepartmentId(Long departmentId);
 
     //summary by department
     List<DepartmentSummaryDTO> getSummaryByDepartment();
@@ -28,4 +34,5 @@ public interface IDepartmentService {
 
     //CSV
     void exportDepartmentSummaryToCSV(HttpServletResponse response, List<DepartmentSummaryDTO> summaries) throws IOException;
+
 }

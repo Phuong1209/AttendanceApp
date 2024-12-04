@@ -8,7 +8,6 @@ import com.example.demo.dto.Summary.ProjectSummaryDTO3;
 import com.example.demo.model.*;
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IJobTypeRepository;
-import com.example.demo.repository.IUserRepository;
 import com.opencsv.CSVWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
@@ -27,6 +26,7 @@ import java.util.stream.Collectors;
 public class DepartmentService implements IDepartmentService {
 
     private final IDepartmentRepository departmentRepository;
+    private final IJobTypeRepository jobTypeRepository;
 
     //get all department
     @Override
@@ -62,8 +62,34 @@ public class DepartmentService implements IDepartmentService {
         return departmentRepository.save(department);
     }
 
+    //Find by Id
+    @Override
+    public DepartmentDTO findById(long departmentId) {
+        Department department = departmentRepository.findById(departmentId).get();
+        return mapToDepartmentDTO(department);
+    }
 
+    //Update
+    @Override
+    public void updateDepartment(DepartmentDTO departmentDto) {
+        Department department = mapToDepartment(departmentDto);
+        departmentRepository.save(department);
+    }
 
+    @Override
+    public Set<JobType> findJobTypesByDepartmentId(Long departmentId) {
+        return departmentRepository.findJobTypesByDepartmentId(departmentId);
+    }
+
+    //Map
+    private Department mapToDepartment(DepartmentDTO department){
+        Department departmentDto = Department.builder()
+                .id(department.getId())
+                .name(department.getName())
+                .build();
+
+        return departmentDto;
+    }
 
     //Edit
     @Transactional

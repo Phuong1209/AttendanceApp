@@ -1,3 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>部署管理</h1>
+        <p class="department-name"><strong th:text="'Department: ' + ${departmentName}"></strong></p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>作業</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="jobType, iterStat : ${jobTypes}">
+                <td th:text="${iterStat.count}"></td>
+                <td th:text="${jobType.name}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <br>
+
+        <div style="text-align: center;">
+            <a class="btn btn-outline-primary" href="departments" role="button">Back</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
 <!--
 <!doctype html>
 <html lang="en">
