@@ -15,7 +15,7 @@
         <tr>
           <th>#</th>
           <th>部署名</th>
-  <!--    <th>メンバーリスト</th>-->
+          <th>メンバーリスト</th>
           <th>作業内容リスト</th>
           <th></th>
         </tr>
@@ -24,8 +24,8 @@
         <tr>
           <td th:text="${stat.index+1}"></td>
           <td th:text="${department.name}"></td>
-  <!--        <td><button class="btn">メンバリストを見る</button></td>-->
-          <td><a class="btn" th:href="@{/departments/{departmentId}(departmentId=${department.id})/jobtypes}">作業リストを見る</a></td>
+          <td><a class="btn" th:href="@{/departments/{departmentId}/jobtypes(departmentId=${department.id})}">作業内容リストを見る</a></td>
+          <td><a class="btn" th:href="@{/departments/{departmentId}/members(departmentId=${department.id})}">メンバリストを見る</a></td>
           <td><a class="btn-blue" th:href="@{/departments/{departmentId}(departmentId=${department.id})}">修正</a><a class="btn-red">削除</a></td>
         </tr>
       </tbody>

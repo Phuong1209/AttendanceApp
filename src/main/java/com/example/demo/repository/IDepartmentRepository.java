@@ -18,5 +18,9 @@ public interface IDepartmentRepository extends JpaRepository <Department, Long> 
 
     //show list JobType
     @Query("SELECT d.jobTypes FROM Department d WHERE d.id = :departmentId")
-    Set<JobType> findJobTypesByDepartmentId(@Param("departmentId") Long departmentId);
+    Set<JobType> findJobTypesByDepartment(@Param("departmentId") Long departmentId);
+
+    //show list user
+    @Query("SELECT d.users FROM Department d WHERE d.id = :departmentId")
+    Set<User> findUsersByDepartment(@Param("departmentId") Long departmentId);
 }

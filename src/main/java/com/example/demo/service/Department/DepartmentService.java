@@ -77,8 +77,13 @@ public class DepartmentService implements IDepartmentService {
     }
 
     @Override
-    public Set<JobType> findJobTypesByDepartmentId(Long departmentId) {
-        return departmentRepository.findJobTypesByDepartmentId(departmentId);
+    public Set<JobType> findJobTypesByDepartment(Long departmentId) {
+        return departmentRepository.findJobTypesByDepartment(departmentId);
+    }
+
+    @Override
+    public Set<User> findUsersByDepartment(Long departmentId) {
+        return departmentRepository.findUsersByDepartment(departmentId);
     }
 
     //Map
@@ -94,7 +99,7 @@ public class DepartmentService implements IDepartmentService {
     //Edit
     @Transactional
     public DepartmentDTO editDepartment(Long departmentId, String newName, Set<Long> newJobTypeIds) {
-/*        // Find the department by ID
+        // Find the department by ID
         Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
         if (!optionalDepartment.isPresent()) {
             throw new NoSuchElementException("Department not found with ID: " + departmentId);
@@ -135,8 +140,7 @@ public class DepartmentService implements IDepartmentService {
         }
         departmentDTO.setJobTypes(jobTypeDTOS);
 
-        return departmentDTO;*/
-        return null;
+        return departmentDTO;
     }
 
     //Summarize JobType by Department

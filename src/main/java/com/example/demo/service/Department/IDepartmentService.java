@@ -18,12 +18,18 @@ import java.util.Set;
 @Repository
 public interface IDepartmentService {
     List<DepartmentDTO> getAllDepartment();
+
     Department saveDepartment(Department department);
+
     DepartmentDTO findById(long departmentId);
+
     void updateDepartment(DepartmentDTO departmentDto);
 
     //show list jobType
-    Set<JobType> findJobTypesByDepartmentId(Long departmentId);
+    Set<JobType> findJobTypesByDepartment(Long departmentId);
+
+    //show list user
+    Set<User> findUsersByDepartment(Long departmentId);
 
     //summary by department
     List<DepartmentSummaryDTO> getSummaryByDepartment();

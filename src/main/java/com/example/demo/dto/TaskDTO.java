@@ -14,4 +14,9 @@ public class TaskDTO {
     private ProjectDTO project;
     private JobTypeDTO jobType;
 
+    //constructor
+    public TaskDTO(Long id, String comment, float totalTime) {
+    }
+    public TaskDTO() {
+    }
 }
