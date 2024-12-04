@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.dto.request.UserCreationRequest;
@@ -65,16 +66,17 @@ public class UserController {
     IDepartmentRepository departmentRepository;
     @Autowired
     DepartmentService departmentService;
-    PasswordEncoder passwordEncoder;
+//    PasswordEncoder passwordEncoder;
 
-    @GetMapping("/myInfo")
-    public ApiResponse<UserResponse> getMyInfo(){
-        return ApiResponse.<UserResponse>builder()
-                .result(userService1.getMyInfo())
-                .build();
-    }
+//    @GetMapping("/myInfo")
+//    public ApiResponse<UserResponse> getMyInfo(){
+//        return ApiResponse.<UserResponse>builder()
+//                .result(userService1.getMyInfo())
+//                .build();
+//    }
 
     //show list
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok().body(userService.findAll());
@@ -112,7 +114,7 @@ public class UserController {
         User newUser = new User();
         newUser.setUserName(userDTO.getUserName());
         newUser.setFullName(userDTO.getFullName());
-        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+//        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         //Set Position list
         Set<PositionDTO> positionDTOS = userDTO.getPositions();

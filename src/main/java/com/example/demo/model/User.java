@@ -5,9 +5,13 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "user")
@@ -51,5 +55,11 @@ public class User implements Serializable {
         this.userName = userDTO.getUserName();
         this.fullName = userDTO.getFullName();
         this.password = userDTO.getPassword();
+    }
+//    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return positions.stream()
+                .map(position -> new SimpleGrantedAuthority("ROLE_" + position.getName().toUpperCase()))
+                .collect(Collectors.toSet());
     }
 }

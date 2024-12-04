@@ -17,12 +17,17 @@ import java.util.Set;
 public interface IDepartmentService extends IGeneralService<Department> {
     //get list department
     List<DepartmentDTO> getAllDepartment();
+    Department saveDepartment(Department department);
+
+
     //get list user of department
     List<User> getUserByDepartment(Long departmentId);
     //get list jobType of department
     List<JobType> getJobTypeByDepartment(Long departmentId);
     //summary by department
     List<DepartmentSummaryDTO> getSummaryByDepartment();
+//    List<DepartmentSummaryDTO3> getSummaryByDepartment3();
+
     //edit department
     DepartmentDTO editDepartment(Long departmentId, String name, Set<Long> jobTypeIds);
 

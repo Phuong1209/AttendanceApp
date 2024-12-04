@@ -5,3 +5,11 @@
 */
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
+function setAuthHeader(token) {
+    localStorage.setItem('jwtToken', token); // Save token in local storage
+    fetch('/user', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+}

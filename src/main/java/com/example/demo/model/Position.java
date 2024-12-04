@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-
+@Data
 
 public class Position implements Serializable {
     @Id
@@ -26,9 +27,14 @@ public class Position implements Serializable {
     private String name;
     @ManyToMany(mappedBy="positions", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
-    private Set<User> users;
+    private Set<User> users ;
 
     public Position(PositionDTO positionDTO){
         this.name = positionDTO.getName();
     }
+
+    public Position(String name) {
+        this.name = name;
+    }
+//
 }
