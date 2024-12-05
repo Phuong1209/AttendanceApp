@@ -11,6 +11,13 @@
         <h1>勤怠時間登録</h1>
         <form role="form" method="POST" class="form_create" th:action="@{/worktimes/create}" th:object="${workTime}">
             <div class="input_field">
+                <label>日付</label>
+                <input
+                        type="text"
+                        placeholder="日付"
+                        th:field="*{date}">
+            </div>
+            <div class="input_field">
                 <label>出勤時間</label>
                 <input
                         type="text"

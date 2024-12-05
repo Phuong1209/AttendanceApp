@@ -1,5 +1,4 @@
 package com.example.demo.model;
-//import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.dto.DepartmentDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -10,7 +9,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Data
 @Getter
 @Setter
 @AllArgsConstructor

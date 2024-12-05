@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class WorkTimeService implements IWorkTimeService {
 
     private final IWorkTimeRepository workTimeRepository;
-    private final ITaskRepository taskRepository;
 
     //get all workTime
     @Override
@@ -34,11 +33,6 @@ public class WorkTimeService implements IWorkTimeService {
 
     //mapper
     public WorkTimeDTO mapToWorkTimeDTO(WorkTime workTime) {
-        //map list tasks to taskDtos
-        Set<TaskDTO> taskDTOs = workTime.getTasks().stream()
-                .map((tasks) -> new TaskDTO(tasks.getId(), tasks.getComment(), tasks.getTotalTime()))
-                .collect(Collectors.toSet());
-
         //map workTime to workTimeDto
         WorkTimeDTO workTimeDTO = WorkTimeDTO.builder()
                 .id(workTime.getId())
@@ -48,7 +42,6 @@ public class WorkTimeService implements IWorkTimeService {
                 .breakTime(workTime.getBreakTime())
                 .workTime(workTime.getWorkTime())
                 .overTime(workTime.getOverTime())
-                .tasks(taskDTOs)
                 .build();
 
         return workTimeDTO;

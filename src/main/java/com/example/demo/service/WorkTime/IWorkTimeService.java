@@ -17,9 +17,9 @@ import java.util.Set;
 public interface IWorkTimeService {
     List<WorkTimeDTO> getAllWorkTime();
 
-/*    WorkTime saveWorkTime(WorkTime workTime);
+    WorkTime saveWorkTime(WorkTime workTime);
 
-    WorkTimeDTO findById(long workTimeId);
+    /*WorkTimeDTO findById(long workTimeId);
 
     void updateWorkTime(WorkTimeDTO workTimeDto);
 
