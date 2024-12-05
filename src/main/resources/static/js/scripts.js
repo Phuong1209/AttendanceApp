@@ -70,3 +70,18 @@ if (token) {
 
 }
 
+//create user
+if (token) {
+    fetch("http://localhost:8080/userui/createuser", {
+        method: "GET",  // hoặc POST
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+        })
+}
+

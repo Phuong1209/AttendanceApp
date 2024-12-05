@@ -39,6 +39,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/loginui").permitAll()
                         .requestMatchers(HttpMethod.GET,"/userui").permitAll()
                         .requestMatchers(HttpMethod.GET,"/departmentui").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/userui/createuser").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/userui/createuser").permitAll()
                         .requestMatchers(HttpMethod.GET,"/static/**", "/js/**", "/css/**", "/images/**").permitAll()
                         .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(auth2 ->

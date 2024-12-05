@@ -106,9 +106,10 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public User save(User model) {
-        return userRepository.save(model);
+    public User save(User user) {
+        return userRepository.save(user);
     }
+
 
     @Transactional
     @Override
