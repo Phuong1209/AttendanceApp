@@ -15,13 +15,12 @@ import java.util.Set;
 
 @Repository
 public interface IWorkTimeService {
+    //CRUD
     List<WorkTimeDTO> getAllWorkTime();
-
     WorkTime saveWorkTime(WorkTime workTime);
-
     WorkTimeDTO findById(long workTimeId);
-
    void updateWorkTime(WorkTimeDTO workTimeDto);
+    void delete(long workTimeId);
 
      /*//show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);*/

@@ -35,7 +35,8 @@
                 <td th:text="${workTime.workTime}"></td>
                 <td th:text="${workTime.overTime}"></td>
                 <td><a class="btn" th:href="@{/worktimes/{workTimeId}/tasks(workTimeId=${workTime.id})}">リストを見る</a></td>
-                <td><a class="btn-blue" th:href="@{/worktimes/{workTimeId}(workTimeId=${workTime.id})}">修正</a><a class="btn-red">削除</a></td>
+                <td><a class="btn-blue" th:href="@{/worktimes/{workTimeId}(workTimeId=${workTime.id})}">修正</a>
+                    <a class="btn-red" th:href="@{/worktimes/{workTimeId}/delete(workTimeId=${workTime.id})}">削除</a></td>
             </tr>
             </tbody>
         </table>

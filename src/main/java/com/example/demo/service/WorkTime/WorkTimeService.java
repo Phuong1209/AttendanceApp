@@ -66,7 +66,8 @@ public class WorkTimeService implements IWorkTimeService {
         workTimeRepository.save(workTime);
     }
 
-    //Map
+
+    //Map (to edit)
     private WorkTime mapToWorkTime(WorkTimeDTO workTime){
         WorkTime workTimeDto = WorkTime.builder()
                 .id(workTime.getId())
@@ -80,6 +81,10 @@ public class WorkTimeService implements IWorkTimeService {
         return workTimeDto;
     }
 
-
+    //Delete
+    @Override
+    public void delete(long workTimeId) {
+        workTimeRepository.deleteById(workTimeId);
+    }
 
 }

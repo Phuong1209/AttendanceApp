@@ -64,4 +64,11 @@ public class WorkTimeUIController {
         return "redirect:/worktimes";
     }
 
+    //Delete
+    @GetMapping("/{workTimeId}/delete")
+    public String deleteWorkTime(@PathVariable("workTimeId")long workTimeId){
+        workTimeService.delete(workTimeId);
+        return "redirect:/worktimes";
+    }
+
 }
