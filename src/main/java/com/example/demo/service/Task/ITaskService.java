@@ -1,5 +1,6 @@
 package com.example.demo.service.Task;
 
+import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.model.Task;
 import com.example.demo.dto.TaskDTO;
 import com.example.demo.service.IGeneralService;
@@ -9,10 +10,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface ITaskService extends IGeneralService<Task> {
+public interface ITaskService {
+    //CRUD
     List<TaskDTO> getAllTask();
-
-    TaskDTO getTaskById(Long taskId);
 
     int countByWorkTimeAndDate(Long workTimeId, LocalDate workDate);
 }

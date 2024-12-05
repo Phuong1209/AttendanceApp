@@ -1,9 +1,7 @@
 package com.example.demo.service.Task;
 
-import com.example.demo.dto.JobTypeDTO;
-import com.example.demo.dto.ProjectDTO;
-import com.example.demo.dto.TaskDTO;
-import com.example.demo.dto.WorkTimeDTO;
+import com.example.demo.dto.*;
+import com.example.demo.model.Department;
 import com.example.demo.model.Task;
 import com.example.demo.model.User;
 import com.example.demo.repository.ITaskRepository;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,35 +20,47 @@ import java.util.*;
 public class TaskService implements ITaskService {
     private final ITaskRepository taskRepository;
 
-    @Transactional
+    //get all
     @Override
-    public Iterable<Task> findAll() {
-        return taskRepository.findAll();
+    public List<TaskDTO> getAllTask() {
+        List<Task> tasks = taskRepository.findAll();
+        return tasks.stream().map((task) -> mapToTaskDTO(task)).collect(Collectors.toList());
     }
 
-    @Transactional
-    @Override
-    public Optional<Task> findById(Long id) {
-        return taskRepository.findById(id);
+    //mapper
+    public TaskDTO mapToTaskDTO(Task task) {
+        //jobtype --> jobtypeDto
+        JobTypeDTO jobTypeDTO = JobTypeDTO.builder()
+                .id(task.getJobType().getId())
+                .name(task.getJobType().getName())
+                .build();
+
+        //project --> projectDto
+        ProjectDTO projectDTO = ProjectDTO.builder()
+                .id(task.getProject().getId())
+                .name(task.getProject().getName())
+                .build();
+
+        TaskDTO taskDTO = TaskDTO.builder()
+                .id(task.getId())
+                .totalTime(task.getTotalTime())
+                .comment(task.getComment())
+                .project(projectDTO)
+                .jobType(jobTypeDTO)
+                .build();
+        return taskDTO;
     }
 
-    @Transactional
     @Override
-    public Task save(Task model) {
-        return taskRepository.save(model);
+    public int countByWorkTimeAndDate(Long workTimeId, LocalDate workDate) {
+        return taskRepository.countByWorkTimeAndDate(workTimeId,workDate);
     }
 
-    @Transactional
-    @Override
-    public void remove(Long id) {
-        taskRepository.deleteById(id);
-    }
+}
 
-    @Override
-    public void delete(User user) {
 
-    }
 
+/*    //OLD
     //get all task
     @Override
     public List<TaskDTO> getAllTask() {
@@ -128,10 +139,4 @@ public class TaskService implements ITaskService {
             return taskDTO;
         }
         return null;
-    }
-
-    @Override
-    public int countByWorkTimeAndDate(Long workTimeId, LocalDate workDate) {
-        return taskRepository.countByWorkTimeAndDate(workTimeId,workDate);
-    }
-}
+    }*/
