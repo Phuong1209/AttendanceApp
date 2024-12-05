@@ -26,7 +26,8 @@
           <td th:text="${department.name}"></td>
           <td><a class="btn" th:href="@{/departments/{departmentId}/jobtypes(departmentId=${department.id})}">作業内容リストを見る</a></td>
           <td><a class="btn" th:href="@{/departments/{departmentId}/members(departmentId=${department.id})}">メンバリストを見る</a></td>
-          <td><a class="btn-blue" th:href="@{/departments/{departmentId}(departmentId=${department.id})}">修正</a><a class="btn-red">削除</a></td>
+          <td><a class="btn-blue" th:href="@{/departments/{departmentId}(departmentId=${department.id})}">修正</a>
+              <a class="btn-red" th:href="@{/departments/{departmentId}/delete(departmentId=${department.id})}">削除</a></td>
         </tr>
       </tbody>
     </table>

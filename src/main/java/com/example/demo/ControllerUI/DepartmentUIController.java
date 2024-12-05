@@ -78,6 +78,13 @@ public class DepartmentUIController {
         return "redirect:/departments";
     }
 
+    //Delete
+    @GetMapping("/{departmentId}/delete")
+    public String deleteDepartment(@PathVariable("departmentId")long departmentId){
+        departmentService.delete(departmentId);
+        return "redirect:/departments";
+    }
+
     //Show JobTypelist:
     @GetMapping("/{id}/jobtypes")
     public String showJobTypeList(@PathVariable("id") Long departmentId, Model model) {

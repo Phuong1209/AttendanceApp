@@ -17,13 +17,13 @@ import java.util.Set;
 
 @Repository
 public interface IDepartmentService {
+    //CRUD
     List<DepartmentDTO> getAllDepartment();
-
     Department saveDepartment(Department department);
-
     DepartmentDTO findById(long departmentId);
-
     void updateDepartment(DepartmentDTO departmentDto);
+    void delete(long departmentId);
+
 
     //show list jobType
     Set<JobType> findJobTypesByDepartment(Long departmentId);

@@ -76,17 +76,7 @@ public class DepartmentService implements IDepartmentService {
         departmentRepository.save(department);
     }
 
-    @Override
-    public Set<JobType> findJobTypesByDepartment(Long departmentId) {
-        return departmentRepository.findJobTypesByDepartment(departmentId);
-    }
-
-    @Override
-    public Set<User> findUsersByDepartment(Long departmentId) {
-        return departmentRepository.findUsersByDepartment(departmentId);
-    }
-
-    //Map
+    //Map to edit
     private Department mapToDepartment(DepartmentDTO department){
         Department departmentDto = Department.builder()
                 .id(department.getId())
@@ -94,6 +84,24 @@ public class DepartmentService implements IDepartmentService {
                 .build();
 
         return departmentDto;
+    }
+
+    //Delete
+    @Override
+    public void delete(long departmentId) {
+        departmentRepository.deleteById(departmentId);
+    }
+
+    //Show list job type
+    @Override
+    public Set<JobType> findJobTypesByDepartment(Long departmentId) {
+        return departmentRepository.findJobTypesByDepartment(departmentId);
+    }
+
+    //show list user
+    @Override
+    public Set<User> findUsersByDepartment(Long departmentId) {
+        return departmentRepository.findUsersByDepartment(departmentId);
     }
 
     //Edit (OLD)
