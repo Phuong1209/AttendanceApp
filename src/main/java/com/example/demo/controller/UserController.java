@@ -77,7 +77,8 @@ public class UserController {
     //show list
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
-        return ResponseEntity.ok().body(userService.findAll());
+        return ResponseEntity.ok().body(userService.getAllUser());
+
     }
 
     //show by Id

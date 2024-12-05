@@ -35,6 +35,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
                 request.requestMatchers(HttpMethod.POST, PUBLIC_URLS).permitAll()
+//                        .requestMatchers("/favicon.ico").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/loginui").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/userui").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/departmentui").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/static/**", "/js/**", "/css/**", "/images/**").permitAll()
                         .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(auth2 ->
                 auth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
