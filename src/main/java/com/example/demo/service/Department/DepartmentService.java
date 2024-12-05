@@ -96,7 +96,7 @@ public class DepartmentService implements IDepartmentService {
         return departmentDto;
     }
 
-    //Edit
+    //Edit (OLD)
     @Transactional
     public DepartmentDTO editDepartment(Long departmentId, String newName, Set<Long> newJobTypeIds) {
         // Find the department by ID

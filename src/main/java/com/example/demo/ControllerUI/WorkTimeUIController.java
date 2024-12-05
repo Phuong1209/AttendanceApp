@@ -1,5 +1,6 @@
 package com.example.demo.ControllerUI;
 
+import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
@@ -42,6 +43,24 @@ public class WorkTimeUIController {
     @PostMapping("/create")
     public String saveWorkTime(@ModelAttribute("workTime") WorkTime workTime){
         workTimeService.saveWorkTime(workTime);
+        return "redirect:/worktimes";
+    }
+
+    //Show edit form
+    @GetMapping("/{workTimeId}")
+    public String editWorkTimeForm(@PathVariable("workTimeId") long workTimeId, Model model){
+        WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
+        model.addAttribute("workTime", workTimeDto);
+
+        return "worktime/worktime-edit";
+    }
+
+    //Edit
+    @PostMapping("/{workTimeId}")
+    public String updateWorkTime(@PathVariable("workTimeId") Long workTimeId,
+                                   @ModelAttribute("workTimeDto") WorkTimeDTO workTimeDto){
+        workTimeDto.setId(workTimeId);
+        workTimeService.updateWorkTime(workTimeDto);
         return "redirect:/worktimes";
     }
 

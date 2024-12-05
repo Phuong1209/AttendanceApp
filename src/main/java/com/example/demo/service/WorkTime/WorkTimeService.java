@@ -52,4 +52,34 @@ public class WorkTimeService implements IWorkTimeService {
         return workTimeRepository.save(workTime);
     }
 
+    //Find by Id
+    @Override
+    public WorkTimeDTO findById(long workTimeId) {
+        WorkTime workTime = workTimeRepository.findById(workTimeId).get();
+        return mapToWorkTimeDTO(workTime);
+    }
+
+    //Update
+    @Override
+    public void updateWorkTime(WorkTimeDTO workTimeDto) {
+        WorkTime workTime = mapToWorkTime(workTimeDto);
+        workTimeRepository.save(workTime);
+    }
+
+    //Map
+    private WorkTime mapToWorkTime(WorkTimeDTO workTime){
+        WorkTime workTimeDto = WorkTime.builder()
+                .id(workTime.getId())
+                .date(workTime.getDate())
+                .checkinTime(workTime.getCheckinTime())
+                .checkoutTime(workTime.getCheckoutTime())
+                .breakTime(workTime.getBreakTime())
+                .workTime(workTime.getWorkTime())
+                .overTime(workTime.getOverTime())
+                .build();
+        return workTimeDto;
+    }
+
+
+
 }

@@ -19,11 +19,11 @@ public interface IWorkTimeService {
 
     WorkTime saveWorkTime(WorkTime workTime);
 
-    /*WorkTimeDTO findById(long workTimeId);
+    WorkTimeDTO findById(long workTimeId);
 
-    void updateWorkTime(WorkTimeDTO workTimeDto);
+   void updateWorkTime(WorkTimeDTO workTimeDto);
 
-    //show list task
+     /*//show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);*/
 
     /*Code TA
