@@ -27,6 +27,11 @@ public class TaskService implements ITaskService {
         return tasks.stream().map((task) -> mapToTaskDTO(task)).collect(Collectors.toList());
     }
 
+    @Override
+    public Task saveTask(Task task) {
+        return taskRepository.save(task);
+    }
+
     //mapper
     public TaskDTO mapToTaskDTO(Task task) {
         //jobtype --> jobtypeDto
@@ -57,7 +62,6 @@ public class TaskService implements ITaskService {
     }
 
 }
-
 
 
 /*    //OLD

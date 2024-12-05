@@ -13,6 +13,9 @@ import java.util.List;
 public interface ITaskService {
     //CRUD
     List<TaskDTO> getAllTask();
+    Task saveTask(Task task);
 
+    //set max task
     int countByWorkTimeAndDate(Long workTimeId, LocalDate workDate);
+
 }
