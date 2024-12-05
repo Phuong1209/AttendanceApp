@@ -14,10 +14,7 @@ import com.example.demo.service.WorkTime.IWorkTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -60,6 +57,39 @@ public class TaskUIController {
     @PostMapping("/create")
     public String saveTask(@ModelAttribute("task") Task task){
         taskService.saveTask(task);
+        return "redirect:/tasks";
+    }
+
+    //Show edit form
+    @GetMapping("/{taskId}")
+    public String editTaskForm(@PathVariable("taskId") long taskId, Model model){
+        TaskDTO taskDto = taskService.findById(taskId);
+        model.addAttribute("task", taskDto);
+
+        //show list project
+        List<Project> projects = projectRepository.findAll();
+        model.addAttribute("projects", projects);
+
+        //show list jobtype
+        List<JobType> jobTypes = jobTypeRepository.findAll();
+        model.addAttribute("jobTypes", jobTypes);
+
+        return "task/task-edit";
+    }
+
+    //Edit
+    @PostMapping("/{taskId}")
+    public String updateTask(@PathVariable("taskId") Long taskId,
+                                 @ModelAttribute("taskDto") TaskDTO taskDto){
+        taskDto.setId(taskId);
+        taskService.updateTask(taskDto);
+        return "redirect:/tasks";
+    }
+
+    //Delete
+    @GetMapping("/{taskId}/delete")
+    public String deleteTask(@PathVariable("taskId")long taskId){
+        taskService.delete(taskId);
         return "redirect:/tasks";
     }
 

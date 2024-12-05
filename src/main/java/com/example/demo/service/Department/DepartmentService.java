@@ -77,13 +77,13 @@ public class DepartmentService implements IDepartmentService {
     }
 
     //Map to edit
-    private Department mapToDepartment(DepartmentDTO department){
-        Department departmentDto = Department.builder()
-                .id(department.getId())
-                .name(department.getName())
+    private Department mapToDepartment(DepartmentDTO departmentDto){
+        Department department = Department.builder()
+                .id(departmentDto.getId())
+                .name(departmentDto.getName())
                 .build();
 
-        return departmentDto;
+        return department;
     }
 
     //Delete

@@ -1,11 +1,8 @@
 package com.example.demo.service.Task;
 
 import com.example.demo.dto.*;
-import com.example.demo.model.Department;
-import com.example.demo.model.Task;
-import com.example.demo.model.User;
+import com.example.demo.model.*;
 import com.example.demo.repository.ITaskRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -54,6 +51,48 @@ public class TaskService implements ITaskService {
                 .jobType(jobTypeDTO)
                 .build();
         return taskDTO;
+    }
+
+    @Override
+    public TaskDTO findById(long taskId) {
+        Task task = taskRepository.findById(taskId).get();
+        return mapToTaskDTO(task);
+    }
+
+    @Override
+    public void updateTask(TaskDTO taskDto) {
+        Task task = mapToTask(taskDto);
+        taskRepository.save(task);
+    }
+
+    //Map to edit
+    private Task mapToTask(TaskDTO taskDto){
+        //jobtypeDto --> jobtype
+        JobType jobType = JobType.builder()
+                .id(taskDto.getJobType().getId())
+                .name(taskDto.getJobType().getName())
+                .build();
+
+        //projectDto --> project
+        Project project = Project.builder()
+                .id(taskDto.getProject().getId())
+                .name(taskDto.getProject().getName())
+                .build();
+
+        Task task = Task.builder()
+                .id(taskDto.getId())
+                .totalTime(taskDto.getTotalTime())
+                .comment(taskDto.getComment())
+                .project(project)
+                .jobType(jobType)
+                .build();
+        return task;
+    }
+
+    //Delete
+    @Override
+    public void delete(long taskId) {
+        taskRepository.deleteById(taskId);
     }
 
     @Override

@@ -14,6 +14,9 @@ public interface ITaskService {
     //CRUD
     List<TaskDTO> getAllTask();
     Task saveTask(Task task);
+    TaskDTO findById(long taskId);
+    void updateTask(TaskDTO taskDto);
+    void delete(long taskId);
 
     //set max task
     int countByWorkTimeAndDate(Long workTimeId, LocalDate workDate);
