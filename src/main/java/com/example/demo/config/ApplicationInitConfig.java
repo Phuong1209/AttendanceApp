@@ -1,3 +1,4 @@
+/*
 package com.example.demo.config;
 
 import lombok.AccessLevel;
@@ -36,3 +37,4 @@ public class ApplicationInitConfig {
     }
 }
 
+*/

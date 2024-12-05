@@ -1,0 +1,75 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: white;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    width: 30vw;
+    height: 80vh;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.create_jobtype input,.update_jobtype input {
+    padding: 8px;
+    font-size: 15px;
+}
+
+.create_jobtype button,.update_jobtype button {
+    padding: 10px;
+    background-color: green;
+    color: white;
+}
+
+.create_jobtype button:hover,.update_jobtype button:hover {
+    background-color: darkgreen;
+    cursor: pointer;
+}
+
+.create_jobtype, .update_jobtype{
+    display: none;
+}
+
+.addbtn{
+    padding: 8px 15px;
+    background-color: green;
+    color: white;
+    font-size: 15px;
+}
+
+.addbtn:hover{
+    background-color: green;
+    cursor: pointer;
+}
+
+.table{
+    margin-top: 10px;
+    width: 100%;
+}
+
+
+
+@media screen and (max-width: 400px) {
+    .form-container {
+        width: 95vw;
+    }
+    .create_jobtype input, .update_jobtype input {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}

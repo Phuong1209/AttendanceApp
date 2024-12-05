@@ -1,3 +1,4 @@
+/*
 package com.example.demo.dto.request;
 
 import lombok.*;
@@ -12,13 +13,5 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class IntrospectRequest {
     String token;
-
-    @Getter
-    @Setter
-
-    public static class ProjectEditRequest {
-        private String name;
-        private String code;
-        private Set<Long> taskIds;
-    }
 }
+*/

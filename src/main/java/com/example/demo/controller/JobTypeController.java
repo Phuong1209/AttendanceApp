@@ -55,6 +55,8 @@ public class JobTypeController {
         return new ResponseEntity<>(newJobType, HttpStatus.CREATED);
     }
 
+
+
     //edit
     @PutMapping("/{id}")
     public ResponseEntity<?> editTask(@PathVariable Long id, @RequestBody Map<String, Object> requestBody) {

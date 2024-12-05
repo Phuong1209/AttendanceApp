@@ -23,9 +23,9 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
 import com.example.demo.dto.response.UserResponse;
-import com.example.demo.enums.Position;
-import com.example.demo.exception.AppException;
-import com.example.demo.exception.ErrorCode;
+//import com.example.demo.enums.Position;
+//import com.example.demo.exception.AppException;
+//import com.example.demo.exception.ErrorCode;
 import com.example.demo.mapper.UserMapper;
 
 import java.util.*;
@@ -39,10 +39,10 @@ public class UserService implements IUserService {
     private final IWorkTimeRepository workTimeRepository;
     private final IDepartmentRepository departmentRepository;
     private final IPositionRepository positionRepository;
-    PasswordEncoder passwordEncoder;
+    //PasswordEncoder passwordEncoder;
     UserMapper userMapper;
 //    @PreAuthorize("hasRole('ADMIN')")
-    public UserResponse createRequest(UserCreationRequest request){
+    /*public UserResponse createRequest(UserCreationRequest request){
         if(userRepository.existsByUserName(request.getUsername())){
             throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
         }
@@ -59,9 +59,9 @@ public class UserService implements IUserService {
                 () -> new AppException(ErrorCode.USER_NOT_FOUND)
         );
         return userMapper.toUserResponse(user);
-    }
+    }*/
 //    @PreAuthorize("hasRole('ADMIN')")
-    public List<UserResponse> getAllUsers(){
+    /*public List<UserResponse> getAllUsers(){
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse).toList();
     }
@@ -78,7 +78,7 @@ public class UserService implements IUserService {
     user.setPassword(passwordEncoder.encode(request.getPassword()));
     user.setPositions(new HashSet<>(positionRepository.findAllById(Collections.singleton(userId))));
     return userMapper.toUserResponse(userRepository.save(user));
-    }
+    }*/
 //    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);

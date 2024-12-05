@@ -1,3 +1,4 @@
+/*
 package com.example.demo.model;
 
 import jakarta.persistence.*;
@@ -25,3 +26,4 @@ public class BlacklistedToken {
 
     // Constructor, getters, setters
 }
+*/

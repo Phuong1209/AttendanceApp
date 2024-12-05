@@ -1,3 +1,4 @@
+/*
 package com.example.demo.service;
 
 
@@ -30,7 +31,7 @@ public class BlacklistService {
         // Extract expiration time from token
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
-                .build()
+                .bauild()
                 .parseClaimsJws(token)
                 .getBody();
         Date expirationDate = claims.getExpiration();
@@ -47,3 +48,4 @@ public class BlacklistService {
         return blacklistRepository.existsByToken(token);
     }
 }
+*/

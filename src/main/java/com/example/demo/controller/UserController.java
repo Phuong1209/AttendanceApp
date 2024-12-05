@@ -65,14 +65,14 @@ public class UserController {
     IDepartmentRepository departmentRepository;
     @Autowired
     DepartmentService departmentService;
-    PasswordEncoder passwordEncoder;
+    //PasswordEncoder passwordEncoder;
 
-    @GetMapping("/myInfo")
+/*    @GetMapping("/myInfo")
     public ApiResponse<UserResponse> getMyInfo(){
         return ApiResponse.<UserResponse>builder()
                 .result(userService1.getMyInfo())
                 .build();
-    }
+    }*/
 
     //show list
     @GetMapping
@@ -112,7 +112,7 @@ public class UserController {
         User newUser = new User();
         newUser.setUserName(userDTO.getUserName());
         newUser.setFullName(userDTO.getFullName());
-        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        newUser.setPassword(userDTO.getPassword());
 
         //Set Position list
         Set<PositionDTO> positionDTOS = userDTO.getPositions();

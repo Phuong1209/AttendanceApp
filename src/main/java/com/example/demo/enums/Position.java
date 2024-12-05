@@ -1,3 +1,4 @@
+/*
 package com.example.demo.enums;
 
 public enum Position {
@@ -10,4 +11,4 @@ public enum Position {
     public String des(){
         return this.msg;
     }
-}
+}*/
