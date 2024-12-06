@@ -10,7 +10,6 @@ import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IJobTypeRepository;
 import com.opencsv.CSVWriter;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
@@ -224,6 +223,39 @@ public class DepartmentService implements IDepartmentService {
         // Đóng CSVWriter sau khi hoàn thành
         writer.close();
     }
+
+ /* //Don't care about this
+    @Override
+    public void delete(User user) {
+    }
+
+
+    @Transactional
+    @Override
+    public Iterable<Department> findAll() {
+        return departmentRepository.findAll();
+    }
+
+    @Transactional
+    @Override
+    public Optional<Department> findById(Long id) {
+        return departmentRepository.findById(id);
+    }
+
+    @Transactional
+    @Override
+    public Department save(Department model) {
+        return departmentRepository.save(model);
+    }
+
+    @Transactional
+    @Override
+    public void remove(Long id) {
+        departmentRepository.deleteById(id);
+    }
+*/
+
+
 
 }
 

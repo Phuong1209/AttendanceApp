@@ -15,7 +15,7 @@
 .wrapper .sidebar{
     position: fixed;
     background: #123559;
-    width: 172px;
+    width: 200px;
     height: 100%;
     transition: all 0.3s ease;
 }
@@ -89,7 +89,7 @@
 }
 
 .wrapper .top_menu .system_name{
-    margin-left: 175px;
+    margin-left: 200px;
     color: #123559;
     font-size: 20px;
     font-weight: 700;
