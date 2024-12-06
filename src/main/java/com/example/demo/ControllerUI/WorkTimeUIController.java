@@ -46,8 +46,7 @@ public class WorkTimeUIController {
     @GetMapping("/{workTimeId}")
     public String editWorkTimeForm(@PathVariable("workTimeId") long workTimeId, Model model){
         WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
-        model.addAttribute("workTime", workTimeDto);
-
+        model.addAttribute("workTimeDto", workTimeDto);
         return "worktime/worktime-edit";
     }
 

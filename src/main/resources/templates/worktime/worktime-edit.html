@@ -9,7 +9,7 @@
     <div th:replace="~{layout :: top_menu}"></div>
     <div class="main_container">
         <h1>勤怠時間修正</h1>
-        <form role="form" method="POST" class="form_create" th:action="@{/worktimes/{worktimeId}(worktimeId=${workTime.id})}" th:object="${workTime}">
+        <form role="form" method="POST" class="form_create" th:action="@{/worktimes/{worktimeDtoId}(worktimeDtoId=${workTimeDto.id})}" th:object="${workTimeDto}">
             <div class="input_field">
                 <label>日付</label>
                 <input

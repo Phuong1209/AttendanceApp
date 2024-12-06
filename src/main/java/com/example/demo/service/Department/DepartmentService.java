@@ -78,6 +78,7 @@ public class DepartmentService implements IDepartmentService {
 
     //Map to update
     private Department mapToDepartment(DepartmentDTO departmentDto){
+        //create list jobType
         Set<JobType> jobTypes = departmentDto.getJobTypeIds().stream()
                 .map(id -> jobTypeRepository.findById(id).orElseThrow())
                 .collect(Collectors.toSet());
@@ -87,7 +88,6 @@ public class DepartmentService implements IDepartmentService {
                 .name(departmentDto.getName())
                 .jobTypes(jobTypes)
                 .build();
-
         return department;
     }
 

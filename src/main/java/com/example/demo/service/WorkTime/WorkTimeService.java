@@ -43,7 +43,6 @@ public class WorkTimeService implements IWorkTimeService {
                 .workTime(workTime.getWorkTime())
                 .overTime(workTime.getOverTime())
                 .build();
-
         return workTimeDTO;
     }
 
@@ -66,19 +65,18 @@ public class WorkTimeService implements IWorkTimeService {
         workTimeRepository.save(workTime);
     }
 
-
     //Map (to edit)
-    private WorkTime mapToWorkTime(WorkTimeDTO workTime){
-        WorkTime workTimeDto = WorkTime.builder()
-                .id(workTime.getId())
-                .date(workTime.getDate())
-                .checkinTime(workTime.getCheckinTime())
-                .checkoutTime(workTime.getCheckoutTime())
-                .breakTime(workTime.getBreakTime())
-                .workTime(workTime.getWorkTime())
-                .overTime(workTime.getOverTime())
+    private WorkTime mapToWorkTime(WorkTimeDTO workTimeDto){
+        WorkTime workTime = WorkTime.builder()
+                .id(workTimeDto.getId())
+                .date(workTimeDto.getDate())
+                .checkinTime(workTimeDto.getCheckinTime())
+                .checkoutTime(workTimeDto.getCheckoutTime())
+                .breakTime(workTimeDto.getBreakTime())
+                .workTime(workTimeDto.getWorkTime())
+                .overTime(workTimeDto.getOverTime())
                 .build();
-        return workTimeDto;
+        return workTime;
     }
 
     //Delete
