@@ -1,6 +1,7 @@
 package com.example.demo.ControllerUI;
 
 import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.dto.JobTypeDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
 import com.example.demo.model.User;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/departments")

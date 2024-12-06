@@ -19,7 +19,7 @@
                         placeholder="部署名"
                         th:field="*{name}">
             </div>
-<!--
+
             <div class="input_field">
                 <label>作業内容 </label>
                 <div class="selection_multiple">
@@ -36,13 +36,12 @@
                             <i class="fa-solid fa-check check-icon"></i>
                         </span>
                             <span class="item-text" th:text="${jobType.name}"></span>
-                            <input type="checkbox" name="jobTypes" th:value="${jobType.id}"
+                            <input type="checkbox" name="jobTypeIds" th:value="${jobType.id}"
                                    th:checked="${department.jobTypes.contains(jobType)}" hidden>
                         </li>
                     </ul>
                 </div>
             </div>
--->
             <input type="submit" value="修正" class="btn-blue">
         </form>
     </div>

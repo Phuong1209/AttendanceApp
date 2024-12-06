@@ -76,11 +76,16 @@ public class DepartmentService implements IDepartmentService {
         departmentRepository.save(department);
     }
 
-    //Map to edit
+    //Map to update
     private Department mapToDepartment(DepartmentDTO departmentDto){
+        Set<JobType> jobTypes = departmentDto.getJobTypeIds().stream()
+                .map(id -> jobTypeRepository.findById(id).orElseThrow())
+                .collect(Collectors.toSet());
+
         Department department = Department.builder()
                 .id(departmentDto.getId())
                 .name(departmentDto.getName())
+                .jobTypes(jobTypes)
                 .build();
 
         return department;
