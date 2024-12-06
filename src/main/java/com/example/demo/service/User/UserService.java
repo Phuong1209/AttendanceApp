@@ -17,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ import java.util.*;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+/*@RequiredArgsConstructor*/
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService implements IUserService {
     private final IUserRepository userRepository;
@@ -41,6 +42,17 @@ public class UserService implements IUserService {
     private final IPositionRepository positionRepository;
     //PasswordEncoder passwordEncoder;
     UserMapper userMapper;
+
+    //12/4 Huong added
+    @Autowired
+    public UserService(IUserRepository userRepository, IWorkTimeRepository workTimeRepository, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.workTimeRepository = workTimeRepository;
+        this.departmentRepository = departmentRepository;
+        this.positionRepository = positionRepository;
+        this.userMapper = userMapper;
+    }
+
 //    @PreAuthorize("hasRole('ADMIN')")
     /*public UserResponse createRequest(UserCreationRequest request){
         if(userRepository.existsByUserName(request.getUsername())){

@@ -1,4 +1,27 @@
-//Code P
+//12/06 add
+package com.example.demo.repository;
+
+import com.example.demo.model.User;
+import com.example.demo.model.WorkTime;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+@Repository
+public interface IWorkTimeRepository extends JpaRepository<WorkTime, Long> {
+    List<WorkTime> findByUser(User user);
+
+    Optional<WorkTime> findById(Long id);
+
+    List<WorkTime> findAllByUserId(Long userId); // Add a proper method for user-specific WorkTime
+
+    List<WorkTime> findByUserIdAndDateBetween(Long userId, LocalDate startOfMonth, LocalDate endOfMonth);
+}
+
+
+/*//Code P
 package com.example.demo.repository;
 
 import com.example.demo.model.User;
@@ -14,6 +37,8 @@ public interface IWorkTimeRepository extends JpaRepository<WorkTime, Long> {
     List<WorkTime> findByUser(User user);
 
     Optional<WorkTime> findById(Long id);
+
+    Iterable<WorkTime> findAllById();*/
 
 /*Code TA
     @Query("SELECT w FROM WorkingTime w WHERE w.user_id = :userId AND w.date = :date")
@@ -79,4 +104,3 @@ public interface IWorkTimeRepository extends JpaRepository<WorkTime, Long> {
     Optional<WorkingTime> findLatestUnclosedByUserIdOrderByCheckin_timeDesc(@Param("userId") Long userId);
 */
 
-}
