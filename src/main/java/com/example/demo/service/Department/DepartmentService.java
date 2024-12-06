@@ -77,7 +77,7 @@ public class DepartmentService implements IDepartmentService {
     }
 
     //Map to update
-    private Department mapToDepartment(DepartmentDTO departmentDto){
+    public Department mapToDepartment(DepartmentDTO departmentDto){
         //create list jobType
         Set<JobType> jobTypes = departmentDto.getJobTypeIds().stream()
                 .map(id -> jobTypeRepository.findById(id).orElseThrow())
@@ -107,53 +107,6 @@ public class DepartmentService implements IDepartmentService {
     @Override
     public Set<User> findUsersByDepartment(Long departmentId) {
         return departmentRepository.findUsersByDepartment(departmentId);
-    }
-
-    //Edit (OLD)
-    @Transactional
-    public DepartmentDTO editDepartment(Long departmentId, String newName, Set<Long> newJobTypeIds) {
-        // Find the department by ID
-        Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
-        if (!optionalDepartment.isPresent()) {
-            throw new NoSuchElementException("Department not found with ID: " + departmentId);
-        }
-
-        Department department = optionalDepartment.get();
-
-        // Update the department's name
-        if (newName != null && !newName.trim().isEmpty()) {
-            department.setName(newName);
-        }
-
-        // Update the department's job types
-        if (newJobTypeIds != null && !newJobTypeIds.isEmpty()) {
-            // Fetch the new JobType entities by their IDs
-            List<JobType> newJobTypes = jobTypeRepository.findAllById(newJobTypeIds);
-            if (newJobTypes.size() != newJobTypeIds.size()) {
-                throw new IllegalArgumentException("One or more JobType IDs are invalid.");
-            }
-            department.setJobTypes(new HashSet<>(newJobTypes));
-        }
-
-        // Save the updated department
-        Department updatedDepartment = departmentRepository.save(department);
-
-        // Map the updated department to DepartmentDTO
-        DepartmentDTO departmentDTO = new DepartmentDTO();
-        departmentDTO.setId(updatedDepartment.getId());
-        departmentDTO.setName(updatedDepartment.getName());
-
-        // Map job types to JobTypeDTO
-        Set<JobTypeDTO> jobTypeDTOS = new HashSet<>();
-        for (JobType jobType : updatedDepartment.getJobTypes()) {
-            JobTypeDTO jobTypeDTO = new JobTypeDTO();
-            jobTypeDTO.setId(jobType.getId());
-            jobTypeDTO.setName(jobType.getName());
-            jobTypeDTOS.add(jobTypeDTO);
-        }
-        departmentDTO.setJobTypes(jobTypeDTOS);
-
-        return departmentDTO;
     }
 
     //Summarize JobType by Department
@@ -271,39 +224,6 @@ public class DepartmentService implements IDepartmentService {
         // Đóng CSVWriter sau khi hoàn thành
         writer.close();
     }
-
- /* //Don't care about this
-    @Override
-    public void delete(User user) {
-    }
-
-
-    @Transactional
-    @Override
-    public Iterable<Department> findAll() {
-        return departmentRepository.findAll();
-    }
-
-    @Transactional
-    @Override
-    public Optional<Department> findById(Long id) {
-        return departmentRepository.findById(id);
-    }
-
-    @Transactional
-    @Override
-    public Department save(Department model) {
-        return departmentRepository.save(model);
-    }
-
-    @Transactional
-    @Override
-    public void remove(Long id) {
-        departmentRepository.deleteById(id);
-    }
-*/
-
-
 
 }
 

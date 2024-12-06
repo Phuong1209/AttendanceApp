@@ -35,8 +35,6 @@ public interface IDepartmentService {
     List<DepartmentSummaryDTO> getSummaryByDepartment();
     //summary department-project
     List<DepartmentSummaryDTO3> getSummaryByDepartment3();
-    //edit department
-    DepartmentDTO editDepartment(Long departmentId, String name, Set<Long> jobTypeIds);
 
     //CSV
     void exportDepartmentSummaryToCSV(HttpServletResponse response, List<DepartmentSummaryDTO> summaries) throws IOException;
