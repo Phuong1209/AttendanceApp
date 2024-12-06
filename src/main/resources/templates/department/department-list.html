@@ -10,28 +10,30 @@
   <div class="main_container">
     <h1>部署管理</h1>
     <a class="btn-blue" href="http://localhost:8080/departments/create">新規部署作成</a>
-    <table class="list-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>部署名</th>
-          <th>作業内容リスト</th>
-          <th>メンバーリスト</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody th:each="department, stat : ${departments}">
-        <tr>
-          <td th:text="${stat.index+1}"></td>
-          <td th:text="${department.name}"></td>
-          <td><a class="btn" th:href="@{/departments/{departmentId}/jobtypes(departmentId=${department.id})}">作業内容リストを見る</a></td>
-          <td><a class="btn" th:href="@{/departments/{departmentId}/members(departmentId=${department.id})}">メンバーリストを見る</a></td>
-          <td><a class="btn-blue" th:href="@{/departments/{departmentId}(departmentId=${department.id})}">修正</a>
-              <a class="btn-red" th:href="@{/departments/{departmentId}/delete(departmentId=${department.id})}">削除</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div style="overflow-x:auto;">
+      <table class="list-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>部署名</th>
+            <th>作業内容リスト</th>
+            <th>メンバーリスト</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody th:each="department, stat : ${departments}">
+          <tr>
+            <td th:text="${stat.index+1}"></td>
+            <td th:text="${department.name}"></td>
+            <td><a class="btn" th:href="@{/departments/{departmentId}/jobtypes(departmentId=${department.id})}">作業リストを見る</a></td>
+            <td><a class="btn" th:href="@{/departments/{departmentId}/members(departmentId=${department.id})}">メンバーリストを見る</a></td>
+            <td><a class="btn-blue" th:href="@{/departments/{departmentId}(departmentId=${department.id})}">修正</a>
+                <a class="btn-red" th:href="@{/departments/{departmentId}/delete(departmentId=${department.id})}">削除</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
 </div>
 </body>
 </html>
