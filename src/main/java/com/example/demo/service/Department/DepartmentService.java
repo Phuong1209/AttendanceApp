@@ -46,13 +46,21 @@ public class DepartmentService implements IDepartmentService {
                 .map((users) -> new UserDTO(users.getId(), users.getUserName(), users.getFullName()))
                 .collect(Collectors.toSet());
 
+        //set jobTypeIds (to show in edit form)
+        Set<Long> jobTypeIds = department.getJobTypes().stream()
+                .map(JobType::getId)
+                .collect(Collectors.toSet());
+
         //map department to departmentDto
         DepartmentDTO departmentDTO = DepartmentDTO.builder()
                 .id(department.getId())
                 .name(department.getName())
                 .jobTypes(jobTypeDTOs)
+                .jobTypeIds(jobTypeIds)
                 .users(userDTOs)
                 .build();
+
+        System.out.println("Job Type IDs: " + jobTypeIds);
         return departmentDTO;
     }
 

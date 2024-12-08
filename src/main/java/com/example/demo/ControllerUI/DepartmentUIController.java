@@ -68,6 +68,9 @@ public class DepartmentUIController {
         List<JobType> jobTypes = jobTypeRepository.findAll();
         model.addAttribute("jobTypes", jobTypes);
 
+        System.out.println("Job Types: " + jobTypes);
+        System.out.println("Department DTO: " + departmentDto);
+
         return "department/department-edit";
     }
 
