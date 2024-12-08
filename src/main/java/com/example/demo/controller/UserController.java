@@ -1,3 +1,4 @@
+/*
 package com.example.demo.controller;
 
 import com.example.demo.csv.UserCSVExporter;
@@ -65,16 +66,20 @@ public class UserController {
     IDepartmentRepository departmentRepository;
     @Autowired
     DepartmentService departmentService;
+*/
 /*    @Autowired
-    PasswordEncoder passwordEncoder;*/
+    PasswordEncoder passwordEncoder;*//*
+
 
     //Tạm ẩn để test UI
+*/
 /*    @GetMapping("/myInfo")
     public ApiResponse<UserResponse> getMyInfo(){
         return ApiResponse.<UserResponse>builder()
                 .result(userService1.getMyInfo())
                 .build();
-    }*/
+    }*//*
+
 
     //show list
     @GetMapping
@@ -251,3 +256,4 @@ public class UserController {
         return new ResponseEntity<>(userOptional.get(), HttpStatus.NO_CONTENT);
     }
 }
+*/

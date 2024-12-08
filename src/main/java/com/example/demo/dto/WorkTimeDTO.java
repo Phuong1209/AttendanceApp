@@ -25,6 +25,12 @@ public class WorkTimeDTO {
     private UserDTO user;
     private Set<TaskDTO> tasks;
 
+    // Added fields for the attendance sheet
+    private boolean isHoliday;
+    private boolean isWeekend;
+    private boolean isFuture;
+    private String weekday; // Add this to display the weekday name (月, 火, etc.)
+
     //constructor
     public WorkTimeDTO() {
     }
@@ -41,7 +47,7 @@ public class WorkTimeDTO {
         this.overTime = overTime;
     }
 
-    public WorkTimeDTO(Long id, LocalDate date, LocalDateTime checkinTime, LocalDateTime checkoutTime, Float breakTime, Float workTime, Float overTime, UserDTO user, Set<TaskDTO> tasks) {
+    public WorkTimeDTO(Long id, LocalDate date, LocalDateTime checkinTime, LocalDateTime checkoutTime, Float breakTime, Float workTime, Float overTime, UserDTO user, Set<TaskDTO> tasks, boolean isHoliday, boolean isWeekend, boolean isFuture, String weekday) {
         this.id = id;
         this.date = date;
         this.checkinTime = checkinTime;
@@ -51,5 +57,9 @@ public class WorkTimeDTO {
         this.overTime = overTime;
         this.user = user;
         this.tasks = tasks;
+        this.isHoliday = isHoliday;
+        this.isWeekend = isWeekend;
+        this.isFuture = isFuture;
+        this.weekday = weekday;
     }
 }

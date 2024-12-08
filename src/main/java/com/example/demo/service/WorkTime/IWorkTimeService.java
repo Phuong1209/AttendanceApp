@@ -19,8 +19,11 @@ public interface IWorkTimeService {
     List<WorkTimeDTO> getAllWorkTime();
     WorkTime saveWorkTime(WorkTime workTime);
     WorkTimeDTO findById(long workTimeId);
-   void updateWorkTime(WorkTimeDTO workTimeDto);
+    void updateWorkTime(WorkTimeDTO workTimeDto);
     void delete(long workTimeId);
+
+    //Calendar
+    List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long id, int year, int month);
 
      /*//show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);*/

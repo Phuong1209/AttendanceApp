@@ -1,18 +1,15 @@
 package com.example.demo.service.WorkTime;
 
-import com.example.demo.dto.*;
-import com.example.demo.dto.TaskDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
-import com.example.demo.repository.ITaskRepository;
 import com.example.demo.repository.IWorkTimeRepository;
+import com.example.demo.utils.WorkTimeMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,6 +20,8 @@ import java.util.stream.Collectors;
 public class WorkTimeService implements IWorkTimeService {
 
     private final IWorkTimeRepository workTimeRepository;
+    private final WorkTimeMapper workTimeMapper;
+
 
     //get all workTime
     @Override
@@ -84,5 +83,47 @@ public class WorkTimeService implements IWorkTimeService {
     public void delete(long workTimeId) {
         workTimeRepository.deleteById(workTimeId);
     }
+
+    //GetCalendar
+    @Transactional
+    @Override
+    public List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long userId, int year, int month) {
+        LocalDate startOfMonth = LocalDate.of(year, month, 1);
+        LocalDate endOfMonth = startOfMonth.withDayOfMonth(startOfMonth.lengthOfMonth());
+        List<WorkTime> workTimes = workTimeRepository.findByUserIdAndDateBetween(userId, startOfMonth, endOfMonth);
+
+        Map<LocalDate, WorkTimeDTO> workTimeMap = workTimes.stream()
+                .map(workTime -> workTimeMapper.toDto(workTime, new ArrayList<>(workTime.getTasks())))
+                .collect(Collectors.toMap(WorkTimeDTO::getDate, dto -> dto));
+
+
+        List<WorkTimeDTO> allDays = new ArrayList<>();
+        for (LocalDate date = startOfMonth; !date.isAfter(endOfMonth); date = date.plusDays(1)) {
+            WorkTimeDTO dto = workTimeMap.getOrDefault(date, new WorkTimeDTO());
+            dto.setDate(date);
+            dto.setWeekday(getWeekdayString(date));
+            dto.setWeekend(date.getDayOfWeek().getValue() >= 6);
+            dto.setHoliday(false); // Add custom holiday logic if needed
+            dto.setFuture(date.isAfter(LocalDate.now()));
+            allDays.add(dto);
+        }
+
+        return allDays;
+    }
+
+    //get Weekday
+    private String getWeekdayString(LocalDate date) {
+        switch (date.getDayOfWeek()) {
+            case MONDAY: return "月";
+            case TUESDAY: return "火";
+            case WEDNESDAY: return "水";
+            case THURSDAY: return "木";
+            case FRIDAY: return "金";
+            case SATURDAY: return "土";
+            case SUNDAY: return "日";
+            default: return "";
+        }
+    }
+
 
 }

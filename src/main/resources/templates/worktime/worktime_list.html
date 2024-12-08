@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>勤務時間表</title>
+    <style>
+        /* Add table and button styling here for simplicity */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .holiday {
+            background-color: lightpink;
+        }
+        .weekend {
+            background-color: lightblue;
+        }
+        .future {
+            background-color: lightgray;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h3>ユーザー名:</h3>
+    <h4 th:text="${currentYear} + '年' + ${currentMonth} + '月'"></h4>
+    <table>
+        <thead>
+        <tr>
+            <th>日付</th>
+            <th>曜日</th>
+            <th>出勤</th>
+            <th>退勤</th>
+            <th>休憩</th>
+            <th>時間内</th>
+            <th>残業時間</th>
+            <th>アクション</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="workTime : ${workTimes}"
+            th:class="${workTime.isHoliday ? 'holiday' : ''} + ' ' + ${workTime.isWeekend ? 'weekend' : ''} + ' ' + ${workTime.isFuture ? 'future' : ''}">
+            <td th:text="${workTime.date}"></td>
+            <td th:text="${workTime.weekday}"></td>
+            <td th:text="${workTime.checkinTime}"></td>
+            <td th:text="${workTime.checkoutTime}"></td>
+            <td th:text="${workTime.breakTime} + ' 時間'"></td>
+            <td th:text="${workTime.workTime} + ' 時間'"></td>
+            <td th:text="${workTime.overTime} + ' 時間'"></td>
+            <td>
+                <button th:onclick="'/edit/' + ${workTime.id}" th:text="'修正'" th:disabled="${workTime.isFuture}"></button>
+                <button th:onclick="'/delete/' + ${workTime.id}" th:text="'削除'" th:disabled="${workTime.isFuture}"></button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <button th:onclick="'/worktime?year=' + ${currentYear} + '&month=' + (${currentMonth} - 1)"
+                th:text="'先月'"
+                th:disabled="${currentMonth} == 1"></button>
+        <button th:onclick="'/worktime?year=' + ${currentYear} + '&month=' + (${currentMonth} + 1)"
+                th:text="'来月'"
+                th:disabled="${currentMonth} == 12"></button>
+    </div>
+</div>
+</body>
+</html>
