@@ -33,10 +33,11 @@ public class UserUIController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+
     //Show User List
     @GetMapping({""})
     public String getUserList(Model model) {
-        Iterable<UserDTO> users = userService.getAllUser();
+        Iterable<User> users = userService.findAll();
         model.addAttribute("users", users);
         return "user/index";
     }
@@ -109,6 +110,18 @@ public class UserUIController {
         // Lưu thông tin người dùng
         userService.save(existingUser);
         return "redirect:/userui";
+    }
+    @GetMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable Long id, Model model){
+        Optional<User> user = userService.findById(id);
+        if (user.isPresent()) {
+            userService.remove(id);
+            // Nếu muốn hiển thị thông báo về người dùng đã xóa
+            model.addAttribute("message", "User has been deleted successfully.");
+        } else {
+            model.addAttribute("error", "User not found.");
+        }
+        return "redirect:/userui"; // Chuyển hướng về trang userui
     }
 
 }

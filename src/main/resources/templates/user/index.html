@@ -26,25 +26,25 @@
     </thead>
 
     <tbody>
-      <tr th:each="userDTO : ${users}">
-        <td th:text="${userDTO.id}"></td>
-        <td th:text="${userDTO.fullName}"></td>
-        <td th:text="${userDTO.userName}"></td>
+      <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.fullName}"></td>
+        <td th:text="${user.userName}"></td>
         <td>
           <ul>
-            <li th:each="position : ${userDTO.positions}" th:text="${position.name}"></li>
+            <li th:each="position : ${user.positions}" th:text="${position.name}"></li>
           </ul>
         </td>
         <td>
           <ul>
-            <li th:each="department : ${userDTO.departments}" th:text="${department.name}"></li>
+            <li th:each="department : ${user.departments}" th:text="${department.name}"></li>
           </ul>
         </td>
         <td style="white-space: nowrap">
           <a class="btn btn-primary btn-sm"
-             th:href="@{/userui/editUser/{id}(id=${userDTO.id})}">更新</a>
+             th:href="@{/userui/editUser/{id}(id=${user.id})}">更新</a>
           <a class="btn btn-danger btn-sm"
-             th:href="@{/user/delete(id=${userDTO.id})}"
+             th:href="@{/userui/deleteUser/{id}(id=${user.id})}"
              onclick="return confirm('Are you sure?')">削除</a>
         </td>
       </tr>

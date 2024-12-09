@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"userui/editUser/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/static/**", "/js/**", "/css/**", "/images/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/logout").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/userui/deleteUser/**").permitAll()
                         .anyRequest().authenticated())
                         .logout(logout ->
                                 logout.logoutUrl("/logout") // Endpoint để xử lý logout
