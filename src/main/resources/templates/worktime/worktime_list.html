@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>勤務時間表</title>
     <style>
-        /* Add table and button styling here for simplicity */
         table {
             border-collapse: collapse;
             width: 100%;
@@ -40,6 +39,45 @@
             cursor: not-allowed;
         }
     </style>
+    <script>
+        function parseTimeString(timeStr) {
+            if (!timeStr || !timeStr.includes(":")) return null;
+            const [hours, minutes] = timeStr.split(":").map(Number);
+            return new Date(1970, 0, 1, hours, minutes, 0);
+        }
+
+        function calculateWorkAndOverTime(checkin, checkout, breakTime) {
+            const checkinTime = parseTimeString(checkin);
+            const checkoutTime = parseTimeString(checkout);
+            const breakTimeHours = parseFloat(breakTime) || 0;
+
+            if (!checkinTime || !checkoutTime) {
+                return { workTime: 0, overTime: 0 };
+            }
+
+            const totalHours = (checkoutTime - checkinTime) / (1000 * 60 * 60) - breakTimeHours;
+            const regularWorkTime = Math.max(0, Math.min(totalHours, 8));
+            const overTime = Math.max(0, totalHours - 8);
+
+            return { workTime: regularWorkTime.toFixed(2), overTime: overTime.toFixed(2) };
+        }
+
+        function updateWorkTimeTable() {
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const checkin = row.querySelector('.checkin')?.innerText.trim() || "";
+                const checkout = row.querySelector('.checkout')?.innerText.trim() || "";
+                const breakTime = row.querySelector('.break')?.innerText.trim() || "0";
+
+                const { workTime, overTime } = calculateWorkAndOverTime(checkin, checkout, breakTime);
+
+                row.querySelector('.worktime').innerText = `${workTime} 時間`;
+                row.querySelector('.overtime').innerText = `${overTime} 時間`;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', updateWorkTimeTable);
+    </script>
 </head>
 <body>
 <div>
@@ -53,7 +91,7 @@
             <th>出勤</th>
             <th>退勤</th>
             <th>休憩</th>
-            <th>時間内</th>
+            <th>勤務時間</th>
             <th>残業時間</th>
             <th>アクション</th>
         </tr>
@@ -63,14 +101,16 @@
             th:class="${workTime.isHoliday ? 'holiday' : ''} + ' ' + ${workTime.isWeekend ? 'weekend' : ''} + ' ' + ${workTime.isFuture ? 'future' : ''}">
             <td th:text="${workTime.date}"></td>
             <td th:text="${workTime.weekday}"></td>
-            <td th:text="${workTime.checkinTime}"></td>
-            <td th:text="${workTime.checkoutTime}"></td>
-            <td th:text="${workTime.breakTime} + ' 時間'"></td>
-            <td th:text="${workTime.workTime} + ' 時間'"></td>
-            <td th:text="${workTime.overTime} + ' 時間'"></td>
+            <td class="checkin" th:text="${workTime.checkinTime}"></td>
+            <td class="checkout" th:text="${workTime.checkoutTime}"></td>
+            <td class="break" th:text="${workTime.breakTime != null ? workTime.breakTime : '0'}"></td>
+            <td class="worktime" th:text="'0 時間'"></td>
+            <td class="overtime" th:text="'0 時間'"></td>
             <td>
-                <button th:onclick="'/edit/' + ${workTime.id}" th:text="'修正'" th:disabled="${workTime.isFuture}"></button>
-                <button th:onclick="'/delete/' + ${workTime.id}" th:text="'削除'" th:disabled="${workTime.isFuture}"></button>
+                <button th:onclick="'/edit/' + ${workTime.id}" th:text="'修正'"
+                        th:disabled="${workTime.isFuture}"></button>
+                <button th:onclick="'/delete/' + ${workTime.id}" th:text="'削除'"
+                        th:disabled="${workTime.isFuture}"></button>
             </td>
         </tr>
         </tbody>
