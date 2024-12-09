@@ -5,10 +5,10 @@
 */
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
-fetch("http://localhost:8080/auth/token", {
+fetch ("http://localhost:8080/loginui", {
     method: "POST",
     headers: {
-        // "Authorization": `Bearer ${token}`,
+        // Authorization": `Bearer ${token}`,
         "Content-Type": "application/json"
     },
     body: JSON.stringify({
@@ -73,6 +73,20 @@ if (token) {
 //create user
 if (token) {
     fetch("http://localhost:8080/userui/createuser", {
+        method: "GET",  // hoặc POST
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+        })
+}
+
+if (token) {
+    fetch("http://localhost:8080/userui/editUser/{id}", {
         method: "GET",  // hoặc POST
         headers: {
             "Authorization": `Bearer ${token}`,

@@ -27,10 +27,11 @@ import com.example.demo.enums.Position;
 import com.example.demo.exception.AppException;
 import com.example.demo.exception.ErrorCode;
 import com.example.demo.mapper.UserMapper;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -104,6 +105,7 @@ public class UserService implements IUserService {
         return userRepository.findById(id);
     }
 
+
     @Transactional
     @Override
     public User save(User user) {
@@ -147,6 +149,7 @@ public class UserService implements IUserService {
 //        workingTimeRepository.deleteAll(workingTimes);
         userRepository.deleteById(user.getId());
     }
+
 
     @Override
     public List<UserDTO> getAllUser() {

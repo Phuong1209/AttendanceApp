@@ -17,9 +17,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface IUserService extends IGeneralService<User> {
+public interface IUserService  {
+    @Transactional
+    void remove(Long id);
+
+    @Transactional
+
     //get list user
     List<UserDTO> getAllUser();
     //get list department by user
@@ -28,6 +34,13 @@ public interface IUserService extends IGeneralService<User> {
     List<Position> getPositionByUser(Long userId);
     //get list worktime by user
     List<WorkTime> getWorkTimeByUser(Long userId);
+
+    @Transactional
+    Iterable<User> findAll();
+
+    Optional<User> findById(Long id);
+
+    User save(User newUser);
 
 //    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }
