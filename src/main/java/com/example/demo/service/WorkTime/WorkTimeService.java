@@ -125,5 +125,14 @@ public class WorkTimeService implements IWorkTimeService {
         }
     }
 
+    //get list task
+    @Override
+    public Set<Task> findTasksByWorkTime(Long workTimeId) {
+        return workTimeRepository.findTasksByWorkTime(workTimeId);
+    }
+
+
+
+
 
 }

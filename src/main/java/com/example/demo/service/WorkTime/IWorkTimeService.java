@@ -25,6 +25,9 @@ public interface IWorkTimeService {
     //Calendar
     List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long id, int year, int month);
 
+    //show list task
+    Set<Task> findTasksByWorkTime(Long workTimeId);
+
      /*//show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);*/
 

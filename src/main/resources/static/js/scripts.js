@@ -2,28 +2,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Select all <a> tags in the sidebar
     const links = document.querySelectorAll('.sidebar ul li > a');
-    console.log('Links:', links); // Debug to check selected elements
+    const currentPath = window.location.pathname; // Get current URL path
 
-    // If links are found, attach event listeners
-    if (links.length > 0) {
-        links.forEach(link => {
-            link.addEventListener('click', (event) => {
-                // Prevent default if necessary (e.g., SPA navigation)
-                // event.preventDefault();
+    // Highlight the active link based on the current URL
+    links.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('active'); // Add active class if path matches
+        }
 
-                // Remove 'active' class from all links
-                links.forEach(item => item.classList.remove('active'));
+        // Add click event listeners for SPA-like behavior
+        link.addEventListener('click', (event) => {
+            // Remove 'active' class from all links
+            links.forEach(item => item.classList.remove('active'));
 
-                // Add 'active' class to the clicked link
-                event.currentTarget.classList.add('active');
-                console.log('Class added:', event.currentTarget.className); // Debug
-            });
+            // Add 'active' class to the clicked link
+            event.currentTarget.classList.add('active');
         });
-    } else {
-        console.error('No links found in the sidebar');
-    }
+    });
 });
-
 
 const selectBtn = document.querySelector(".select-btn"),
     items = document.querySelectorAll(".item");

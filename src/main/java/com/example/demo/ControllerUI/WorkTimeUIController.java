@@ -1,6 +1,8 @@
 package com.example.demo.ControllerUI;
 
+import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.dto.WorkTimeDTO;
+import com.example.demo.model.Task;
 import com.example.demo.model.User;
 import com.example.demo.model.WorkTime;
 import com.example.demo.repository.ITaskRepository;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/worktimes")
@@ -107,6 +110,28 @@ public class WorkTimeUIController {
         model.addAttribute("nextYear", month == 12 ? year + 1 : year);
 
         return "worktime/worktime_list";
+    }
+
+    //Show task list:
+    @GetMapping("/{id}/tasks")
+    public String showTaskList(@PathVariable("id") Long workTimeId, Model model) {
+        Set<Task> tasks = workTimeService.findTasksByWorkTime(workTimeId);
+
+        if (tasks == null) {
+            model.addAttribute("errorMessage", "タスクを登録してください。");
+            return "redirect:/worktimes";
+        }
+
+        model.addAttribute("tasks", tasks);
+
+        // Fetch the workTime info
+        WorkTimeDTO workTime = workTimeService.findById(workTimeId);
+        model.addAttribute("date", workTime.getDate());
+/*
+        model.addAttribute("fullName", workTime.getUser().getFullName());
+*/
+
+        return "worktime/worktime-tasks";
     }
 
 }
