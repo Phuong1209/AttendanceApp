@@ -127,9 +127,7 @@ public class WorkTimeUIController {
         // Fetch the workTime info
         WorkTimeDTO workTime = workTimeService.findById(workTimeId);
         model.addAttribute("date", workTime.getDate());
-/*
         model.addAttribute("fullName", workTime.getUser().getFullName());
-*/
 
         return "worktime/worktime-tasks";
     }

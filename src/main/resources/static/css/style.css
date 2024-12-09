@@ -342,6 +342,16 @@ h1 {
     padding: 0 7px;
 }
 
+.form-table td select{
+    position: relative;
+    width: 100%;
+    height: 35px;
+    outline: none;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 7px;
+}
+
 /*Collapse*/
 .wrapper.collapse .sidebar{
     width: 70px;

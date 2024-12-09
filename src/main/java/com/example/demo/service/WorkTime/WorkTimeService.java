@@ -1,5 +1,7 @@
 package com.example.demo.service.WorkTime;
 
+import com.example.demo.dto.JobTypeDTO;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.IWorkTimeRepository;
@@ -32,6 +34,12 @@ public class WorkTimeService implements IWorkTimeService {
 
     //mapper
     public WorkTimeDTO mapToWorkTimeDTO(WorkTime workTime) {
+        //user --> userDto
+        UserDTO userDTO = UserDTO.builder()
+                .id(workTime.getUser().getId())
+                .fullName(workTime.getUser().getFullName())
+                .build();
+
         //map workTime to workTimeDto
         WorkTimeDTO workTimeDTO = WorkTimeDTO.builder()
                 .id(workTime.getId())
@@ -41,6 +49,7 @@ public class WorkTimeService implements IWorkTimeService {
                 .breakTime(workTime.getBreakTime())
                 .workTime(workTime.getWorkTime())
                 .overTime(workTime.getOverTime())
+                .user(userDTO)
                 .build();
         return workTimeDTO;
     }
@@ -66,6 +75,12 @@ public class WorkTimeService implements IWorkTimeService {
 
     //Map (to edit)
     private WorkTime mapToWorkTime(WorkTimeDTO workTimeDto){
+        //userDto --> user
+        User user = User.builder()
+                .id(workTimeDto.getUser().getId())
+                .fullName(workTimeDto.getUser().getFullName())
+                .build();
+
         WorkTime workTime = WorkTime.builder()
                 .id(workTimeDto.getId())
                 .date(workTimeDto.getDate())
@@ -74,6 +89,7 @@ public class WorkTimeService implements IWorkTimeService {
                 .breakTime(workTimeDto.getBreakTime())
                 .workTime(workTimeDto.getWorkTime())
                 .overTime(workTimeDto.getOverTime())
+                .user(user)
                 .build();
         return workTime;
     }
