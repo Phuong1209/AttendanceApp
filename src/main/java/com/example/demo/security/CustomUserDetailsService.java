@@ -1,4 +1,3 @@
-/*
 package com.example.demo.security;
 
 import com.example.demo.model.User;
@@ -28,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             org.springframework.security.core.userdetails.User authUser = new org.springframework.security.core.userdetails.User(
                     user.getUserName(),
                     user.getPassword(),
-                    user.getPositions().stream().map((role) -> new SimpleGrantedAuthority(role.getName()))
+                    user.getPositions().stream().map((position) -> new SimpleGrantedAuthority(position.getName()))
                             .collect(Collectors.toList())
             );
             return authUser;
@@ -36,4 +35,4 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Invalid username or password");
         }
     }
-}*/
+}

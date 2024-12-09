@@ -1,4 +1,3 @@
-/*
 package com.example.demo.controller;
 
 import com.example.demo.csv.UserCSVExporter;
@@ -66,19 +65,17 @@ public class UserController {
     IDepartmentRepository departmentRepository;
     @Autowired
     DepartmentService departmentService;
-*/
-/*    @Autowired
-    PasswordEncoder passwordEncoder;*//*
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
 
-    //Tạm ẩn để test UI
-*/
-/*    @GetMapping("/myInfo")
+/*    //Tạm ẩn để test UI
+    @GetMapping("/myInfo")
     public ApiResponse<UserResponse> getMyInfo(){
         return ApiResponse.<UserResponse>builder()
                 .result(userService1.getMyInfo())
                 .build();
-    }*//*
+    }*/
 
 
     //show list
@@ -119,7 +116,7 @@ public class UserController {
         User newUser = new User();
         newUser.setUserName(userDTO.getUserName());
         newUser.setFullName(userDTO.getFullName());
-        //newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         //Set Position list
         Set<PositionDTO> positionDTOS = userDTO.getPositions();
@@ -256,4 +253,3 @@ public class UserController {
         return new ResponseEntity<>(userOptional.get(), HttpStatus.NO_CONTENT);
     }
 }
-*/

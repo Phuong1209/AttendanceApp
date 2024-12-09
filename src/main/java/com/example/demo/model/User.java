@@ -24,7 +24,8 @@ public class User implements Serializable {
     private String fullName;
     private String userName;
     private String password;
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    //doi tam fecthtype thanh eager thi login thanh cong
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(
             name="user_position",
             joinColumns = @JoinColumn(name="user_id"),

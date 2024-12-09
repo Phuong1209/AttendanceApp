@@ -1,19 +1,32 @@
+//Sidebar display
+document.addEventListener('DOMContentLoaded', () => {
+    // Select all <a> tags in the sidebar
+    const links = document.querySelectorAll('.sidebar ul li > a');
+    console.log('Links:', links); // Debug to check selected elements
+
+    // If links are found, attach event listeners
+    if (links.length > 0) {
+        links.forEach(link => {
+            link.addEventListener('click', (event) => {
+                // Prevent default if necessary (e.g., SPA navigation)
+                // event.preventDefault();
+
+                // Remove 'active' class from all links
+                links.forEach(item => item.classList.remove('active'));
+
+                // Add 'active' class to the clicked link
+                event.currentTarget.classList.add('active');
+                console.log('Class added:', event.currentTarget.className); // Debug
+            });
+        });
+    } else {
+        console.error('No links found in the sidebar');
+    }
+});
+
+
 const selectBtn = document.querySelector(".select-btn"),
     items = document.querySelectorAll(".item");
-
-selectBtn.addEventListener("click", () => {
-    selectBtn.classList.toggle("open");
-})
-
-items.forEach(item => {
-    item.addEventListener("click", () => {
-        const checkbox = item.querySelector('input[type="checkbox"]');
-        checkbox.checked = !checkbox.checked;
-        item.classList.toggle("checked", checkbox.checked); // Update class based on new state
-
-        updateSelectedText();
-    });
-});
 
 window.onload = () => {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -49,3 +62,17 @@ function updateSelectedText() {
     }
 }
 
+//multiple select
+selectBtn.addEventListener("click", () => {
+    selectBtn.classList.toggle("open");
+})
+
+items.forEach(item => {
+    item.addEventListener("click", () => {
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+        item.classList.toggle("checked", checkbox.checked); // Update class based on new state
+
+        updateSelectedText();
+    });
+});
