@@ -53,7 +53,7 @@ function updateSelectedText() {
         btnText.innerText = selectedTexts.join("、 ");
         btnText.classList.add("active");
     } else {
-        btnText.innerText = "作業内容を選択";
+        btnText.innerText = "選択してください。";
         btnText.classList.remove("active");
     }
 }

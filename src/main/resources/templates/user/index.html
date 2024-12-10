@@ -1,20 +1,17 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>勤怠管理システム</title>
-  <!-- Ngăn trình duyệt yêu cầu favicon -->
-  <link rel="icon" href="data:,">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-<body>
-<div class="cointainer">
-  <h1 class="text-center my-4">メンバー管理</h1>
-  <a class="btn btn-primary" href="./userui/createuser">新規ユーザ作成</a>
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
 
-  <table class="table">
-    <thead>
+<body>
+<div class="wrapper">
+  <div th:replace="~{layout :: sidebar}"></div>
+  <div th:replace="~{layout :: top_menu}"></div>
+  <div class="main_container">
+    <h1>メンバー管理</h1>
+    <a class="btn-blue" href="http://localhost:8080/members/create">新規ユーザ作成</a>
+    <table class="list-table">
+      <thead>
       <tr>
         <th>ID</th>
         <th>フルネーム</th>
@@ -23,9 +20,9 @@
         <th>部署</th>
         <th>操作</th>
       </tr>
-    </thead>
+      </thead>
 
-    <tbody>
+      <tbody>
       <tr th:each="user : ${users}">
         <td th:text="${user.id}"></td>
         <td th:text="${user.fullName}"></td>
@@ -41,24 +38,84 @@
           </ul>
         </td>
         <td style="white-space: nowrap">
-          <a class="btn btn-primary btn-sm"
-             th:href="@{/userui/editUser/{id}(id=${user.id})}">更新</a>
-          <a class="btn btn-danger btn-sm"
-             th:href="@{/userui/deleteUser/{id}(id=${user.id})}"
+          <a class="btn-blue"
+             th:href="@{/members/edit/{id}(id=${user.id})}">更新</a>
+          <a class="btn-red"
+             th:href="@{/members/delete/{id}(id=${user.id})}"
              onclick="return confirm('Are you sure?')">削除</a>
         </td>
       </tr>
-    </tbody>
+      </tbody>
 
-  </table>
-
-
+    </table>
+  </div>
 </div>
-<!--<script src="/static/js/scripts.js"></script>-->
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
+
+
+
+    <!--<!doctype html>
+    <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>勤怠管理システム</title>
+      &lt;!&ndash; Ngăn trình duyệt yêu cầu favicon &ndash;&gt;
+      <link rel="icon" href="data:,">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    </head>
+    <body>
+    <div class="cointainer">
+      <h1 class="text-center my-4">メンバー管理</h1>
+      <a class="btn btn-primary" href="./userui/createuser">新規ユーザ作成</a>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>フルネーム</th>
+            <th>ユーザー名</th>
+            <th>役職</th>
+            <th>部署</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.fullName}"></td>
+            <td th:text="${user.userName}"></td>
+            <td>
+              <ul>
+                <li th:each="position : ${user.positions}" th:text="${position.name}"></li>
+              </ul>
+            </td>
+            <td>
+              <ul>
+                <li th:each="department : ${user.departments}" th:text="${department.name}"></li>
+              </ul>
+            </td>
+            <td style="white-space: nowrap">
+              <a class="btn btn-primary btn-sm"
+                 th:href="@{/userui/editUser/{id}(id=${user.id})}">更新</a>
+              <a class="btn btn-danger btn-sm"
+                 th:href="@{/userui/deleteUser/{id}(id=${user.id})}"
+                 onclick="return confirm('Are you sure?')">削除</a>
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+
+
+    </div>
+    &lt;!&ndash;<script src="/static/js/scripts.js"></script>&ndash;&gt;
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </body>
+    </html>-->
 
 
 <!--<!doctype html>-->

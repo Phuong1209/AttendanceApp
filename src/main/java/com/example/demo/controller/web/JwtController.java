@@ -44,7 +44,7 @@ public class JwtController {
             cookie.setMaxAge(Integer.MAX_VALUE);
             cookie.setPath("/");
             res.addCookie(cookie);
-            return "redirect:/userui";
+            return "redirect:/members";
         }catch(Exception e)
         {
             session.setAttribute("msg","Credentials were right But something went wrong!!");
