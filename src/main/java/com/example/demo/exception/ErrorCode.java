@@ -1,4 +1,3 @@
-/*
 package com.example.demo.exception;
 
 import lombok.AllArgsConstructor;
@@ -29,4 +28,3 @@ public enum ErrorCode {
     private HttpStatusCode httpStatusCode;
 
 }
-*/

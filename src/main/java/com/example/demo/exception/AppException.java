@@ -1,4 +1,3 @@
-/*
 package com.example.demo.exception;
 
 import lombok.AllArgsConstructor;
@@ -11,4 +10,3 @@ import lombok.NoArgsConstructor;
 public class AppException extends RuntimeException {
     private ErrorCode errorCode;
 }
-*/

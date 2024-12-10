@@ -1,4 +1,3 @@
-/*
 package com.example.demo.config;
 
 import lombok.AccessLevel;
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.demo.model.User;
-//import com.example.demo.enums.Position;
+import com.example.demo.enums.Position;
 import com.example.demo.repository.IUserRepository;
 
 import java.util.HashSet;
@@ -36,5 +35,3 @@ public class ApplicationInitConfig {
         };
     }
 }
-
-*/

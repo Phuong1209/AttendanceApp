@@ -1,4 +1,3 @@
-/*
 package com.example.demo.service;
 
 import com.example.demo.dto.request.UserCreationRequest;
@@ -63,7 +62,7 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
         User user = userRepository.findByUserName(authenticationRequest.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        if (!passwordEncoder.matches(authenticationRequest.getUser_passwords(), user.getPassword())) {
+        if (!passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
             throw new AppException(ErrorCode.AUTHENTICATION_FAILED); // Return an error if passwords do not match
         }
 
@@ -155,4 +154,3 @@ public class AuthenticationService {
 //        return authResponse;
 //    }
 }
-*/

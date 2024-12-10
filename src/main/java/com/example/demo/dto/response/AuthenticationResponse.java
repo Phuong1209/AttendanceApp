@@ -1,4 +1,3 @@
-/*
 package com.example.demo.dto.response;
 
 import lombok.*;
@@ -13,4 +12,3 @@ public class AuthenticationResponse {
     boolean authenticated;
     String token;
 }
-*/

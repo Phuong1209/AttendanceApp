@@ -1,5 +1,5 @@
-/*
 package com.example.demo.enums;
+
 
 public enum Position {
     ADMIN ("上司"),
@@ -11,4 +11,4 @@ public enum Position {
     public String des(){
         return this.msg;
     }
-}*/
+}

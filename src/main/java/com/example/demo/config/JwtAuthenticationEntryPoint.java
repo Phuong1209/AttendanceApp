@@ -1,4 +1,3 @@
-/*
 package com.example.demo.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,4 +27,3 @@ public class JwtAuthenticationEntryPoint  implements AuthenticationEntryPoint {
         response.flushBuffer();
     }
 }
-*/

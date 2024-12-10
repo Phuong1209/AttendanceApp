@@ -24,8 +24,8 @@ public class User implements Serializable {
     private String fullName;
     private String userName;
     private String password;
-    //doi tam fecthtype thanh eager thi login thanh cong
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(
             name="user_position",
             joinColumns = @JoinColumn(name="user_id"),
@@ -52,9 +52,5 @@ public class User implements Serializable {
         this.userName = userDTO.getUserName();
         this.fullName = userDTO.getFullName();
         this.password = userDTO.getPassword();
-    }
-
-    //test security
-    public User(String userName, String password, Object collect) {
     }
 }

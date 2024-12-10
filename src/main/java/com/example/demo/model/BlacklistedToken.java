@@ -1,4 +1,3 @@
-/*
 package com.example.demo.model;
 
 import jakarta.persistence.*;
@@ -24,4 +23,3 @@ public class BlacklistedToken {
     @Column(nullable = false)
     private Date expirationDate;
 }
-*/
