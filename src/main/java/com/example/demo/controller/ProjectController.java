@@ -1,8 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ProjectDTO;
-import com.example.demo.dto.ProjectSummaryDTO;
-import com.example.demo.dto.request.IntrospectRequest;
+import com.example.demo.dto.ProjectEditRequest;
+import com.example.demo.dto.Summary.ProjectSummaryDTO;
+//import com.example.demo.dto.request.IntrospectRequest;
 import com.example.demo.model.Project;
 import com.example.demo.model.Task;
 import com.example.demo.repository.ITaskRepository;
@@ -66,7 +67,7 @@ public class ProjectController {
     @PutMapping("/{id}")
     public ResponseEntity<ProjectDTO> editProject(
             @PathVariable("id") Long projectId,
-            @RequestBody IntrospectRequest.ProjectEditRequest editRequest) {
+            @RequestBody ProjectEditRequest editRequest) {
         ProjectDTO updatedProject = projectService.editProject(projectId, editRequest.getName(), editRequest.getCode(), editRequest.getTaskIds());
         return ResponseEntity.ok(updatedProject);
     }

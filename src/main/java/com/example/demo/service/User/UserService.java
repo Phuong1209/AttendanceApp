@@ -105,13 +105,11 @@ public class UserService implements IUserService {
         return userRepository.findById(id);
     }
 
-
     @Transactional
     @Override
     public User save(User user) {
         return userRepository.save(user);
     }
-
 
     @Transactional
     @Override
@@ -149,7 +147,6 @@ public class UserService implements IUserService {
 //        workingTimeRepository.deleteAll(workingTimes);
         userRepository.deleteById(user.getId());
     }
-
 
     @Override
     public List<UserDTO> getAllUser() {
@@ -193,8 +190,8 @@ public class UserService implements IUserService {
                 WorkTimeDTO workTimeDTO = new WorkTimeDTO();
                 workTimeDTO.setId(workTime.getId());
                 workTimeDTO.setDate(workTime.getDate());
-                workTimeDTO.setCheckinTime(LocalTime.from(workTime.getCheckinTime()));
-                workTimeDTO.setCheckoutTime(LocalTime.from(workTime.getCheckoutTime()));
+                workTimeDTO.setCheckinTime(workTime.getCheckinTime());
+                workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
                 workTimeDTO.setBreakTime(workTime.getBreakTime());
                 workTimeDTO.setWorkTime(workTime.getWorkTime());
                 workTimeDTO.setOverTime(workTime.getOverTime());

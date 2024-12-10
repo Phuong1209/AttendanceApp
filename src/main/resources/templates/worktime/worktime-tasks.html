@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>勤怠時間管理</h1>
+        <p><strong th:text="'User: ' + ${fullName}"></strong></p>
+        <p><strong th:text="'Date: ' + ${date}"></strong></p>
+        <br>
+        <p th:if="${isTaskLimitReached}" class="error-message" style="color:red;">タスクは最大20件まで登録できます。</p>
+        <a class="btn-blue" th:href="@{/worktimes/{workTimeId}/tasks/create(workTimeId=${workTimeId})}"
+            th:disabled="${isTaskLimitReached}"
+            th:classappend="${isTaskLimitReached} ? 'disabled' : ''">新規作成</a>
+
+        <style>
+            .disabled {
+                pointer-events: none;
+                opacity: 0;
+            }
+        </style>
+
+        <table class="list-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>プロジェクト</th>
+                <th>作業内容</th>
+                <th>作業時間</th>
+                <th>コメント</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody th:each="task, stat : ${tasks}">
+            <tr>
+                <td th:text="${stat.index+1}"></td>
+                <td th:text="${task.project.name}"></td>
+                <td th:text="${task.jobType.name}"></td>
+                <td th:text="${task.totalTime}"></td>
+                <td th:text="${task.comment}"></td>
+                <td><a class="btn-blue" th:href="@{/worktimes/{workTimeId}/tasks/{taskId}(workTimeId=${workTimeId}, taskId=${task.id})}">修正</a>
+                    <a class="btn-red" th:href="@{/worktimes/{workTimeId}/tasks/{taskId}/delete(workTimeId=${workTimeId}, taskId=${task.id})}">削除</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,8 +1,8 @@
 package com.example.demo.service.Project;
 
-import com.example.demo.dto.JobTypeSummaryDTO;
+import com.example.demo.dto.Summary.JobTypeSummaryDTO;
 import com.example.demo.dto.ProjectDTO;
-import com.example.demo.dto.ProjectSummaryDTO;
+import com.example.demo.dto.Summary.ProjectSummaryDTO;
 import com.example.demo.dto.TaskDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;

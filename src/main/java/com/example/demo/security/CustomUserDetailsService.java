@@ -1,5 +1,5 @@
 /*
-package com.example.demo.service;
+package com.example.demo.security;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.IUserRepository;
@@ -32,11 +32,9 @@ public class CustomUserDetailsService implements UserDetailsService {
                             .collect(Collectors.toList())
             );
             return authUser;
-        }
-        else{
-            throw new UsernameNotFoundException("Invalid username or password.");
+        } else {
+            throw new UsernameNotFoundException("Invalid username or password");
         }
     }
-
 }
 */

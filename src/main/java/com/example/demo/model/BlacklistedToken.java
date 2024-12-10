@@ -22,6 +22,4 @@ public class BlacklistedToken {
     private String token;
     @Column(nullable = false)
     private Date expirationDate;
-
-    // Constructor, getters, setters
 }

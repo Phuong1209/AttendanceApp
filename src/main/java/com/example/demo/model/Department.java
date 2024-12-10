@@ -35,7 +35,7 @@ public class Department implements Serializable {
     @JsonBackReference
     private Set<User> users;
 
-    //constructor
+    //constructor (to get list department)
     public Department(DepartmentDTO departmentDTO){
         this.name = departmentDTO.getName();
     }

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>部署作成</h1>
+        <form role="form" method="POST" th:action="@{/departments/create}" th:object="${department}">
+            <table class="form-table">
+                <tr>
+                    <td>部署名</td>
+                    <td>
+                        <input type="text"
+                               id="name"
+                               placeholder="部署名"
+                               th:field="*{name}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>作業内容</td>
+                    <td>
+                        <div class="selection_multiple">
+                            <div class="select-btn">
+                                <span class="btn-text">作業内容を選択</span>
+                                <span class="arrow-dwn"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+
+                            <ul class="list-items">
+                                <li th:each="jobType : ${jobTypes}" class="item">
+                                    <span class="checkbox">
+                                    <i class="fa-solid fa-check check-icon"></i>
+                                    </span>
+                                    <span class="item-text" th:text="${jobType.name}"></span>
+                                    <input type="checkbox" name="jobTypes" th:value="${jobType.id}" hidden>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="作成" class="btn-blue">
+        </form>
+    </div>
+
+    <script src="/js/scripts.js"></script>
+</div>
+
+</body>
+</html>

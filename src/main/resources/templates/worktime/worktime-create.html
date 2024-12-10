@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>勤怠時間登録</h1>
+        <form role="form" method="POST" class="form_create" th:action="@{/worktimes/create}" th:object="${workTime}">
+            <div class="input_field">
+                <label>日付</label>
+                <input
+                        type="text"
+                        placeholder="日付"
+                        th:field="*{date}">
+            </div>
+            <div class="input_field">
+                <label>出勤時間</label>
+                <input
+                        type="text"
+                        placeholder="出勤時間"
+                        th:field="*{checkinTime}">
+            </div>
+            <div class="input_field">
+                <label>退勤時間</label>
+                <input
+                        type="text"
+                        placeholder="退勤時間"
+                        th:field="*{checkoutTime}">
+            </div>
+            <div class="input_field">
+                <label>休憩時間</label>
+                <input
+                        type="text"
+                        placeholder="休憩時間"
+                        th:field="*{breakTime}">
+            </div>
+            <div class="input_field">
+                <label>所定内勤務時間</label>
+                <input
+                        type="text"
+                        placeholder="所定内勤務時間"
+                        th:field="*{workTime}">
+            </div>
+            <div class="input_field">
+                <label>残業時間</label>
+                <input
+                        type="text"
+                        placeholder="残業時間"
+                        th:field="*{overTime}">
+            </div>
+            <input type="submit" value="登録" class="btn-blue">
+        </form>
+    </div>
+
+    <script src="/js/scripts.js"></script>
+</div>
+
+</body>
+</html>

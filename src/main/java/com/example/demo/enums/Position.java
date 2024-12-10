@@ -11,6 +11,4 @@ public enum Position {
     public String des(){
         return this.msg;
     }
-
-
 }

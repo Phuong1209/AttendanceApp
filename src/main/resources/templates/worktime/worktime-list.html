@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>勤怠時間管理</h1>
+        <a class="btn-blue" href="http://localhost:8080/worktimes/create">新規作成</a>
+        <table class="list-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>日付</th>
+                <th>出勤</th>
+                <th>退勤</th>
+                <th>休憩</th>
+                <th>時間内</th>
+                <th>残業時間</th>
+                <th>タスク</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody th:each="workTime, stat : ${workTimes}">
+            <tr>
+                <td th:text="${stat.index+1}"></td>
+                <td th:text="${workTime.date}"></td>
+                <td th:text="${workTime.checkinTime}"></td>
+                <td th:text="${workTime.checkoutTime}"></td>
+                <td th:text="${workTime.breakTime}"></td>
+                <td th:text="${workTime.workTime}"></td>
+                <td th:text="${workTime.overTime}"></td>
+                <td><a class="btn" th:href="@{/worktimes/{workTimeId}/tasks(workTimeId=${workTime.id})}">リストを見る</a></td>
+                <td><a class="btn-blue" th:href="@{/worktimes/{workTimeId}(workTimeId=${workTime.id})}">修正</a>
+                    <a class="btn-red" th:href="@{/worktimes/{workTimeId}/delete(workTimeId=${workTime.id})}">削除</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
