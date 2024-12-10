@@ -11,8 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("*") // Cho phép mọi nguồn gốc. Thay đổi nếu muốn giới hạn.
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-                .allowedHeaders("*");
-//                .allowCredentials(true);
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

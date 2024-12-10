@@ -38,18 +38,18 @@ public class JwtController {
             return "redirect:/loginui";
         }
 
-     try {
-        final String token = result.getToken();
-        Cookie cookie = new Cookie("token",token);
-        cookie.setMaxAge(Integer.MAX_VALUE);
-         cookie.setPath("/");
-        res.addCookie(cookie);
-        return "redirect:/userui";
-     }catch(Exception e)
-     {
-        session.setAttribute("msg","Credentials were right But something went wrong!!");
-        return "redirect:/loginui";
-     }
+        try {
+            final String token = result.getToken();
+            Cookie cookie = new Cookie("token",token);
+            cookie.setMaxAge(Integer.MAX_VALUE);
+            cookie.setPath("/");
+            res.addCookie(cookie);
+            return "redirect:/userui";
+        }catch(Exception e)
+        {
+            session.setAttribute("msg","Credentials were right But something went wrong!!");
+            return "redirect:/loginui";
+        }
     }
 
     @GetMapping("/logout")
