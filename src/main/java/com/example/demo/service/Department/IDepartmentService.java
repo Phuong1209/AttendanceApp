@@ -1,6 +1,8 @@
 package com.example.demo.service.Department;
 
 import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.dto.Summary.DepJobSummaryDTO;
+import com.example.demo.dto.Summary.DepProjSummaryDTO;
 import com.example.demo.dto.Summary.DepartmentSummaryDTO3;
 import com.example.demo.dto.Summary.DepartmentSummaryDTO;
 import com.example.demo.model.Department;
@@ -28,4 +30,8 @@ public interface IDepartmentService {
 
     //CSV
     void exportDepartmentSummaryToCSV(HttpServletResponse response, List<DepartmentSummaryDTO> summaries) throws IOException;
+
+    List<DepJobSummaryDTO> getDepJobSummary();
+
+    List<DepProjSummaryDTO> getDepProjSummary();
 }
