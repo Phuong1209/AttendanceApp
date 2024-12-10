@@ -15,7 +15,7 @@ class AttendanceApplicationTests {
 	private PasswordEncoder passwordEncoder;
 	@Test
 	void contextLoads() {
-		final List<String> INPUT_LIST = Lists.newArrayList("250901", "070201", "140301","1209","2110","2111","2112","password1");
+		final List<String> INPUT_LIST = Lists.newArrayList("250901", "070201", "140301","1209","2110","2111","2112","password1","admin","password2");
 		for(String password : INPUT_LIST) {
 			String pass = passwordEncoder.encode(password);
 			System.out.println( password + "PasswordEncoded" + pass);
