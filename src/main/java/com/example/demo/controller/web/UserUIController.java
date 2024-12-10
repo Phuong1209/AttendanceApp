@@ -89,7 +89,7 @@ public class UserUIController {
         existingUser.setFullName(updatedUser.getFullName());
         existingUser.setUserName(updatedUser.getUserName());
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            existingUser.setPassword(updatedUser.getPassword());
         }
 
         // Cập nhật position
