@@ -1,3 +1,4 @@
+/*
 package com.example.demo.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,4 +27,4 @@ public class JwtAuthenticationEntryPoint  implements AuthenticationEntryPoint {
         response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
         response.flushBuffer();
     }
-}
+}*/

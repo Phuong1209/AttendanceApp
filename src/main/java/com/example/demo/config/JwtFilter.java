@@ -1,3 +1,4 @@
+/*
 package com.example.demo.config;
 
 import com.example.demo.service.BlacklistService;
@@ -39,4 +40,4 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         return null;
     }
-}
+}*/

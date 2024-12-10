@@ -1,3 +1,4 @@
+/*
 package com.example.demo.controller;
 
 import com.example.demo.dto.request.UserCreationRequest;
@@ -96,4 +97,4 @@ public class AuthenticationController {
 //                    .body(ErrorCode.UNKNOWN_ERROR.getMessage());
 //        }
 //    }
-}
+}*/

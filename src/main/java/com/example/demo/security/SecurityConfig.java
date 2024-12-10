@@ -1,4 +1,3 @@
-/*
 package com.example.demo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(c -> c.disable())
                 .authorizeRequests()
-                .requestMatchers("/login","/departments", "/css/**", "/js/**")
+                .requestMatchers("/login", "/css/**", "/js/**")
                 .permitAll()
                 .and()
                 .formLogin(form -> form
@@ -51,4 +50,3 @@ public class SecurityConfig {
         builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 }
-*/

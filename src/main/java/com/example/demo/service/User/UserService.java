@@ -24,8 +24,8 @@ import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.enums.Position;
-import com.example.demo.exception.AppException;
-import com.example.demo.exception.ErrorCode;
+//import com.example.demo.exception.AppException;
+//import com.example.demo.exception.ErrorCode;
 import com.example.demo.mapper.UserMapper;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -45,7 +45,7 @@ public class UserService implements IUserService {
     PasswordEncoder passwordEncoder;
     UserMapper userMapper;
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+/*    //    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse createRequest(UserCreationRequest request) {
         if (userRepository.existsByUserName(request.getUsername())) {
             throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
@@ -55,16 +55,16 @@ public class UserService implements IUserService {
         HashSet<String> position = new HashSet<>();
         position.add(Position.USER.name());
         return userMapper.toUserResponse(userRepository.save(user));
-    }
+    }*/
 
-    //    @PostAuthorize("returnObject.userName == authentication.name")
+/*    //    @PostAuthorize("returnObject.userName == authentication.name")
     public UserResponse getMyInfo() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(username).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_FOUND)
         );
         return userMapper.toUserResponse(user);
-    }
+    }*/
 
     //    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUsers() {
@@ -72,13 +72,13 @@ public class UserService implements IUserService {
                 .map(userMapper::toUserResponse).toList();
     }
 
-    //    @PostAuthorize("returnObject.userName == authentication.name")
+/*    //    @PostAuthorize("returnObject.userName == authentication.name")
     public UserResponse getUserById(Long id) {
         return userMapper.toUserResponse(userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
-    }
+    }*/
 
-    //    @PostAuthorize("returnObject.userName == authentication.name")
+/*    //    @PostAuthorize("returnObject.userName == authentication.name")
     public UserResponse updateUser(Long userId, UserUpdateRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
@@ -86,7 +86,7 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setPositions(new HashSet<>(positionRepository.findAllById(Collections.singleton(userId))));
         return userMapper.toUserResponse(userRepository.save(user));
-    }
+    }*/
 
     //    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(Long userId) {

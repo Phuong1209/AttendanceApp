@@ -1,3 +1,4 @@
+/*
 package com.example.demo.config;
 
 import lombok.AccessLevel;
@@ -29,9 +30,9 @@ public class ApplicationInitConfig {
                 User user = User.builder()
                         .userName("admin")
                         .password(passwordEncoder.encode("admin"))
-                        .build();
+                        .build();a
                 iUserRepository.save(user);
             }
         };
     }
-}
+}*/
