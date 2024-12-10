@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/userui")
+@RequestMapping("/members")
 public class UserUIController {
     @Autowired
     private IUserService userService;
@@ -35,7 +35,6 @@ public class UserUIController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-
     //Show User List
     @GetMapping({""})
     public String getUserList(Model model) {
@@ -44,24 +43,24 @@ public class UserUIController {
         return "user/index";
     }
 
-    @GetMapping("/createuser")
+    @GetMapping("/create")
     public String createUserForm(Model model) {
         User user = new User();
         model.addAttribute("user", user);
         return "user/CreateUser";
     }
 
-    @PostMapping("/createuser")
+    @PostMapping("/create")
     public String saveUser(@ModelAttribute("user") User model) {
         userService.save(model);
-        return "redirect:/userui";
+        return "redirect:/members";
     }
 
-    @GetMapping("/editUser/{id}")
+    @GetMapping("/edit/{id}")
     public String editUserForm(@PathVariable("id") Long id, Model model) {
         Optional<User> user = userService.findById(id);
         if (user.isEmpty()) {
-            return "redirect:/userui?error=User not found";
+            return "redirect:/members?error=User not found";
         }
         //get list position
         List<Department> departments =departmentRepository.findAll();
@@ -72,7 +71,7 @@ public class UserUIController {
         return "user/EditUser";
     }
 
-    @PostMapping("/editUser/{id}")
+    @PostMapping("/edit/{id}")
     public String updateUser(@PathVariable("id") Long id,
                              @Valid
                              @ModelAttribute("user") User updatedUser,
@@ -115,9 +114,9 @@ public class UserUIController {
 
         // Lưu thông tin người dùng
         userService.save(existingUser);
-        return "redirect:/userui";
+        return "redirect:/members";
     }
-    @GetMapping("/deleteUser/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id, Model model){
         Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
@@ -127,7 +126,7 @@ public class UserUIController {
         } else {
             model.addAttribute("error", "User not found.");
         }
-        return "redirect:/userui"; // Chuyển hướng về trang userui
+        return "redirect:/members"; // Chuyển hướng về trang userui
     }
 
 }
