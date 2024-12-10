@@ -13,7 +13,7 @@
         <p><strong th:text="'Date: ' + ${date}"></strong></p>
         <br>
         <br>
-        <a class="btn-blue" href="http://localhost:8080/tasks/create">新規作成</a>
+        <a class="btn-blue" th:href="@{/worktimes/{workTimeId}/tasks/create(workTimeId=${workTimeId})}">新規作成</a>
         <table class="list-table">
             <thead>
             <tr>

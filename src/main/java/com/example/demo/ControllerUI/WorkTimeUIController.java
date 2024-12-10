@@ -2,9 +2,9 @@ package com.example.demo.ControllerUI;
 
 import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.dto.WorkTimeDTO;
-import com.example.demo.model.Task;
-import com.example.demo.model.User;
-import com.example.demo.model.WorkTime;
+import com.example.demo.model.*;
+import com.example.demo.repository.IJobTypeRepository;
+import com.example.demo.repository.IProjectRepository;
 import com.example.demo.repository.ITaskRepository;
 import com.example.demo.service.User.UserService;
 import com.example.demo.service.WorkTime.IWorkTimeService;
@@ -23,9 +23,13 @@ public class WorkTimeUIController {
     @Autowired
     private IWorkTimeService workTimeService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private ITaskRepository taskRepository;
     @Autowired
-    private UserService userService;
+    private IJobTypeRepository jobTypeRepository;
+    @Autowired
+    private IProjectRepository projectRepository;
 
     //Show WorkTime List
     @GetMapping({"","/"})
@@ -82,20 +86,20 @@ public class WorkTimeUIController {
     }
 
     // User Attendance Sheet (Details)
-    @GetMapping("/user/{id}")
-    public String listWorkTime(@PathVariable Long id, Model model) {
+    @GetMapping("/user/{userId}")
+    public String listWorkTime(@PathVariable Long userId, Model model) {
         LocalDate today = LocalDate.now(); // Get the current date
         int year = today.getYear();
         int month = today.getMonthValue();
 
         // Fetch the user by ID
-        User user = userService.findById(id).orElse(null);
+        User user = userService.findById(userId).orElse(null);
         if (user == null) {
             return "error/404"; // Handle case where user is not found
         }
 
         // Fetch attendance data for the user's current month
-        Iterable<WorkTimeDTO> workTimes = workTimeService.getWorkTimeForUserAndMonth(id, year, month);
+        Iterable<WorkTimeDTO> workTimes = workTimeService.getWorkTimeForUserAndMonth(userId, year, month);
 
         // Add attributes to the model for rendering
         model.addAttribute("userName", user.getUserName()); // Set the user's name as the title
@@ -113,15 +117,15 @@ public class WorkTimeUIController {
     }
 
     //Show task list:
-    @GetMapping("/{id}/tasks")
-    public String showTaskList(@PathVariable("id") Long workTimeId, Model model) {
-        Set<Task> tasks = workTimeService.findTasksByWorkTime(workTimeId);
+    @GetMapping("/{workTimeId}/tasks")
+    public String showTaskList(@PathVariable("workTimeId") Long workTimeId, Model model) {
+        model.addAttribute("workTimeId", workTimeId);
 
+        Set<Task> tasks = workTimeService.findTasksByWorkTime(workTimeId);
         if (tasks == null) {
             model.addAttribute("errorMessage", "タスクを登録してください。");
             return "redirect:/worktimes";
         }
-
         model.addAttribute("tasks", tasks);
 
         // Fetch the workTime info
@@ -131,5 +135,36 @@ public class WorkTimeUIController {
 
         return "worktime/worktime-tasks";
     }
+
+    //Create task
+    //Show Create form
+    @GetMapping("{workTimeId}/tasks/create")
+    public String createTaskForm(@PathVariable("workTimeId") Long workTimeId,
+                                 Model model){
+        model.addAttribute("workTimeId", workTimeId);
+
+        Task task = new Task();
+        model.addAttribute("task", task);
+
+        //show list project
+        List<Project> projects = projectRepository.findAll();
+        model.addAttribute("projects", projects);
+
+        //show list jobtype
+        List<JobType> jobTypes = jobTypeRepository.findAll();
+        model.addAttribute("jobTypes", jobTypes);
+
+        return "task/task-create";
+    }
+
+/*
+    //Create
+    @PostMapping("/create")
+    public String saveWorkTime(@ModelAttribute("workTime") WorkTime workTime){
+        workTimeService.saveWorkTime(workTime);
+        return "redirect:/worktimes";
+    }
+*/
+
 
 }
