@@ -21,7 +21,7 @@
 }
 
 .wrapper .sidebar .hamburger{
-    min-width: 70px;
+    min-width: 60px;
     height: 50px;
     background: #123559;
     padding: 15px 17px;
@@ -32,7 +32,7 @@
     width: 18px;
     height: 2px;
     background: #fff;
-    margin: 5px 9px;
+    margin: 5px 0px;
 }
 
 .wrapper .sidebar ul li a{
@@ -57,8 +57,8 @@
 
 .wrapper .sidebar ul li a span.icon{
     display: inline-block;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 6px;
+    margin-right: 6px;
 }
 
 .wrapper .sidebar ul li a span.title{
@@ -354,7 +354,7 @@ h1 {
 
 /*Collapse*/
 .wrapper.collapse .sidebar{
-    width: 70px;
+    width: 60px;
 }
 
 .wrapper.collapse .sidebar ul li a{
@@ -370,10 +370,10 @@ h1 {
 }
 
 .wrapper.collapse .main_container{
-    width: calc(100% - 70px);
-    margin-left: 70px;
+    width: calc(100% - 60px);
+    margin-left: 60px;
 }
 
 .wrapper.collapse .top_menu .system_name{
-    margin-left: 70px;
+    margin-left: 60px;
 }
