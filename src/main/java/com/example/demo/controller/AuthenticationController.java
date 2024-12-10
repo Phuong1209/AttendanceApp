@@ -1,9 +1,4 @@
 package com.example.demo.controller;
-
-import com.example.demo.dto.request.UserCreationRequest;
-import com.example.demo.dto.response.UserResponse;
-import com.example.demo.exception.AppException;
-import com.example.demo.exception.ErrorCode;
 import com.example.demo.service.BlacklistService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
