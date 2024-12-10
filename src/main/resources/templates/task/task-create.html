@@ -9,7 +9,8 @@
     <div th:replace="~{layout :: top_menu}"></div>
     <div class="main_container">
         <h1>タスク登録</h1>
-        <form role="form" method="POST" class="form_create" th:action="@{/tasks/create}" th:object="${task}">
+        <p><strong th:text="'日付: ' + ${workTimeDto.date}"></strong></p>
+        <form role="form" method="POST" class="form_create" th:action="@{/worktimes/{workTimeId}/tasks/create(workTimeId=${workTimeId})}" th:object="${task}">
             <table class="form-table">
                 <tr>
                     <td><label for="project">プロジェクト</label></td>

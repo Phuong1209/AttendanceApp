@@ -24,6 +24,7 @@ public class TaskService implements ITaskService {
         return tasks.stream().map((task) -> mapToTaskDTO(task)).collect(Collectors.toList());
     }
 
+    //save
     @Override
     public Task saveTask(Task task) {
         return taskRepository.save(task);
@@ -43,12 +44,19 @@ public class TaskService implements ITaskService {
                 .name(task.getProject().getName())
                 .build();
 
+        //workTime --> workTimeDto
+        WorkTimeDTO workTimeDTO = WorkTimeDTO.builder()
+                .id(task.getWorkTime().getId())
+                .date(task.getWorkTime().getDate())
+                .build();
+
         TaskDTO taskDTO = TaskDTO.builder()
                 .id(task.getId())
                 .totalTime(task.getTotalTime())
                 .comment(task.getComment())
                 .project(projectDTO)
                 .jobType(jobTypeDTO)
+                .workTime(workTimeDTO)
                 .build();
         return taskDTO;
     }
@@ -79,12 +87,19 @@ public class TaskService implements ITaskService {
                 .name(taskDto.getProject().getName())
                 .build();
 
+        //workTimeDto --> workTime
+        WorkTime workTime = WorkTime.builder()
+                .id(taskDto.getWorkTime().getId())
+                .date(taskDto.getWorkTime().getDate())
+                .build();
+
         Task task = Task.builder()
                 .id(taskDto.getId())
                 .totalTime(taskDto.getTotalTime())
                 .comment(taskDto.getComment())
                 .project(project)
                 .jobType(jobType)
+                .workTime(workTime)
                 .build();
         return task;
     }

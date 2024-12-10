@@ -9,7 +9,7 @@
     <div th:replace="~{layout :: top_menu}"></div>
     <div class="main_container">
         <h1>タスク修正</h1>
-        <form role="form" method="POST" class="form_create" th:action="@{/tasks/{taskId}(taskId=${task.id})}" th:object="${task}">
+        <form role="form" method="POST" class="form_create" th:action="@{/worktimes/{workTimeId}/tasks/{taskId}(workTimeId=${workTimeId}, taskId=${task.id})}" th:object="${task}">
             <table class="form-table">
                 <tr>
                     <td><label for="project">プロジェクト</label></td>

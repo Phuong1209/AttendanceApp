@@ -1,11 +1,13 @@
 package com.example.demo.ControllerUI;
 
 import com.example.demo.dto.DepartmentDTO;
+import com.example.demo.dto.TaskDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IProjectRepository;
 import com.example.demo.repository.ITaskRepository;
+import com.example.demo.service.Task.TaskService;
 import com.example.demo.service.User.UserService;
 import com.example.demo.service.WorkTime.IWorkTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class WorkTimeUIController {
     @Autowired
     private UserService userService;
     @Autowired
-    private ITaskRepository taskRepository;
+    private TaskService taskService;
     @Autowired
     private IJobTypeRepository jobTypeRepository;
     @Autowired
@@ -143,6 +145,9 @@ public class WorkTimeUIController {
                                  Model model){
         model.addAttribute("workTimeId", workTimeId);
 
+        WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
+        model.addAttribute("workTimeDto", workTimeDto);
+
         Task task = new Task();
         model.addAttribute("task", task);
 
@@ -157,14 +162,58 @@ public class WorkTimeUIController {
         return "task/task-create";
     }
 
-/*
     //Create
-    @PostMapping("/create")
-    public String saveWorkTime(@ModelAttribute("workTime") WorkTime workTime){
-        workTimeService.saveWorkTime(workTime);
-        return "redirect:/worktimes";
-    }
-*/
+    @PostMapping("{workTimeId}/tasks/create")
+    public String saveTask(@PathVariable("workTimeId") Long workTimeId,
+                           @ModelAttribute("task") Task task){
+        WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
+        WorkTime workTime = WorkTime.builder()
+                        .id(workTimeDto.getId())
+                        .date(workTimeDto.getDate())
+                        .build();
 
+        task.setWorkTime(workTime);
+        taskService.saveTask(task);
+        return "redirect:/worktimes/" + workTimeId + "/tasks";
+    }
+
+    //Show edit form
+    @GetMapping("{workTimeId}/tasks/{taskId}")
+    public String editTaskForm(@PathVariable("workTimeId") Long workTimeId,
+                               @PathVariable("taskId") long taskId,
+                               Model model){
+        TaskDTO taskDto = taskService.findById(taskId);
+        model.addAttribute("task", taskDto);
+
+        //show list project
+        List<Project> projects = projectRepository.findAll();
+        model.addAttribute("projects", projects);
+
+        //show list jobtype
+        List<JobType> jobTypes = jobTypeRepository.findAll();
+        model.addAttribute("jobTypes", jobTypes);
+
+        return "task/task-edit";
+    }
+
+    //Edit
+    @PostMapping("{workTimeId}/tasks/{taskId}")
+    public String updateTask(@PathVariable("taskId") Long taskId,
+                             @PathVariable("workTimeId") Long workTimeId,
+                             @ModelAttribute("taskDto") TaskDTO taskDto){
+        WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
+        taskDto.setWorkTime(workTimeDto);
+        taskDto.setId(taskId);
+        taskService.updateTask(taskDto);
+        return "redirect:/worktimes/" + workTimeId + "/tasks";
+    }
+
+    //Delete
+    @GetMapping("{workTimeId}/tasks/{taskId}/delete")
+    public String deleteTask(@PathVariable("taskId")long taskId,
+                             @PathVariable("workTimeId") Long workTimeId){
+        taskService.delete(taskId);
+        return "redirect:/worktimes/" + workTimeId + "/tasks";
+    }
 
 }
