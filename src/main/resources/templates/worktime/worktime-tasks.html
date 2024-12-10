@@ -12,8 +12,18 @@
         <p><strong th:text="'User: ' + ${fullName}"></strong></p>
         <p><strong th:text="'Date: ' + ${date}"></strong></p>
         <br>
-        <br>
-        <a class="btn-blue" th:href="@{/worktimes/{workTimeId}/tasks/create(workTimeId=${workTimeId})}">新規作成</a>
+        <p th:if="${isTaskLimitReached}" class="error-message" style="color:red;">タスクは最大20件まで登録できます。</p>
+        <a class="btn-blue" th:href="@{/worktimes/{workTimeId}/tasks/create(workTimeId=${workTimeId})}"
+            th:disabled="${isTaskLimitReached}"
+            th:classappend="${isTaskLimitReached} ? 'disabled' : ''">新規作成</a>
+
+        <style>
+            .disabled {
+                pointer-events: none;
+                opacity: 0;
+            }
+        </style>
+
         <table class="list-table">
             <thead>
             <tr>
