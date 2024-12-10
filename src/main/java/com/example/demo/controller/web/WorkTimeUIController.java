@@ -89,10 +89,10 @@ public class WorkTimeUIController {
     @GetMapping("/{workTimeId}/tasks")
     public String showTaskList(@PathVariable("workTimeId") Long workTimeId, Model model) {
         // Fetch the workTime info
-        WorkTimeDTO workTime = workTimeService.findById(workTimeId);
+        /*WorkTimeDTO workTime = workTimeService.findById(workTimeId);
         model.addAttribute("date", workTime.getDate());
         model.addAttribute("fullName", workTime.getUser().getFullName());
-
+*/
         //add workTimeId to model
         model.addAttribute("workTimeId", workTimeId);
 
