@@ -6,7 +6,6 @@ import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IProjectRepository;
-import com.example.demo.repository.ITaskRepository;
 import com.example.demo.service.Task.TaskService;
 import com.example.demo.service.User.UserService;
 import com.example.demo.service.WorkTime.IWorkTimeService;
@@ -33,72 +32,78 @@ public class WorkTimeUIController {
     @Autowired
     private IProjectRepository projectRepository;
 
-    //Show WorkTime List
-    @GetMapping({"","/"})
+    // Show WorkTime List
+    @GetMapping({"", "/"})
     public String listWorkTime(Model model) {
         List<WorkTimeDTO> workTimes = workTimeService.getAllWorkTime();
         model.addAttribute("workTimes", workTimes);
         return "worktime/worktime-list";
     }
 
-    //Show Create form
+    // Show Create Form
     @GetMapping("/create")
-    public String createWorkTimeForm(Model model){
+    public String createWorkTimeForm(Model model) {
         WorkTime workTime = new WorkTime();
         model.addAttribute("workTime", workTime);
         return "worktime/worktime-create";
     }
 
-    //Create
+    // Create
     @PostMapping("/create")
-    public String saveWorkTime(@ModelAttribute("workTime") WorkTime workTime){
+    public String saveWorkTime(@ModelAttribute("workTime") WorkTime workTime) {
         workTimeService.saveWorkTime(workTime);
-        return "redirect:/worktimes";
+        // After creating, redirect to the user's attendance screen
+        return "redirect:/worktimes/user/" + workTime.getUser().getId();
     }
 
-    //Show edit form
+    // Show Edit Form
     @GetMapping("/{workTimeId}")
-    public String editWorkTimeForm(@PathVariable("workTimeId") long workTimeId, Model model){
+    public String editWorkTimeForm(@PathVariable("workTimeId") long workTimeId, Model model) {
         WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
         model.addAttribute("workTimeDto", workTimeDto);
         return "worktime/worktime-edit";
     }
 
-    //Edit
+    // Edit
     @PostMapping("/{workTimeId}")
     public String updateWorkTime(@PathVariable("workTimeId") Long workTimeId,
-                                   @ModelAttribute("workTimeDto") WorkTimeDTO workTimeDto){
+                                 @ModelAttribute("workTimeDto") WorkTimeDTO workTimeDto) {
         workTimeDto.setId(workTimeId);
         workTimeService.updateWorkTime(workTimeDto);
-        return "redirect:/worktimes";
+        // After updating, redirect to the user's attendance screen
+        return "redirect:/worktimes/user/" + workTimeDto.getUser().getId();
     }
 
-    //Delete
+    // Delete
     @GetMapping("/{workTimeId}/delete")
-    public String deleteWorkTime(@PathVariable("workTimeId")long workTimeId){
+    public String deleteWorkTime(@PathVariable("workTimeId") long workTimeId) {
+        WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
         workTimeService.delete(workTimeId);
-        return "redirect:/worktimes";
+        // After deleting, redirect to the user's attendance screen
+        return "redirect:/worktimes/user/" + workTimeDto.getUser().getId();
     }
 
+    // Admin Path - Show List of Users
     @GetMapping("/admin")
     public String listUsers(Model model) {
-        Iterable<User> users = userService.findAll(); // Fetch all users
+        Iterable<User> users = userService.findAll();
+        System.out.println("Users: " + users); // Debugging output
         model.addAttribute("users", users);
-        return "worktime/user_worktime_list"; // Thymeleaf template name
+        return "worktime/user_worktime_list";
     }
 
-    //Show task list:
-    @GetMapping("/{workTimeId}/tasks")
+    // Show Task List
+    @GetMapping("/user/user{id}/tasks")
     public String showTaskList(@PathVariable("workTimeId") Long workTimeId, Model model) {
         // Fetch the workTime info
         WorkTimeDTO workTime = workTimeService.findById(workTimeId);
         model.addAttribute("date", workTime.getDate());
         model.addAttribute("fullName", workTime.getUser().getFullName());
 
-        //add workTimeId to model
+        // Add workTimeId to model
         model.addAttribute("workTimeId", workTimeId);
 
-        //add task to model
+        // Add task to model
         Set<Task> tasks = workTimeService.findTasksByWorkTime(workTimeId);
         if (tasks == null) {
             model.addAttribute("errorMessage", "タスクを登録してください。");
@@ -106,18 +111,16 @@ public class WorkTimeUIController {
         }
         model.addAttribute("tasks", tasks);
 
-        //check task number
+        // Check task number
         boolean isTasklimitReached = tasks.size() >= 20;
         model.addAttribute("isTaskLimitReached", isTasklimitReached);
 
         return "worktime/worktime-tasks";
     }
 
-    //Create task
-    //Show Create form
+    // Show Create Task Form
     @GetMapping("{workTimeId}/tasks/create")
-    public String createTaskForm(@PathVariable("workTimeId") Long workTimeId,
-                                 Model model){
+    public String createTaskForm(@PathVariable("workTimeId") Long workTimeId, Model model) {
         model.addAttribute("workTimeId", workTimeId);
 
         WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
@@ -126,56 +129,56 @@ public class WorkTimeUIController {
         Task task = new Task();
         model.addAttribute("task", task);
 
-        //show list project
+        // Show list of projects
         List<Project> projects = projectRepository.findAll();
         model.addAttribute("projects", projects);
 
-        //show list jobtype
+        // Show list of job types
         List<JobType> jobTypes = jobTypeRepository.findAll();
         model.addAttribute("jobTypes", jobTypes);
 
         return "task/task-create";
     }
 
-    //Create task
+    // Create Task
     @PostMapping("{workTimeId}/tasks/create")
     public String saveTask(@PathVariable("workTimeId") Long workTimeId,
-                           @ModelAttribute("task") Task task){
+                           @ModelAttribute("task") Task task) {
         WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
         WorkTime workTime = WorkTime.builder()
-                        .id(workTimeDto.getId())
-                        .date(workTimeDto.getDate())
-                        .build();
+                .id(workTimeDto.getId())
+                .date(workTimeDto.getDate())
+                .build();
 
         task.setWorkTime(workTime);
         taskService.saveTask(task);
         return "redirect:/worktimes/" + workTimeId + "/tasks";
     }
 
-    //Show edit task form
+    // Show Edit Task Form
     @GetMapping("{workTimeId}/tasks/{taskId}")
     public String editTaskForm(@PathVariable("workTimeId") Long workTimeId,
                                @PathVariable("taskId") long taskId,
-                               Model model){
+                               Model model) {
         TaskDTO taskDto = taskService.findById(taskId);
         model.addAttribute("task", taskDto);
 
-        //show list project
+        // Show list of projects
         List<Project> projects = projectRepository.findAll();
         model.addAttribute("projects", projects);
 
-        //show list jobtype
+        // Show list of job types
         List<JobType> jobTypes = jobTypeRepository.findAll();
         model.addAttribute("jobTypes", jobTypes);
 
         return "task/task-edit";
     }
 
-    //Edit task
+    // Edit Task
     @PostMapping("{workTimeId}/tasks/{taskId}")
     public String updateTask(@PathVariable("taskId") Long taskId,
                              @PathVariable("workTimeId") Long workTimeId,
-                             @ModelAttribute("taskDto") TaskDTO taskDto){
+                             @ModelAttribute("taskDto") TaskDTO taskDto) {
         WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
         taskDto.setWorkTime(workTimeDto);
         taskDto.setId(taskId);
@@ -183,15 +186,16 @@ public class WorkTimeUIController {
         return "redirect:/worktimes/" + workTimeId + "/tasks";
     }
 
-    //Delete task
+    // Delete Task
     @GetMapping("{workTimeId}/tasks/{taskId}/delete")
-    public String deleteTask(@PathVariable("taskId")long taskId,
-                             @PathVariable("workTimeId") Long workTimeId){
+    public String deleteTask(@PathVariable("taskId") long taskId,
+                             @PathVariable("workTimeId") Long workTimeId) {
         taskService.delete(taskId);
         return "redirect:/worktimes/" + workTimeId + "/tasks";
     }
 
     // User Attendance Sheet (Details)
+    // Uncommented for use
     @GetMapping("/user/{userId}")
     public String listWorkTime(@PathVariable Long userId, Model model) {
         LocalDate today = LocalDate.now(); // Get the current date
@@ -208,7 +212,8 @@ public class WorkTimeUIController {
         Iterable<WorkTimeDTO> workTimes = workTimeService.getWorkTimeForUserAndMonth(userId, year, month);
 
         // Add attributes to the model for rendering
-        model.addAttribute("userName", user.getUserName()); // Set the user's name as the title
+        model.addAttribute("userFullName", user.getFullName()); // Add the user's full name here
+        model.addAttribute("userName", user.getUserName()); // Retain username for other uses
         model.addAttribute("currentYear", year);
         model.addAttribute("currentMonth", month);
         model.addAttribute("workTimes", workTimes);

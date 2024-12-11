@@ -18,29 +18,31 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-
 public class WorkTimeService implements IWorkTimeService {
 
     private final IWorkTimeRepository workTimeRepository;
     private final WorkTimeMapper workTimeMapper;
 
-
-    //get all workTime
+    // Get all workTime
     @Override
     public List<WorkTimeDTO> getAllWorkTime() {
         List<WorkTime> workTimes = workTimeRepository.findAll();
-        return workTimes.stream().map((workTime) -> mapToWorkTimeDTO(workTime)).collect(Collectors.toList());
+        return workTimes.stream()
+                .map(this::mapToWorkTimeDTO)
+                .collect(Collectors.toList());
     }
 
-    //mapper
+    // Mapper
     public WorkTimeDTO mapToWorkTimeDTO(WorkTime workTime) {
-        //user --> userDto
-        UserDTO userDTO = UserDTO.builder()
+        // Check if user is null to prevent NullPointerException
+        UserDTO userDTO = (workTime.getUser() != null)
+                ? UserDTO.builder()
                 .id(workTime.getUser().getId())
                 .fullName(workTime.getUser().getFullName())
-                .build();
+                .build()
+                : null;  // If user is null, userDTO will be null
 
-        //map workTime to workTimeDto
+        // Map workTime to workTimeDTO
         WorkTimeDTO workTimeDTO = WorkTimeDTO.builder()
                 .id(workTime.getId())
                 .date(workTime.getDate())
@@ -49,33 +51,34 @@ public class WorkTimeService implements IWorkTimeService {
                 .breakTime(workTime.getBreakTime())
                 .workTime(workTime.getWorkTime())
                 .overTime(workTime.getOverTime())
-                .user(userDTO)
+                .user(userDTO)  // Handle the null case gracefully
                 .build();
+
         return workTimeDTO;
     }
 
-    //Save WorkTime
+    // Save WorkTime
     public WorkTime saveWorkTime(WorkTime workTime){
         return workTimeRepository.save(workTime);
     }
 
-    //Find by Id
+    // Find by Id
     @Override
     public WorkTimeDTO findById(long workTimeId) {
         WorkTime workTime = workTimeRepository.findById(workTimeId).get();
         return mapToWorkTimeDTO(workTime);
     }
 
-    //Update
+    // Update
     @Override
     public void updateWorkTime(WorkTimeDTO workTimeDto) {
         WorkTime workTime = mapToWorkTime(workTimeDto);
         workTimeRepository.save(workTime);
     }
 
-    //Map (to edit)
-    private WorkTime mapToWorkTime(WorkTimeDTO workTimeDto){
-        //userDto --> user
+    // Map (to edit)
+    private WorkTime mapToWorkTime(WorkTimeDTO workTimeDto) {
+        // userDTO --> user
         User user = User.builder()
                 .id(workTimeDto.getUser().getId())
                 .fullName(workTimeDto.getUser().getFullName())
@@ -91,16 +94,17 @@ public class WorkTimeService implements IWorkTimeService {
                 .overTime(workTimeDto.getOverTime())
                 .user(user)
                 .build();
+
         return workTime;
     }
 
-    //Delete
+    // Delete
     @Override
     public void delete(long workTimeId) {
         workTimeRepository.deleteById(workTimeId);
     }
 
-    //GetCalendar
+    // Get Calendar
     @Transactional
     @Override
     public List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long userId, int year, int month) {
@@ -111,7 +115,6 @@ public class WorkTimeService implements IWorkTimeService {
         Map<LocalDate, WorkTimeDTO> workTimeMap = workTimes.stream()
                 .map(workTime -> workTimeMapper.toDto(workTime, new ArrayList<>(workTime.getTasks())))
                 .collect(Collectors.toMap(WorkTimeDTO::getDate, dto -> dto));
-
 
         List<WorkTimeDTO> allDays = new ArrayList<>();
         for (LocalDate date = startOfMonth; !date.isAfter(endOfMonth); date = date.plusDays(1)) {
@@ -127,7 +130,7 @@ public class WorkTimeService implements IWorkTimeService {
         return allDays;
     }
 
-    //get Weekday
+    // Get Weekday
     private String getWeekdayString(LocalDate date) {
         switch (date.getDayOfWeek()) {
             case MONDAY: return "月";
@@ -141,14 +144,9 @@ public class WorkTimeService implements IWorkTimeService {
         }
     }
 
-    //get list task
+    // Get list task
     @Override
     public Set<Task> findTasksByWorkTime(Long workTimeId) {
         return workTimeRepository.findTasksByWorkTime(workTimeId);
     }
-
-
-
-
-
 }
