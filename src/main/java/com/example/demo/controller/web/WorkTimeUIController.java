@@ -60,7 +60,7 @@ public class WorkTimeUIController {
         workTime.setUser(loggedInUser);
 
         workTimeService.saveWorkTime(workTime);
-        return "redirect:/worktimes";
+        return "redirect:/worktimes/users/" + workTime.getUser().getId();
     }
 
     //Show edit form
@@ -77,31 +77,36 @@ public class WorkTimeUIController {
                                    @ModelAttribute("workTimeDto") WorkTimeDTO workTimeDto){
         workTimeDto.setId(workTimeId);
         workTimeService.updateWorkTime(workTimeDto);
-        return "redirect:/worktimes";
+        // After updating, redirect to the user's attendance screen
+        return "redirect:/worktimes/users/" + workTimeDto.getUser().getId();
     }
 
     //Delete
     @GetMapping("/{workTimeId}/delete")
-    public String deleteWorkTime(@PathVariable("workTimeId")long workTimeId){
+    public String deleteWorkTime(@PathVariable("workTimeId") long workTimeId) {
+        WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
         workTimeService.delete(workTimeId);
-        return "redirect:/worktimes";
+        // After deleting, redirect to the user's attendance screen
+        return "redirect:/worktimes/users/" + workTimeDto.getUser().getId();
     }
 
+    // Admin Path - Show List of Users
     @GetMapping("/admin")
     public String listUsers(Model model) {
-        Iterable<User> users = userService.findAll(); // Fetch all users
+        Iterable<User> users = userService.findAll();
+        System.out.println("Users: " + users); // Debugging output
         model.addAttribute("users", users);
-        return "worktime/user_worktime_list"; // Thymeleaf template name
+        return "worktime/user_worktime_list";
     }
 
     //Show task list:
     @GetMapping("/{workTimeId}/tasks")
     public String showTaskList(@PathVariable("workTimeId") Long workTimeId, Model model) {
         // Fetch the workTime info
-        /*WorkTimeDTO workTime = workTimeService.findById(workTimeId);
+        WorkTimeDTO workTime = workTimeService.findById(workTimeId);
         model.addAttribute("date", workTime.getDate());
         model.addAttribute("fullName", workTime.getUser().getFullName());
-*/
+
         //add workTimeId to model
         model.addAttribute("workTimeId", workTimeId);
 
@@ -120,8 +125,7 @@ public class WorkTimeUIController {
         return "worktime/worktime-tasks";
     }
 
-    //Create task
-    //Show Create form
+    // Show Create Task Form
     @GetMapping("{workTimeId}/tasks/create")
     public String createTaskForm(@PathVariable("workTimeId") Long workTimeId,
                                  Model model){
@@ -215,7 +219,8 @@ public class WorkTimeUIController {
         Iterable<WorkTimeDTO> workTimes = workTimeService.getWorkTimeForUserAndMonth(userId, year, month);
 
         // Add attributes to the model for rendering
-        model.addAttribute("userName", user.getUserName()); // Set the user's name as the title
+        model.addAttribute("userFullName", user.getFullName()); // Add the user's full name here
+        model.addAttribute("userName", user.getUserName()); // Retain username for other uses
         model.addAttribute("currentYear", year);
         model.addAttribute("currentMonth", month);
         model.addAttribute("workTimes", workTimes);
