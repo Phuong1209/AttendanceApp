@@ -31,19 +31,39 @@ public class JobTypeService implements IJobTypeService {
     }
 
     @Override
+    public void save(JobTypeDTO jobTypeDTO) {
+    }
+
+    @Override
     public JobType save(JobType model) {
         return jobTypeRepository.save(model);
     }
 
     @Override
     public void remove(Long id) {
+        if (jobTypeRepository.existsById(id)) {
+            jobTypeRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("JobType with ID " + id + " does not exist.");
+        }
+    }
+
+    @Override
+    public void delete(User user) {
+    }
+
+    /*@Override
+    public void deleteById(Long id) {
+    }*/
+
+    /* @Override
+    public void remove(Long id) {
         jobTypeRepository.deleteById(id);
     }
 
     @Override
     public void delete(User user) {
-
-    }
+    }*/
 
     @Override
     public List<JobTypeDTO> getAllJobType() {
@@ -69,5 +89,4 @@ public class JobTypeService implements IJobTypeService {
                 .build();
         return projectDTO;
     }
-
 }

@@ -1,10 +1,6 @@
-package com.example.demo.ControllerUI;
+package com.example.demo.controller.web;
 
-import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.JobTypeDTO;
-import com.example.demo.dto.ProjectDTO;
 import com.example.demo.dto.Summary.*;
-import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.service.Department.IDepartmentService;
 import com.example.demo.service.JobType.IJobTypeService;
 import com.example.demo.service.Project.IProjectService;

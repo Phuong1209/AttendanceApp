@@ -1,21 +1,17 @@
-package com.example.demo.ControllerUI;
+package com.example.demo.controller.web;
 
 
 import com.example.demo.dto.ProjectDTO;
 import com.example.demo.model.Project;
-import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.service.Project.IProjectService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/projects")

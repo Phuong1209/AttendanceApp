@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>作業種類更新</title>
+</head>
+<body>
+<h1>作業種類更新</h1>
+<form th:action="@{/jobtypes/update/{id}(id=${jobTypeDTO.id})}" th:object="${jobTypeDTO}" method="post">
+    <label for="name">作業種類名:</label>
+    <input type="text" id="name" th:field="*{name}" placeholder="作業種類名を入力してください" required />
+    <button type="submit" class="btn-blue">更新</button>
+</form>
+<a href="/jobtypes">戻る</a>
+</body>
+</html>
