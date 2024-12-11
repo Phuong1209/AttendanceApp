@@ -114,5 +114,4 @@ public class TaskService implements ITaskService {
     public int countByWorkTimeAndDate(Long workTimeId, LocalDate workDate) {
         return taskRepository.countByWorkTimeAndDate(workTimeId,workDate);
     }
-
 }
