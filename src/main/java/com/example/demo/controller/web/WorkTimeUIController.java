@@ -93,13 +93,14 @@ public class WorkTimeUIController {
     //Create
     @PostMapping("/create")
     public String saveWorkTime(@ModelAttribute("workTime") WorkTime workTime){
+        workTime.setId(null); //for not edit existing workTime
+
         //get logged in user
         String username = SecurityUtil.getSessionUser();
         User loggedInUser = userService.findByUserName(username);
 
         //set user
         workTime.setUser(loggedInUser);
-
         workTimeService.saveWorkTime(workTime);
         return "redirect:/worktimes/user" + workTime.getUser().getId();
     }
@@ -118,8 +119,7 @@ public class WorkTimeUIController {
                                    @ModelAttribute("workTimeDto") WorkTimeDTO workTimeDto){
         workTimeDto.setId(workTimeId);
         workTimeService.updateWorkTime(workTimeDto);
-        // After updating, redirect to the user's attendance screen
-        return "redirect:/worktimes/users/" + workTimeDto.getUser().getId();
+        return "redirect:/worktimes/user" + workTimeDto.getUser().getId();
     }
 
     //Delete
@@ -128,7 +128,7 @@ public class WorkTimeUIController {
         WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
         workTimeService.delete(workTimeId);
         // After deleting, redirect to the user's attendance screen
-        return "redirect:/worktimes/users/" + workTimeDto.getUser().getId();
+        return "redirect:/worktimes/user" + workTimeDto.getUser().getId();
     }
 
     // Admin Path - Show List of Users

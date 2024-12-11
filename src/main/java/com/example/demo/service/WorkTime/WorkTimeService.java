@@ -36,12 +36,10 @@ public class WorkTimeService implements IWorkTimeService {
 
     // Mapper
     public WorkTimeDTO mapToWorkTimeDTO(WorkTime workTime) {
-        UserDTO userDTO = (workTime.getUser() != null)
-                ? UserDTO.builder()
+        UserDTO userDTO = UserDTO.builder()
                 .id(workTime.getUser().getId())
                 .fullName(workTime.getUser().getFullName())
-                .build()
-                : null;
+                .build();
 
         // Map workTime to workTimeDTO
         WorkTimeDTO workTimeDTO = WorkTimeDTO.builder()
@@ -59,7 +57,13 @@ public class WorkTimeService implements IWorkTimeService {
     }
 
     // Save WorkTime
-    public WorkTime saveWorkTime(WorkTime workTime){
+    public WorkTime saveWorkTime(WorkTime workTime) {
+        Optional<WorkTime> existingWorkTime = workTimeRepository.findByUserAndDate(workTime.getUser(), workTime.getDate());
+
+        if (existingWorkTime.isPresent()) {
+            throw new IllegalArgumentException("WorkTime for this user on this date already exists");
+        }
+
         return workTimeRepository.save(workTime);
     }
 
@@ -95,7 +99,6 @@ public class WorkTimeService implements IWorkTimeService {
                 .overTime(workTimeDto.getOverTime())
                 .user(user)
                 .build();
-
         return workTime;
     }
 
@@ -106,7 +109,7 @@ public class WorkTimeService implements IWorkTimeService {
     }
 
     // Get Calendar
-    @Transactional
+    /*@Transactional
     @Override
     public List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long userId, int year, int month) {
         LocalDate startOfMonth = LocalDate.of(year, month, 1);
@@ -129,7 +132,7 @@ public class WorkTimeService implements IWorkTimeService {
         }
 
         return allDays;
-    }
+    }*/
 
     // Get Weekday
     private String getWeekdayString(LocalDate date) {

@@ -113,7 +113,7 @@ public class UserService implements IUserService {
 
     @Override
     public User findByUserName(String userName) {
-        return userRepository.findFirstByUserName(userName);
+        return userRepository.findByUserName(userName).orElse(null);
     }
 
     @Transactional
