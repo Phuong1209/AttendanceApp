@@ -2,43 +2,15 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>勤務時間表</title>
+    <title>勤務時間管理</title>
     <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid black;
-            text-align: center;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .holiday {
-            background-color: lightpink;
-        }
         .weekend {
-            background-color: lightblue;
-        }
-        .future {
-            background-color: lightgray;
-        }
-        button {
-            margin: 10px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:disabled {
-            background-color: gray;
-            cursor: not-allowed;
-        }
-    </style>
+        background-color: lightblue;
+    }
+    .future {
+        background-color: lightgray;
+    }</style>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Link to the style.css -->
     <script>
         function parseTimeString(timeStr) {
             if (!timeStr || !timeStr.includes(":")) return null;
@@ -52,7 +24,7 @@
             const breakTimeHours = parseFloat(breakTime) || 0;
 
             if (!checkinTime || !checkoutTime) {
-                return { workTime: 0, overTime: 0 };
+                return { workTime: '0', overTime: '0' };
             }
 
             const totalHours = (checkoutTime - checkinTime) / (1000 * 60 * 60) - breakTimeHours;
@@ -80,59 +52,52 @@
     </script>
 </head>
 <body>
-<div>
-    <h3>ユーザー名: <span th:text="${userFullName}"></span></h3>
-    <h4 th:text="${currentYear} + '年' + ${currentMonth} + '月'"></h4>
-    <table>
-        <thead>
-        <tr>
-            <th>日付</th>
-            <th>曜日</th>
-            <th>出勤</th>
-            <th>退勤</th>
-            <th>休憩</th>
-            <th>時間内</th>
-            <th>残業時間</th>
-            <th>タスク</th> <!-- New Column for Tasks -->
-            <th>アクション</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="workTime : ${workTimes}"
-            th:class="${workTime.isHoliday ? 'holiday' : ''} + ' ' + ${workTime.isWeekend ? 'weekend' : ''} + ' ' + ${workTime.isFuture ? 'future' : ''}">
-            <td th:text="${workTime.date}"></td>
-            <td th:text="${workTime.weekday}"></td>
-            <td class="checkin" th:text="${#temporals.format(workTime.checkinTime, 'HH:mm')}"></td>
-            <td class="checkout" th:text="${#temporals.format(workTime.checkoutTime, 'HH:mm')}"></td>
-            <td class="break" th:text="${workTime.breakTime != null ? workTime.breakTime : '0'}"></td>
-            <td class="worktime" th:text="'0'"></td>
-            <td class="overtime" th:text="'0'"></td>
-            <td>
-                <!-- Link to task list -->
-                <a th:href="@{/worktimes/{workTimeId}/tasks(workTimeId=${workTime.id})}" class="btn-blue" th:text="'タスク一覧'"></a>
-            </td>
-            <td>
-                <!-- Updated button actions with delete functionality -->
-                <button th:onclick="'/edit/' + ${workTime.id}" th:text="'修正'"
-                        th:disabled="${workTime.isFuture}"></button>
-
-                <!-- Delete button with confirmation -->
-                <form th:action="@{/worktimes/{workTimeId}/delete(workTimeId=${workTime.id})}" method="POST" style="display:inline;">
-                    <button type="submit" th:text="'削除'"
-                            th:disabled="${workTime.isFuture}"
-                            onclick="return confirm('本当に削除しますか？');"></button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div>
-        <button th:onclick="'/worktime?year=' + ${currentYear} + '&month=' + (${currentMonth} - 1)"
-                th:text="'先月'"
-                th:disabled="${currentMonth} == 1"></button>
-        <button th:onclick="'/worktime?year=' + ${currentYear} + '&month=' + (${currentMonth} + 1)"
-                th:text="'来月'"
-                th:disabled="${currentMonth} == 12"></button>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>勤務時間管理</h1>
+        <h3>ユーザー名: <span th:text="${userFullName}"></span></h3>
+        <h4 th:text="${currentYear} + '年' + ${currentMonth} + '月'"></h4>
+        <a class="btn-blue" href="http://localhost:8080/worktimes/create">新規作成</a>
+        <div style="overflow-x:auto;">
+            <table class="list-table">
+                <thead>
+                <tr>
+                    <th>日付</th>
+                    <th>曜日</th>
+                    <th>出勤</th>
+                    <th>退勤</th>
+                    <th>休憩</th>
+                    <th>時間内</th>
+                    <th>残業時間</th>
+                    <th>タスク</th>
+                    <th>アクション</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="workTime : ${workTimes}"
+                    th:class="${workTime.isHoliday ? 'holiday' : ''} + ' ' + ${workTime.isWeekend ? 'weekend' : ''} + ' ' + ${workTime.isFuture ? 'future' : ''}">
+                    <td th:text="${workTime.date}"></td>
+                    <td th:text="${workTime.weekday}"></td>
+                <td class="checkin" th:text="${#temporals.format(workTime.checkinTime, 'HH:mm')}"></td>
+                <td class="checkout" th:text="${#temporals.format(workTime.checkoutTime, 'HH:mm')}"></td>
+                <td class="break" th:text="${workTime.breakTime != null ? workTime.breakTime : '0'}"></td>
+                <td class="worktime" th:text="'0'"></td>
+                <td class="overtime" th:text="'0'"></td>
+                <td>
+                    <a th:href="@{/worktimes/{workTimeId}/tasks(workTimeId=${workTime.id})}" class="btn-blue" th:text="'タスク一覧'"></a>
+                </td>
+                <td>
+                    <a class="btn-blue" th:href="@{/worktimes/{workTimeId}/edit(workTimeId=${workTime.id})}" th:text="'修正'" th:disabled="${workTime.isFuture}"></a>
+                    <form th:action="@{/worktimes/{workTimeId}/delete(workTimeId=${workTime.id})}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn-red" th:text="'削除'" th:disabled="${workTime.isFuture}" onclick="return confirm('本当に削除しますか？');"></button>
+                    </form>
+                </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>
