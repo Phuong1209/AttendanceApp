@@ -5,11 +5,11 @@
     <title>勤務時間管理</title>
     <style>
         .weekend {
-        background-color: lightblue;
-    }
-    .future {
-        background-color: lightgray;
-    }</style>
+            background-color: lightblue;
+        }
+        .future {
+            background-color: lightgray;
+        }</style>
     <link rel="stylesheet" href="/css/style.css"> <!-- Link to the style.css -->
     <script>
         function parseTimeString(timeStr) {
@@ -80,20 +80,20 @@
                     th:class="${workTime.isHoliday ? 'holiday' : ''} + ' ' + ${workTime.isWeekend ? 'weekend' : ''} + ' ' + ${workTime.isFuture ? 'future' : ''}">
                     <td th:text="${workTime.date}"></td>
                     <td th:text="${workTime.weekday}"></td>
-                <td class="checkin" th:text="${#temporals.format(workTime.checkinTime, 'HH:mm')}"></td>
-                <td class="checkout" th:text="${#temporals.format(workTime.checkoutTime, 'HH:mm')}"></td>
-                <td class="break" th:text="${workTime.breakTime != null ? workTime.breakTime : '0'}"></td>
-                <td class="worktime" th:text="'0'"></td>
-                <td class="overtime" th:text="'0'"></td>
-                <td>
-                    <a th:href="@{/worktimes/{workTimeId}/tasks(workTimeId=${workTime.id})}" class="btn-blue" th:text="'タスク一覧'"></a>
-                </td>
-                <td>
-                    <a class="btn-blue" th:href="@{/worktimes/{workTimeId}/edit(workTimeId=${workTime.id})}" th:text="'修正'" th:disabled="${workTime.isFuture}"></a>
-                    <form th:action="@{/worktimes/{workTimeId}/delete(workTimeId=${workTime.id})}" method="POST" style="display:inline;">
-                        <button type="submit" class="btn-red" th:text="'削除'" th:disabled="${workTime.isFuture}" onclick="return confirm('本当に削除しますか？');"></button>
-                    </form>
-                </td>
+                    <td class="checkin" th:text="${#temporals.format(workTime.checkinTime, 'HH:mm')}"></td>
+                    <td class="checkout" th:text="${#temporals.format(workTime.checkoutTime, 'HH:mm')}"></td>
+                    <td class="break" th:text="${workTime.breakTime != null ? workTime.breakTime : '0'}"></td>
+                    <td class="worktime" th:text="'0'"></td>
+                    <td class="overtime" th:text="'0'"></td>
+                    <td>
+                        <a th:href="@{/worktimes/{workTimeId}/tasks(workTimeId=${workTime.id})}" class="btn-blue" th:text="'タスク一覧'"></a>
+                    </td>
+                    <td>
+                        <a class="btn-blue" th:href="@{/worktimes/{workTimeId}/edit(workTimeId=${workTime.id})}" th:text="'修正'" th:disabled="${workTime.isFuture}"></a>
+                        <form th:action="@{/worktimes/{workTimeId}/delete(workTimeId=${workTime.id})}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-red" th:text="'削除'" th:disabled="${workTime.isFuture}" onclick="return confirm('本当に削除しますか？');"></button>
+                        </form>
+                    </td>
                 </tr>
                 </tbody>
             </table>
