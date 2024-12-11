@@ -5,6 +5,7 @@ import com.example.demo.dto.JobTypeDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
+import com.example.demo.model.Project;
 import com.example.demo.model.User;
 import com.example.demo.repository.IJobTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,31 @@ public class JobTypeService implements IJobTypeService {
     @Override
     public void delete(User user) {
 
+    }
+
+    @Override
+    public List<JobTypeDTO> getAllJobType() {
+        List<JobType> jobTypes = jobTypeRepository.findAll();
+//        return jobTypes.stream().map((jobType) -> mapToJobTypeDTO(jobType)).collect(Collectors.toList());
+        return null;
+    }
+
+    public static JobTypeDTO mapToJobTypeDTO(Project project) {
+        JobTypeDTO jobTypeDTO = JobTypeDTO.builder()
+                .id(project.getId())
+                .name(project.getName())
+//                .code(project.getCode())
+                .build();
+        return jobTypeDTO;
+    }
+
+    public static ProjectDTO mapToProjectDTO(Project project) {
+        ProjectDTO projectDTO = ProjectDTO.builder()
+                .id(project.getId())
+                .name(project.getName())
+                .code(project.getCode())
+                .build();
+        return projectDTO;
     }
 
 }

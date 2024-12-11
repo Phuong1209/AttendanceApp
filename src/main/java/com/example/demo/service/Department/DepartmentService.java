@@ -1,10 +1,7 @@
 package com.example.demo.service.Department;
 
 import com.example.demo.dto.*;
-import com.example.demo.dto.Summary.DepartmentSummaryDTO;
-import com.example.demo.dto.Summary.DepartmentSummaryDTO3;
-import com.example.demo.dto.Summary.JobTypeSummaryDTO;
-import com.example.demo.dto.Summary.ProjectSummaryDTO3;
+import com.example.demo.dto.Summary.*;
 import com.example.demo.model.*;
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IJobTypeRepository;
@@ -159,6 +156,55 @@ public class DepartmentService implements IDepartmentService {
         return summaries;
     }
 
+    //Summarize JobType by Department FOR UI
+    public List<DepJobSummaryDTO> getDepJobSummary() {
+        List<Department> departments = departmentRepository.findAll();
+        List<DepJobSummaryDTO> summaries = new ArrayList<>();
+
+        for (Department department : departments) {
+//            DepJobSummaryDTO depJobSummaryDTO = new DepJobSummaryDTO();
+//            depJobSummaryDTO.setDepartmentName(department.getName());
+
+            // Map to accumulate total time for each JobType within the department
+            Map<String, Float> jobTypeTotalTimeMap = new HashMap<>();
+
+            // For each user in the department, retrieve all their tasks and calculate total times per JobType
+            for (User user : department.getUsers()) {
+                for (WorkTime workTime : user.getWorkTimes()) {
+                    for (Task task : workTime.getTasks()) {
+                        JobType jobType = task.getJobType();
+                        if (jobType != null) {
+                            String jobTypeName = jobType.getName();
+                            float currentTotal = jobTypeTotalTimeMap.getOrDefault(jobTypeName, 0f);
+                            jobTypeTotalTimeMap.put(jobTypeName, currentTotal + task.getTotalTime());
+                        }
+                    }
+                }
+            }
+            // Create and add DepJobSummaryDTO for each job type
+            for (Map.Entry<String, Float> entry : jobTypeTotalTimeMap.entrySet()) {
+                DepJobSummaryDTO depJobSummaryDTO = new DepJobSummaryDTO();
+                depJobSummaryDTO.setDepartmentName(department.getName());
+                depJobSummaryDTO.setJobTypeName(entry.getKey());
+                depJobSummaryDTO.setTotalTime(entry.getValue());
+                summaries.add(depJobSummaryDTO);
+            }
+
+//            // Convert the job type map to a list of JobTypeSummaryDTO
+//            List<DepJobSummaryDTO> jobTypeSummaries = jobTypeTotalTimeMap.entrySet()
+//                    .stream()
+//                    .map(entry -> {
+//                        depJobSummaryDTO.setJobTypeName(entry.getKey());
+//                        depJobSummaryDTO.setTotalTime(entry.getValue());
+//                        return depJobSummaryDTO;
+//                    })
+//                    .collect(Collectors.toList());
+//            summaries.add(depJobSummaryDTO);
+        }
+
+        return summaries;
+    }
+
     //Summarize Pj by department
     public List<DepartmentSummaryDTO3> getSummaryByDepartment3() {
         List<Department> departments = departmentRepository.findAll();
@@ -201,7 +247,66 @@ public class DepartmentService implements IDepartmentService {
         }
         return summaries;
     }
+    //Summarize Pj by department FOR UI
+    public List<DepProjSummaryDTO> getDepProjSummary() {
+        List<Department> departments = departmentRepository.findAll();
+        List<DepProjSummaryDTO> summaries = new ArrayList<>();
 
+        for (Department department : departments) {
+//            DepProjSummaryDTO depProjSummaryDTO = new DepProjSummaryDTO();
+//            depProjSummaryDTO.setDepartmentName(department.getName());
+
+            // Map to accumulate total time for each JobType within the department
+//            Map<String, Float> projectTotalTimeMap = new HashMap<>();
+            Map<String, DepProjSummaryDTO> projectTotalTimeMap = new HashMap<>();
+
+
+            // For each user in the department, retrieve all their tasks and calculate total times per JobType
+            for (User user : department.getUsers()) {
+                for (WorkTime workTime : user.getWorkTimes()) {
+                    for (Task task : workTime.getTasks()) {
+                        Project project = task.getProject();
+                        if (project != null) {
+                            String projectName = project.getName();
+                            String projectCode = project.getCode();
+
+                            // Get or create a new DTO for this project
+                            DepProjSummaryDTO depProjSummaryDTO = projectTotalTimeMap.getOrDefault(
+                                    projectName,
+                                    new DepProjSummaryDTO(department.getName(), projectName, projectCode, 0f)
+                            );
+
+                            // Update the total time
+                            depProjSummaryDTO.setTotalTime(depProjSummaryDTO.getTotalTime() + task.getTotalTime());
+                            projectTotalTimeMap.put(projectName, depProjSummaryDTO);
+
+//                            depProjSummaryDTO.setProjectCode(projectCode);
+//                            float currentTotal = projectTotalTimeMap.getOrDefault(projectName, 0f);
+//                            projectTotalTimeMap.put(projectName, currentTotal + task.getTotalTime());
+//                        }
+                        }
+                    }
+                }
+
+                // Convert the project map to a list of ProjectSummaryDTO3
+//            List<DepProjSummaryDTO> projectSummaries = projectTotalTimeMap.entrySet()
+//                    .stream()
+//                    .map(entry -> {
+////                        ProjectSummaryDTO3 projectSummary = new ProjectSummaryDTO3();
+//                        depProjSummaryDTO.setProjectName(entry.getKey());
+//                        depProjSummaryDTO.setTotalTime(entry.getValue());
+//                        return depProjSummaryDTO;
+//                    })
+//                    .collect(Collectors.toList());
+//            depProjSummaryDTO.setProjectSummaries(projectSummaries);
+//            summaries.add(depProjSummaryDTO);
+                summaries.addAll(projectTotalTimeMap.values());
+
+                }
+            }
+            return summaries;
+
+        }
 
     // Phương thức xuất CSV cho DepartmentSummaryDTO
     public void exportDepartmentSummaryToCSV(HttpServletResponse response, List<DepartmentSummaryDTO> summaries) throws IOException {

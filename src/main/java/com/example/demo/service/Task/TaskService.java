@@ -140,9 +140,13 @@ public class TaskService implements ITaskService {
 
             // Map project
             if (task.getProject() != null) {
-                ProjectDTO projectDTO = new ProjectDTO();
-                projectDTO.setId(task.getProject().getId());
-                projectDTO.setName(task.getProject().getName());
+//                ProjectDTO projectDTO = new ProjectDTO();
+//                projectDTO.setId(task.getProject().getId());
+//                projectDTO.setName(task.getProject().getName());
+                ProjectDTO projectDTO = ProjectDTO.builder()
+                        .id(task.getProject().getId())
+                        .name(task.getProject().getName())
+                        .build();
                 taskDTO.setProject(projectDTO);
             }
 
@@ -181,9 +185,13 @@ public class TaskService implements ITaskService {
 
             // Map Project
             if (task.getProject() != null) {
-                ProjectDTO projectDTO = new ProjectDTO();
-                projectDTO.setId(task.getProject().getId());
-                projectDTO.setName(task.getProject().getName());
+//                ProjectDTO projectDTO = new ProjectDTO();
+//                projectDTO.setId(task.getProject().getId());
+//                projectDTO.setName(task.getProject().getName());
+                ProjectDTO projectDTO = ProjectDTO.builder()
+                        .id(task.getProject().getId())
+                        .name(task.getProject().getName())
+                        .build();
                 taskDTO.setProject(projectDTO);
             }
 
