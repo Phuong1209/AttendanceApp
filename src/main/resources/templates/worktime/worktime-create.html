@@ -52,6 +52,9 @@
                         placeholder="残業時間"
                         th:field="*{overTime}">
             </div>
+    </div>
+    <!-- Hidden userId field -->
+    <input type="hidden" th:field="*{userId}" th:value="${userId}">
             <input type="submit" value="登録" class="btn-blue">
         </form>
     </div>

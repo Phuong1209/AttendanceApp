@@ -1,9 +1,16 @@
-/*
+
 package com.example.demo.security;
 
 
 import java.util.Date;
 
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jwt.JWTClaimsSet;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -49,8 +56,8 @@ public class JwtUtil {
                 .getExpiration();
         return expiration.before(new Date());
     }
+    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
 }
 
 
 
-*/

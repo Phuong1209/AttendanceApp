@@ -3,6 +3,7 @@ package com.example.demo.config;
 import com.example.demo.service.BlacklistService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -38,5 +39,18 @@ public class JwtFilter extends OncePerRequestFilter {
             return authorizationHeader.replace("Bearer ", "");
         }
         return null;
+    }
+
+    private String extractTokenFromCookie(HttpServletRequest request) {
+        String token = null;
+        if (request.getCookies() != null) {
+            Cookie[] rc = request.getCookies();
+            for (Cookie cookie : rc) {
+                if (cookie.getName().equals("token")) {
+                    token = cookie.getValue();
+                }
+            }
+        }
+        return token;
     }
 }

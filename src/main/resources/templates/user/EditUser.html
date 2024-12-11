@@ -1,3 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>メンバー作成</h1>
+        <form method="POST" th:action="@{/members/edit/{id}(id=${user.id})}" th:object="${user}">
+            <table class="form-table">
+                <tr>
+                    <td><label for="username">ユーザー名</label></td>
+                    <td>
+                        <input type="text"
+                               id="username"
+                               placeholder="部署名"
+                               th:field="*{userName}">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="fullname">フルネーム</label></td>
+                    <td>
+                        <input type="text"
+                               id="fullname"
+                               placeholder="フルネーム"
+                               th:field="*{fullName}">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="password">パスワード</label></td>
+                    <td>
+                        <input type="text"
+                               id="password"
+                               placeholder="パスワード"
+                               th:field="*{password}">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="positions">役職</label></td>
+                    <td>
+                        <select
+                                class="form-select"
+                                id="positions"
+                                name="positionIds"
+                                placeholder="Select your positionId"
+                                multiple="multiple">
+                            <option
+                                    th:each="position : ${positions}"
+                                    th:value="${position.id}"
+                                    th:text="${position.name}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="departments">部署</label></td>
+                    <td>
+                        <div class="multiple_P">
+                            <select
+                                    class="form-select"
+                                    id="departments"
+                                    name="departmentIds"
+                                    multiple="multiple"
+                                    placeholder="Select your department">
+                                <option
+                                        th:each="department : ${departments}"
+                                        th:value="${department.id}"
+                                        th:text="${department.name}"
+                                        th:selected="${#lists.contains(user.departments, department)}">
+                                </option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn-blue">修正</button>
+        </form>
+    </div>
+</div>
+<script src="/js/scripts.js"></script>
+</body>
+</html>
+
 <!--<!doctype html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
