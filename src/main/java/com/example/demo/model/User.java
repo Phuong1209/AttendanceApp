@@ -22,9 +22,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    @NotEmpty(message = "fullName should not be empty")
     private String fullName;
-//    @NotEmpty(message = "userName should not be empty")
     private String userName;
     private String password;
 
@@ -35,7 +33,6 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "position_id")
     )
     @JsonManagedReference
-//    @NotEmpty(message = "positions should not be empty")
     private Set<Position> positions;
 
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
@@ -45,7 +42,6 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "department_id")
     )
     @JsonManagedReference
-//    @NotEmpty (message = "departments should not be empty")
     private Set<Department> departments;
 
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
