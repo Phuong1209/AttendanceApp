@@ -248,6 +248,7 @@ public class UserService implements IUserService {
             if (optionalUser.isPresent()) {
                 User foundUser = optionalUser.get();
                 List<WorkTime> workTimes = workTimeRepository.findByUser(foundUser);
+                workTimes.sort(Comparator.comparing(WorkTime::getDate).reversed());
                 log.info("Worktimes of user {}:{}", foundUser.getUserName(), workTimes);
                 return workTimes;
             }

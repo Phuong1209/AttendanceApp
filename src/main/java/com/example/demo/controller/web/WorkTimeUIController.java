@@ -47,6 +47,18 @@ public class WorkTimeUIController {
     public String listUserWorkTime(@PathVariable("userId") Long userId, Model model) {
         List<WorkTime> workTimes = userService.getWorkTimeByUser(userId);
         model.addAttribute("workTimes", workTimes);
+
+        //add user to model
+        User user = userService.findById(userId).orElse(null);
+        model.addAttribute("userFullName", user.getFullName());
+
+        // Get the current date
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        int month = today.getMonthValue();
+        model.addAttribute("currentYear", year);
+        model.addAttribute("currentMonth", month);
+
         return "worktime/worktime-list-all";
     }
 

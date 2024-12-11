@@ -9,6 +9,9 @@
     <div th:replace="~{layout :: top_menu}"></div>
     <div class="main_container">
         <h1>勤怠時間管理</h1>
+        <p><strong th:text="'ユーザー名: ' + ${userFullName}"></strong></p>
+        <p><strong th:text="${currentYear} + '年' + ${currentMonth} + '月'"></strong></p>
+        <br>
         <a class="btn-blue" href="http://localhost:8080/worktimes/create">新規作成</a>
         <table class="list-table">
             <thead>
