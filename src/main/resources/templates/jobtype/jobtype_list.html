@@ -2,33 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>作業種類画面</title>
+    <title>作業種類一覧</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Link to the style.css -->
 </head>
 <body>
-<h1>作業種類一覧</h1>
-<a href="/jobtypes/create" class="btn-blue">新規作成+</a>
-<table>
-    <thead>
-    <tr>
-        <th>No.</th>
-        <th>作業種類名</th>
-        <th>アクション</th>
-    </tr>
-    </thead>
-    <tbody th:each="jobType, stat : ${jobTypes}">
-    <tr>
-        <td th:text="${stat.index + 1}"></td>
-        <td th:text="${jobType.name}"></td>
-        <td>
-            <!-- Update Button -->
-            <a th:href="@{/jobtypes/update/{id}(id=${jobType.id})}" class="btn-blue">更新</a>
-            <!-- Delete Button -->
-            <form th:action="@{/jobtypes/delete/{id}(id=${jobType.id})}" method="post" style="display:inline;">
-                <button class="btn-red" type="submit">削除</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>作業種類一覧</h1>
+        <a href="/jobtypes/create" class="btn-blue">新規作成+</a>
+        <table class="list-table">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>作業種類名</th>
+                <th>アクション</th>
+            </tr>
+            </thead>
+            <tbody th:each="jobType, stat : ${jobTypes}">
+            <tr>
+                <td th:text="${stat.index + 1}"></td>
+                <td th:text="${jobType.name}"></td>
+                <td>
+                    <!-- Update Button -->
+                    <a th:href="@{/jobtypes/update/{id}(id=${jobType.id})}" class="btn-blue">更新</a>
+
+                    <!-- Delete Button -->
+                    <form th:action="@{/jobtypes/delete/{id}(id=${jobType.id})}" method="post" style="display:inline;">
+                        <button class="btn-red" type="submit">削除</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>

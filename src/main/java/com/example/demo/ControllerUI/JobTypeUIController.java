@@ -102,11 +102,18 @@ public class JobTypeUIController {
      jobTypeService.save(jobType); // Save the updated job type
      return "redirect:/jobtypes";  // Redirect back to the list page
  }*/
-@PostMapping("/delete/{id}")
+/*@PostMapping("/delete/{id}")
 public String deleteJobType(@PathVariable Long id) {
     jobTypeService.remove(id);
     return "redirect:/jobtypes";
+}*/
+@PostMapping("/delete/{id}")
+public String deleteJobType(@PathVariable Long id) {
+    // Ensure this line correctly removes the jobType by its ID
+    jobTypeService.remove(id);
+    return "redirect:/jobtypes"; // Redirect back to the list after deletion
 }
+
 
 }
 

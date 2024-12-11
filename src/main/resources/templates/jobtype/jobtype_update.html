@@ -3,14 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <title>作業種類更新</title>
+  <link rel="stylesheet" href="/css/style.css"> <!-- Link to the style.css -->
 </head>
 <body>
-<h1>作業種類更新</h1>
-<form th:action="@{/jobtypes/update/{id}(id=${jobTypeDTO.id})}" th:object="${jobTypeDTO}" method="post">
-  <label for="name">作業種類名:</label>
-  <input type="text" id="name" th:field="*{name}" placeholder="作業種類名を入力してください" required />
-  <button type="submit" class="btn-blue">更新</button>
-</form>
-<a href="/jobtypes">戻る</a> <!-- Back to list -->
+<div class="wrapper">
+  <div th:replace="~{layout :: sidebar}"></div>
+  <div th:replace="~{layout :: top_menu}"></div>
+  <div class="main_container">
+    <h1>作業種類更新</h1>
+    <form th:action="@{/jobtypes/update/{id}(id=${jobTypeDTO.id})}" th:object="${jobTypeDTO}" method="post">
+      <div class="form_create">
+        <div class="wrapper_details">
+          <div class="input_field">
+            <label for="name" class="details">作業種類名:</label>
+            <input type="text" id="name" th:field="*{name}" placeholder="作業種類名を入力してください" required />
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn-blue">更新</button>
+    </form>
+    <a href="/jobtypes" class="btn-blue">戻る</a> <!-- Back to list -->
+  </div>
+</div>
 </body>
 </html>
