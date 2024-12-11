@@ -28,19 +28,18 @@ public class WorkTimeService implements IWorkTimeService {
     public List<WorkTimeDTO> getAllWorkTime() {
         List<WorkTime> workTimes = workTimeRepository.findAll();
         return workTimes.stream()
-                .map(this::mapToWorkTimeDTO)
+                .map((workTime) -> mapToWorkTimeDTO(workTime))
                 .collect(Collectors.toList());
     }
 
     // Mapper
     public WorkTimeDTO mapToWorkTimeDTO(WorkTime workTime) {
-        // Check if user is null to prevent NullPointerException
         UserDTO userDTO = (workTime.getUser() != null)
                 ? UserDTO.builder()
                 .id(workTime.getUser().getId())
                 .fullName(workTime.getUser().getFullName())
                 .build()
-                : null;  // If user is null, userDTO will be null
+                : null;
 
         // Map workTime to workTimeDTO
         WorkTimeDTO workTimeDTO = WorkTimeDTO.builder()
@@ -51,7 +50,7 @@ public class WorkTimeService implements IWorkTimeService {
                 .breakTime(workTime.getBreakTime())
                 .workTime(workTime.getWorkTime())
                 .overTime(workTime.getOverTime())
-                .user(userDTO)  // Handle the null case gracefully
+                .user(userDTO)
                 .build();
 
         return workTimeDTO;

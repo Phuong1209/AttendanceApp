@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -33,12 +34,44 @@ public class WorkTimeUIController {
     @Autowired
     private IProjectRepository projectRepository;
 
-    //Show WorkTime List
+    //Show all workTime
     @GetMapping({"","/"})
-    public String listWorkTime(Model model) {
+    public String listAllWorkTime(Model model) {
         List<WorkTimeDTO> workTimes = workTimeService.getAllWorkTime();
         model.addAttribute("workTimes", workTimes);
-        return "worktime/worktime-list";
+        return "worktime/worktime-list-all";
+    }
+
+    //Show user's workTime
+    @GetMapping("/user{userId}")
+    public String listUserWorkTime(@PathVariable("userId") Long userId, Model model) {
+        //add user to model
+        User user = userService.findById(userId).orElse(null);
+        model.addAttribute("user", user);
+
+        // Get the current date
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        int month = today.getMonthValue();
+
+        //add workTime to model
+        Iterable<WorkTimeDTO> workTimes = workTimeService.getWorkTimeForUserAndMonth(userId, year, month);
+        model.addAttribute("workTimes", workTimes);
+
+        // Add attributes to the model for rendering
+        model.addAttribute("userFullName", user.getFullName());
+        model.addAttribute("userName", user.getUserName());
+        model.addAttribute("currentYear", year);
+        model.addAttribute("currentMonth", month);
+        model.addAttribute("workTimes", workTimes);
+
+        // Add navigation buttons for previous and next months
+        model.addAttribute("previousMonth", month == 1 ? 12 : month - 1);
+        model.addAttribute("previousYear", month == 1 ? year - 1 : year);
+        model.addAttribute("nextMonth", month == 12 ? 1 : month + 1);
+        model.addAttribute("nextYear", month == 12 ? year + 1 : year);
+
+        return "worktime/worktime-list-user";
     }
 
     //Show Create form
@@ -60,7 +93,7 @@ public class WorkTimeUIController {
         workTime.setUser(loggedInUser);
 
         workTimeService.saveWorkTime(workTime);
-        return "redirect:/worktimes/users/" + workTime.getUser().getId();
+        return "redirect:/worktimes/user" + workTime.getUser().getId();
     }
 
     //Show edit form
@@ -200,37 +233,5 @@ public class WorkTimeUIController {
                              @PathVariable("workTimeId") Long workTimeId){
         taskService.delete(taskId);
         return "redirect:/worktimes/" + workTimeId + "/tasks";
-    }
-
-    // User Attendance Sheet (Details)
-    @GetMapping("/user/{userId}")
-    public String listWorkTime(@PathVariable Long userId, Model model) {
-        LocalDate today = LocalDate.now(); // Get the current date
-        int year = today.getYear();
-        int month = today.getMonthValue();
-
-        // Fetch the user by ID
-        User user = userService.findById(userId).orElse(null);
-        if (user == null) {
-            return "error/404"; // Handle case where user is not found
-        }
-
-        // Fetch attendance data for the user's current month
-        Iterable<WorkTimeDTO> workTimes = workTimeService.getWorkTimeForUserAndMonth(userId, year, month);
-
-        // Add attributes to the model for rendering
-        model.addAttribute("userFullName", user.getFullName()); // Add the user's full name here
-        model.addAttribute("userName", user.getUserName()); // Retain username for other uses
-        model.addAttribute("currentYear", year);
-        model.addAttribute("currentMonth", month);
-        model.addAttribute("workTimes", workTimes);
-
-        // Add navigation buttons for previous and next months
-        model.addAttribute("previousMonth", month == 1 ? 12 : month - 1);
-        model.addAttribute("previousYear", month == 1 ? year - 1 : year);
-        model.addAttribute("nextMonth", month == 12 ? 1 : month + 1);
-        model.addAttribute("nextYear", month == 12 ? year + 1 : year);
-
-        return "worktime/worktime_list";
     }
 }
