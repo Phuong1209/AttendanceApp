@@ -111,6 +111,11 @@ public class UserService implements IUserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public User findByUserName(String userName) {
+        return userRepository.findFirstByUserName(userName);
+    }
+
     @Transactional
     @Override
     public void remove(Long id) {

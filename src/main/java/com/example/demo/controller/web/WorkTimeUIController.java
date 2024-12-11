@@ -5,6 +5,8 @@ import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IProjectRepository;
+import com.example.demo.repository.IUserRepository;
+import com.example.demo.security.SecurityUtil;
 import com.example.demo.service.Task.TaskService;
 import com.example.demo.service.User.UserService;
 import com.example.demo.service.WorkTime.IWorkTimeService;
@@ -50,6 +52,13 @@ public class WorkTimeUIController {
     //Create
     @PostMapping("/create")
     public String saveWorkTime(@ModelAttribute("workTime") WorkTime workTime){
+        //get logged in user
+        String username = SecurityUtil.getSessionUser();
+        User loggedInUser = userService.findByUserName(username);
+
+        //set user
+        workTime.setUser(loggedInUser);
+
         workTimeService.saveWorkTime(workTime);
         return "redirect:/worktimes";
     }
