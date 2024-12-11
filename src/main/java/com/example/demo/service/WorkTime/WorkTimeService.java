@@ -4,6 +4,7 @@ import com.example.demo.dto.JobTypeDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
+import com.example.demo.repository.IUserRepository;
 import com.example.demo.repository.IWorkTimeRepository;
 import com.example.demo.utils.WorkTimeMapper;
 import jakarta.transaction.Transactional;
@@ -22,6 +23,7 @@ public class WorkTimeService implements IWorkTimeService {
 
     private final IWorkTimeRepository workTimeRepository;
     private final WorkTimeMapper workTimeMapper;
+    private final IUserRepository userRepository;
 
     // Get all workTime
     @Override
@@ -121,7 +123,7 @@ public class WorkTimeService implements IWorkTimeService {
             dto.setDate(date);
             dto.setWeekday(getWeekdayString(date));
             dto.setWeekend(date.getDayOfWeek().getValue() >= 6);
-            dto.setHoliday(false); // Add custom holiday logic if needed
+            dto.setHoliday(false);
             dto.setFuture(date.isAfter(LocalDate.now()));
             allDays.add(dto);
         }
@@ -144,7 +146,6 @@ public class WorkTimeService implements IWorkTimeService {
     }
 
     // Get list task
-    @Override
     public Set<Task> findTasksByWorkTime(Long workTimeId) {
         return workTimeRepository.findTasksByWorkTime(workTimeId);
     }

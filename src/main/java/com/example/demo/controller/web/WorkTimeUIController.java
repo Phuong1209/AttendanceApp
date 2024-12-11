@@ -45,6 +45,14 @@ public class WorkTimeUIController {
     //Show user's workTime
     @GetMapping("/user{userId}")
     public String listUserWorkTime(@PathVariable("userId") Long userId, Model model) {
+        List<WorkTime> workTimes = userService.getWorkTimeByUser(userId);
+        model.addAttribute("workTimes", workTimes);
+        return "worktime/worktime-list-all";
+    }
+
+    //Show user's workTime
+    /*@GetMapping("/user{userId}")
+    public String listUserWorkTime(@PathVariable("userId") Long userId, Model model) {
         //add user to model
         User user = userService.findById(userId).orElse(null);
         model.addAttribute("user", user);
@@ -72,7 +80,7 @@ public class WorkTimeUIController {
         model.addAttribute("nextYear", month == 12 ? year + 1 : year);
 
         return "worktime/worktime-list-user";
-    }
+    }*/
 
     //Show Create form
     @GetMapping("/create")
