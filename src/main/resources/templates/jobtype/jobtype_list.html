@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
+<html
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}">
     <meta charset="UTF-8">
     <title>作業種類画面</title>
 </head>
 <body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
 <h1>作業種類一覧</h1>
 <a href="/jobtypes/create" class="btn-blue">新規作成+</a>
-<table>
+<table class="list-table">
     <thead>
     <tr>
         <th>No.</th>
@@ -30,5 +36,7 @@
     </tr>
     </tbody>
 </table>
+    </div>
+</div>
 </body>
 </html>

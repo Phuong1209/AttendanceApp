@@ -1,15 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html
+        xmlns:th="https://www.thymeleaf.org"
+        xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}">
     <meta charset="UTF-8">
     <title>作業種類作成</title>
 </head>
 <body>
-<h1>作業種類作成</h1>
-<form action="/jobtypes/create" method="post">
-    <label for="name">作業種類名:</label>
-    <input type="text" id="name" name="name" placeholder="作業種類名を入力してください。" required>
-    <button type="submit">新規作成</button>
-</form>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>作業種類作成</h1>
+        <form role="form" method="POST" class="form_create" th:action="@{/jobtypes/create}">
+            <div class="input_field">
+            <label for="name">作業種類名:</label>
+            <input type="text" id="name" name="name" placeholder="作業種類名を入力してください。" required>
+            </div>
+            <button class="btn-blue" type="submit">新規作成</button>
+        </form>
+    </div>
+
+    <script src="/js/scripts.js"></script>
+</div>
 </body>
 </html>
