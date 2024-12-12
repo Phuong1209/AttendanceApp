@@ -39,6 +39,8 @@ public class JwtController {
         try {
             final String token = result.getToken();
             Cookie cookie = new Cookie("token",token);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
             cookie.setMaxAge(Integer.MAX_VALUE);
             cookie.setPath("/");
             res.addCookie(cookie);

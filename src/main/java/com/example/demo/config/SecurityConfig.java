@@ -1,5 +1,4 @@
 package com.example.demo.config;
-
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +49,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET,"/static/**", "/js/**", "/css/**", "/images/**").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/logout").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/members/delete/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/summary").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/project/exportCSV").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/department/exportCSV").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/summary/summaryProjectByDepartment").permitAll()
                                 .anyRequest().authenticated())
                 .logout(logout ->
                         logout.logoutUrl("/logout") // Endpoint để xử lý logout

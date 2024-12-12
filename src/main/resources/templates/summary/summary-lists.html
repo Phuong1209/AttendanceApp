@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="~{layout :: head}"></head>
+<head th:replace="~{layout :: head}">
+
+</head>
 
 <body>
 <div class="wrapper">
@@ -30,6 +32,8 @@
             </tr>
             </tbody>
         </table>
+        <button onclick="exportProjectCSV()" class="btn-blue">Download CSV</button>
+        <br>
         <br>
         <div><h3>2．集計2：部署別作業別時間集計表</h3></div>
         <table class="list-table">
@@ -50,7 +54,9 @@
             </tr>
             </tbody>
         </table>
-<br>
+        <button onclick="exportDepartmentCSV()" class="btn-blue">Download CSV</button>
+        <br>
+        <br>
         <div><h3>3．集計3：部署別プロジェクト別時間集計表</h3></div>
         <table class="list-table">
             <thead>
@@ -72,8 +78,9 @@
             </tr>
             </tbody>
         </table>
+        <button id="downloadCsvButton" class="btn-blue">Download CSV</button>
     </div>
 </div>
-
+<script src="/static/js/scripts.js"></script>
 </body>
 </html>

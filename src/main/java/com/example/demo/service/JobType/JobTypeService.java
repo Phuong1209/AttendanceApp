@@ -69,5 +69,4 @@ public class JobTypeService implements IJobTypeService {
                 .build();
         return projectDTO;
     }
-
 }

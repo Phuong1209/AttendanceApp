@@ -20,10 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 
 public class DepartmentService implements IDepartmentService {
-
     private final IDepartmentRepository departmentRepository;
     private final IJobTypeRepository jobTypeRepository;
-
     //get all department
     @Override
     public List<DepartmentDTO> getAllDepartment() {
@@ -189,7 +187,6 @@ public class DepartmentService implements IDepartmentService {
                 depJobSummaryDTO.setTotalTime(entry.getValue());
                 summaries.add(depJobSummaryDTO);
             }
-
 //            // Convert the job type map to a list of JobTypeSummaryDTO
 //            List<DepJobSummaryDTO> jobTypeSummaries = jobTypeTotalTimeMap.entrySet()
 //                    .stream()
@@ -201,10 +198,8 @@ public class DepartmentService implements IDepartmentService {
 //                    .collect(Collectors.toList());
 //            summaries.add(depJobSummaryDTO);
         }
-
         return summaries;
     }
-
     //Summarize Pj by department
     public List<DepartmentSummaryDTO3> getSummaryByDepartment3() {
         List<Department> departments = departmentRepository.findAll();
@@ -224,6 +219,7 @@ public class DepartmentService implements IDepartmentService {
                         Project project = task.getProject();
                         if (project != null) {
                             String projectName = project.getName();
+                            String projectCode = project.getCode();
                             float currentTotal = projectTotalTimeMap.getOrDefault(projectName, 0f);
                             projectTotalTimeMap.put(projectName, currentTotal + task.getTotalTime());
                         }
@@ -237,6 +233,7 @@ public class DepartmentService implements IDepartmentService {
                     .map(entry -> {
                         ProjectSummaryDTO3 projectSummary = new ProjectSummaryDTO3();
                         projectSummary.setName(entry.getKey());
+                        projectSummary.setCode(entry.getKey());
                         projectSummary.setTotalTime(entry.getValue());
                         return projectSummary;
                     })
@@ -305,8 +302,8 @@ public class DepartmentService implements IDepartmentService {
                 }
             }
             return summaries;
-
         }
+
 
     // Phương thức xuất CSV cho DepartmentSummaryDTO
     public void exportDepartmentSummaryToCSV(HttpServletResponse response, List<DepartmentSummaryDTO> summaries) throws IOException {
@@ -331,6 +328,35 @@ public class DepartmentService implements IDepartmentService {
 
                 // Ghi dữ liệu vào file CSV
                 writer.writeNext(new String[] {departmentName, jobTypeName, String.valueOf(totalTime)});
+            }
+        }
+        // Đóng CSVWriter sau khi hoàn thành
+        writer.close();
+    }
+    // Phương thức xuất CSV cho DepProSummaryDTO
+    public void exportDepProSummaryToCSV(HttpServletResponse response, List<DepartmentSummaryDTO3> summaries) throws IOException {
+        // Cài đặt loại nội dung và tên tệp CSV cho phản hồi HTTP
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=department_summary.csv");
+
+        // Tạo đối tượng CSVWriter để ghi vào response
+        CSVWriter writer = new CSVWriter(response.getWriter());
+
+        // Viết tiêu đề cột vào file CSV
+        writer.writeNext(new String[] {"Department Name", "Project code", "Project Name", "Total Time"});
+
+        // Duyệt qua danh sách summaries và thêm dữ liệu vào file CSV
+        for (DepartmentSummaryDTO3 departmentSummaryDTO3 : summaries) {
+            String departmentName = departmentSummaryDTO3.getName();
+
+            // Duyệt qua danh sách ProjectSummaryDTO trong DepartmentSummaryDTO
+            for (ProjectSummaryDTO3 projectSummary :departmentSummaryDTO3.getProjectSummaries()){
+                String projectName = projectSummary.getName();
+                String projectCode= projectSummary.getCode();
+                Float totalTime = projectSummary.getTotalTime();
+
+                // Ghi dữ liệu vào file CSV
+                writer.writeNext(new String[] {departmentName, projectCode, projectName, String.valueOf(totalTime)});
             }
         }
         // Đóng CSVWriter sau khi hoàn thành
