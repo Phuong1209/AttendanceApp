@@ -27,6 +27,9 @@ public interface IWorkTimeRepository extends JpaRepository<WorkTime, Long> {
     //Calendar
     List<WorkTime> findByUserIdAndDateBetween(Long userId, LocalDate startOfMonth, LocalDate endOfMonth);
 
+    //check existing worktime
+    Optional<WorkTime> findByUserAndDate(User user, LocalDate date);
+
 
 /*Code TA
     @Query("SELECT w FROM WorkingTime w WHERE w.user_id = :userId AND w.date = :date")

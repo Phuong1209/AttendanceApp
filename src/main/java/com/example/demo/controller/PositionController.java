@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.dto.request.PositionRequest;
 //import com.example.demo.dto.response.ApiResponse;
 import com.example.demo.dto.response.PositionResponse;
-import com.example.demo.service.PositionService;
+//import com.example.demo.service.PositionService;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class PositionController {
-    PositionService positionService;
+    //PositionService positionService;
 /*    @PostMapping
     public ApiResponse<PositionResponse> create(@RequestBody PositionRequest request){
         return ApiResponse.<PositionResponse>builder()

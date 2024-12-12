@@ -253,4 +253,5 @@ public class UserController {
         userService.remove(id);
         return new ResponseEntity<>(userOptional.get(), HttpStatus.NO_CONTENT);
     }
+
 }

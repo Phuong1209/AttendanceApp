@@ -13,12 +13,8 @@ import java.util.Optional;
 @Repository
 public interface ITaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByWorkTime(WorkTime workTime);
-
     List<Task> findByProject(Project project);
-
     Optional<Task> findById(Long id);
-
     @Query("SELECT COUNT(t) FROM Task t WHERE t.workTime.id = :workTimeId AND t.workTime.date = :date")
     int countByWorkTimeAndDate(@Param("workTimeId") Long workTimeId, @Param("date") LocalDate date);
-
 }
