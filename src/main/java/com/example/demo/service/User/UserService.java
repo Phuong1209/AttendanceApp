@@ -147,6 +147,10 @@ public class UserService implements IUserService {
 //        workingTimeRepository.deleteAll(workingTimes);
         userRepository.deleteById(user.getId());
     }
+    public boolean existsByUsername(Optional<String> username) {
+        return userRepository.existsByUserName(username.orElse(""));
+    }
+
 
     @Override
     public List<UserDTO> getAllUser() {

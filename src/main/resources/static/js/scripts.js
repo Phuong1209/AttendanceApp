@@ -29,7 +29,7 @@ function exportProjectCSV() {
         });
 }
 
-// Function to export project CSV
+// Function to export department CSV
 function exportDepartmentCSV() {
     fetch('/department/exportCSV', {
         method: 'GET',
@@ -60,12 +60,11 @@ function exportDepartmentCSV() {
         });
 }
 
-
+//export CSV summaryProjectByDepartment
     document.getElementById('downloadCsvButton').addEventListener('click', function() {
     // Chuyển hướng trình duyệt đến endpoint tải file CSV
     window.location.href = '/summary/summaryProjectByDepartment';
 });
-
 
 
 

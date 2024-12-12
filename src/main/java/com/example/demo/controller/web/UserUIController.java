@@ -8,6 +8,7 @@ import com.example.demo.model.Position;
 import com.example.demo.model.User;
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IPositionRepository;
+import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.User.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class UserUIController {
     @Autowired
     private IUserService userService;
     @Autowired
+    IUserRepository userRepository;
+    @Autowired
     IPositionRepository positionRepository;
     @Autowired
     IDepartmentRepository departmentRepository;
@@ -45,7 +48,7 @@ public class UserUIController {
     }
 
     @GetMapping("/create")
-    public String createUserForm(Model model) {
+    public String createUserForm(Long id, Model model) {
         User user = new User();
         model.addAttribute("user", user);
         return "user/CreateUser";
@@ -53,9 +56,15 @@ public class UserUIController {
 
     @PostMapping("/create")
     public String saveUser(@ModelAttribute("user") User model) {
+        if(userRepository.existsByUserName(model.getUserName())){
         userService.save(model);
-        return "redirect:/members";
+            return "redirect:/members/create?error=user already exists";
+
     }
+        else
+            userService.save(model);
+        return "redirect:/members";
+        }
 
     @GetMapping("/edit/{id}")
     public String editUserForm(@PathVariable("id") Long id, Model model) {
