@@ -50,7 +50,7 @@ public class WorkTimeUIController {
 
         //add user to model
         User user = userService.findById(userId).orElse(null);
-        model.addAttribute("userFullName", user.getFullName());
+        model.addAttribute("user", user);
 
         // Get the current date
         LocalDate today = LocalDate.now();

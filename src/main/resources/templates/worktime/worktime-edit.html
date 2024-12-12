@@ -10,6 +10,8 @@
     <div class="main_container">
         <h1>勤怠時間修正</h1>
         <form role="form" method="POST" class="form_create" th:action="@{/worktimes/{worktimeDtoId}(worktimeDtoId=${workTimeDto.id})}" th:object="${workTimeDto}">
+            <input type="hidden" th:field="*{user.id}">
+            <input type="hidden" th:field="*{user.fullName}">
             <table class="form-table">
                 <tr>
                     <td><label>日付</label></td>

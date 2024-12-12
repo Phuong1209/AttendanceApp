@@ -9,7 +9,7 @@
     <div th:replace="~{layout :: top_menu}"></div>
     <div class="main_container">
         <h1>勤怠時間管理</h1>
-        <p><strong th:text="'ユーザー名: ' + ${userFullName}"></strong></p>
+        <p><strong th:text="'ユーザー名: ' + ${user.fullName}"></strong></p>
         <p><strong th:text="${currentYear} + '年' + ${currentMonth} + '月'"></strong></p>
         <br>
         <a class="btn-blue" href="http://localhost:8080/worktimes/create">新規作成</a>
@@ -24,6 +24,7 @@
                 <th>時間内</th>
                 <th>残業時間</th>
                 <th>タスク</th>
+                <th>User</th>
                 <th></th>
 
             </tr>
@@ -38,6 +39,7 @@
                 <td th:text="${workTime.workTime}"></td>
                 <td th:text="${workTime.overTime}"></td>
                 <td><a class="btn" th:href="@{/worktimes/{workTimeId}/tasks(workTimeId=${workTime.id})}">リストを見る</a></td>
+                <td th:text="${workTime.user.id}"></td>
                 <td><a class="btn-blue" th:href="@{/worktimes/{workTimeId}(workTimeId=${workTime.id})}">修正</a>
                     <a class="btn-red" th:href="@{/worktimes/{workTimeId}/delete(workTimeId=${workTime.id})}">削除</a></td>
             </tr>
