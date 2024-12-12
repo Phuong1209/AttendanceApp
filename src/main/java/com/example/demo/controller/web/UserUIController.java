@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/members")
-@PreAuthorize("isAuthenticated()")
 public class UserUIController {
     @Autowired
     private IUserService userService;
