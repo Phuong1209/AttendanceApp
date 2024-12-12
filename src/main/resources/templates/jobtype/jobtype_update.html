@@ -14,7 +14,7 @@
 <form role="form" class="form_create" th:action="@{/jobtypes/update/{id}(id=${jobTypeDTO.id})}" th:object="${jobTypeDTO}" method="post">
     <div class="input_field">
         <label for="name">作業種類名:</label>
-        <input type="text" id="name" th:field="*{name}" placeholder="作業種類名を入力してください" required />
+        <input required type="text" id="name" th:field="*{name}" placeholder="作業種類名を入力してください" required />
     </div>
     <button type="submit" class="btn-blue">更新</button>
 </form>

@@ -15,7 +15,7 @@
                 <tr>
                     <td><label for="project">プロジェクト</label></td>
                     <td>
-                        <select id="project" th:field="*{project.id}">
+                        <select required id="project" th:field="*{project.id}">
                             <option value="" disabled selected>プロジェクト</option>
                             <option th:each="project: ${projects}" th:value="${project.id}" th:text="${project.name}"></option>
                         </select>
@@ -25,7 +25,7 @@
                 <tr>
                     <td><label for="jobType">作業内容</label></td>
                     <td>
-                        <select id="jobType" th:field="*{jobType.id}" >
+                        <select required id="jobType" th:field="*{jobType.id}" >
                             <option value="" disabled selected></option>
                             <option th:each="jobType : ${jobTypes}" th:value="${jobType.id}" th:text="${jobType.name}"></option>
                         </select>
@@ -35,7 +35,7 @@
                 <tr>
                     <td><label for="totalTime">作業時間</label></td>
                     <td>
-                        <input
+                        <input required
                                 type="text"
                                 id="totalTime"
                                 placeholder="作業時間"
@@ -46,7 +46,7 @@
                     <td><label for="comment">コメント</label>
                     </td>
                     <td>
-                        <input
+                        <input required
                         type="text"
                         id="comment"
                         placeholder="コメント"

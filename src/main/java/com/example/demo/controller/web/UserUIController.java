@@ -50,7 +50,7 @@ public class UserUIController {
 
     @PostMapping("/create")
     public String saveUser(@ModelAttribute("user") User model) {
-        userService.save(model);
+        userService.saveEncryptedPassword(model);
         return "redirect:/members";
     }
 
@@ -110,6 +110,38 @@ public class UserUIController {
         userService.save(existingUser);
         return "redirect:/members";
     }
+
+    @GetMapping("/reset_password/{id}")
+    public String resetPasswordForm(@PathVariable("id") Long id, Model model) {
+        Optional<User> user = userService.findById(id);
+        if (user.isEmpty()) {
+            return "redirect:/members?error=User not found";
+        }
+        model.addAttribute("user", user.get());
+        return "user/ResetPassword";
+    }
+
+    @PostMapping("/reset_password/{id}")
+    public String resetPassword(@PathVariable("id") Long id,
+                             @ModelAttribute("user") User updatedUser,
+                             Model model) {
+
+        // Lấy thông tin người dùng cũ
+        Optional<User> optionalUser = userService.findById(id);
+        if (optionalUser.isEmpty()) {
+            model.addAttribute("error", "User not found.");
+            return "user/EditUser";
+        }
+
+        User existingUser = optionalUser.get();
+        existingUser.setPassword(updatedUser.getPassword());
+//        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+//            existingUser.setPassword(updatedUser.getPassword());
+//        }        // Lưu thông tin người dùng
+        userService.saveEncryptedPassword(existingUser);
+        return "redirect:/members";
+    }
+
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id, Model model){
         Optional<User> user = userService.findById(id);

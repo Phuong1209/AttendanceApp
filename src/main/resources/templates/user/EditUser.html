@@ -14,7 +14,7 @@
                 <tr>
                     <td><label for="username">ユーザー名</label></td>
                     <td>
-                        <input type="text"
+                        <input type="text" required
                                id="username"
                                placeholder="部署名"
                                th:field="*{userName}">
@@ -23,25 +23,25 @@
                 <tr>
                     <td><label for="fullname">フルネーム</label></td>
                     <td>
-                        <input type="text"
+                        <input type="text" required
                                id="fullname"
                                placeholder="フルネーム"
                                th:field="*{fullName}">
                     </td>
                 </tr>
-                <tr>
-                    <td><label for="password">パスワード</label></td>
-                    <td>
-                        <input type="text"
-                               id="password"
-                               placeholder="パスワード"
-                               th:field="*{password}">
-                    </td>
-                </tr>
+<!--                <tr>-->
+<!--                    <td><label for="password">パスワード</label></td>-->
+<!--                    <td>-->
+<!--                        <input type="password"-->
+<!--                               id="password"-->
+<!--                               placeholder="(変更しない場合は空白)"-->
+<!--                               >-->
+<!--                    </td>-->
+<!--                </tr>-->
                 <tr>
                     <td><label for="positions">役職</label></td>
                     <td>
-                        <select
+                        <select required
                                 class="form-select"
                                 id="positions"
                                 name="positionIds"
@@ -59,7 +59,7 @@
                     <td><label for="departments">部署</label></td>
                     <td>
                         <div class="multiple_P">
-                            <select
+                            <select required
                                     class="form-select"
                                     id="departments"
                                     name="departmentIds"
@@ -77,6 +77,9 @@
                 </tr>
             </table>
             <button type="submit" class="btn-blue">修正</button>
+            <a class="btn-red"
+               th:href="@{/members/reset_password/{id}(id=${user.id})}"
+               >パスワード・リセット</a>
         </form>
     </div>
 </div>

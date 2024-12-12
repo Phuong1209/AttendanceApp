@@ -42,5 +42,7 @@ public interface IUserService  {
 
     User save(User newUser);
 
+    User saveEncryptedPassword(User newUser);
+
 //    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

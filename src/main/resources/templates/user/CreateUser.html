@@ -1,8 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="~{layout :: head}"></head>
+<head th:replace="~{layout :: head}">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
+<script>
+    function togglePasswordVisibility() {
+        const passwordField = document.getElementById("password");
+        const toggleIcon = document.getElementById("toggleIcon");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
+        }
+    }
+</script>
+<script src="/js/scripts.js"></script>
 <body>
 <div class="wrapper">
     <div th:replace="~{layout :: sidebar}"></div>
@@ -15,7 +34,7 @@
                 <tr>
                     <td><label for="username">ユーザー名</label></td>
                     <td>
-                        <input type="text"
+                        <input type="text" required
                                id="username"
                                placeholder="部署名"
                                th:field="*{userName}">
@@ -24,7 +43,7 @@
                 <tr>
                     <td><label for="fullname">フルネーム</label></td>
                     <td>
-                        <input type="text"
+                        <input type="text" required
                                id="fullname"
                                placeholder="フルネーム"
                                th:field="*{fullName}">
@@ -33,16 +52,22 @@
                 <tr>
                     <td><label for="password">パスワード</label></td>
                     <td>
-                        <input type="password"
+                        <input type="password" required
                                id="password"
                                placeholder="パスワード"
+                               name="password"
                                th:field="*{password}">
+                        <span style="transform: translateY(-50%); cursor: pointer;"
+                              onclick="togglePasswordVisibility()">
+                        <i id="toggleIcon" class="fa fa-eye"></i>
+                        </span>
+                        </input>
                     </td>
                 </tr>
                 <tr>
                     <td><label for="position">役職</label></td>
                     <td>
-                        <select id="position"
+                        <select id="position" required
                                 name="position"
                                 placeholder="Select your position"
                                 th:field="*{positions}" >
@@ -55,7 +80,7 @@
                     <td><label for="department">部署</label></td>
                     <td>
                         <div class="multiple_P">
-                            <select
+                            <select required
                                     class="form-select"
                                     id="department"
                                     name="department"
@@ -75,7 +100,7 @@
         </form>
     </div>
 </div>
-<script src="/js/scripts.js"></script>
+
 </body>
 </html>
 

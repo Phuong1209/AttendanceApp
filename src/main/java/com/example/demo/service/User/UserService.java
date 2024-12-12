@@ -45,17 +45,17 @@ public class UserService implements IUserService {
     PasswordEncoder passwordEncoder;
     UserMapper userMapper;
 
-/*    //    @PreAuthorize("hasRole('ADMIN')")
-    public UserResponse createRequest(UserCreationRequest request) {
-        if (userRepository.existsByUserName(request.getUsername())) {
-            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
-        }
-        User user = userMapper.toUser(request);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        HashSet<String> position = new HashSet<>();
-        position.add(Position.USER.name());
-        return userMapper.toUserResponse(userRepository.save(user));
-    }*/
+///*
+//    public UserResponse createRequest(UserCreationRequest request) {
+//        if (userRepository.existsByUserName(request.getUsername())) {
+//            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
+//        }
+//        User user = userMapper.toUser(request);
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        HashSet<String> position = new HashSet<>();
+//        position.add(Position.USER.name());
+//        return userMapper.toUserResponse(userRepository.save(user));
+//    }*/
 
 /*    //    @PostAuthorize("returnObject.userName == authentication.name")
     public UserResponse getMyInfo() {
@@ -108,6 +108,13 @@ public class UserService implements IUserService {
     @Transactional
     @Override
     public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    @Override
+    public User saveEncryptedPassword(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
