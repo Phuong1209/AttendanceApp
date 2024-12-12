@@ -83,9 +83,7 @@ public class WorkTimeUIController {
     //Create
     @PostMapping("/create")
     public String saveWorkTime(@ModelAttribute("workTime") WorkTime newWorkTime){
-        System.out.println("WorkTime ID before saving: " + newWorkTime.getId());
-
-        //If code error
+        //Force create new workTime
         WorkTime workTime = new WorkTime();
         workTime.setDate(newWorkTime.getDate());
         workTime.setCheckinTime(newWorkTime.getCheckinTime());
