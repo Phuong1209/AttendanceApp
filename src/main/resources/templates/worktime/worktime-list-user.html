@@ -27,7 +27,7 @@
             </thead>
             <tbody>
             <tr th:each="workTime : ${workTimes}"
-                th:class="${workTime.isHoliday ? 'holiday' : ''} + ' ' + ${workTime.isWeekend ? 'weekend' : ''} + ' ' + ${workTime.isFuture ? 'future' : ''}">
+                th:class="${workTime.isFuture ? 'future' : (workTime.id == null || workTime.isHoliday || workTime.isWeekend ? 'no-worktime' : '')}">
                 <td th:text="${workTime.date}"></td>
                 <td th:text="${workTime.weekday}"></td>
             <td class="checkin" th:text="${#temporals.format(workTime.checkinTime, 'HH:mm')}"></td>
@@ -36,7 +36,20 @@
             <td class="worktime" th:text="${workTime.workTime}"></td>
             <td class="overtime" th:text="${workTime.overTime}"></td>
             <td>
-                <a th:href="@{/worktimes/{workTimeId}/tasks(workTimeId=${workTime.id})}" class="btn-blue" th:text="'タスク一覧'"></a>
+                <a class="btn-blue"
+                   th:text="'タスク一覧'"
+                   th:if="${!workTime.isFuture && workTime.id != null}"　
+                   th:href="@{/worktimes/{workTimeId}/tasks(workTimeId=${workTime.id})}"></a>
+                <a class="btn-blue"
+                   th:text="'タスク一覧'"
+                   th:if="${!workTime.isFuture && workTime.id == null}"
+                   onclick="return false"
+                   style="cursor: not-allowed;"></a>
+                <a class="btn-blue"
+                   th:text="'タスク一覧'"
+                   th:if="${workTime.isFuture}"
+                   onclick="return false"
+                   style="cursor: not-allowed;"></a>
             </td>
             <td>
                 <a class="btn-blue"
@@ -51,18 +64,33 @@
                 </a>
                 <a class="btn-blue"
                    th:if="${workTime.isFuture}"
-                   th:href="@{/worktimes/create}"
                    th:text="'登録'"
                    onclick="return false"
                    style="cursor: not-allowed;">
                 </a>
-                <form th:action="@{/worktimes/{workTimeId}/delete(workTimeId=${workTime.id})}" method="get" style="display:inline;">
-                    <button type="submit" class="btn-red" th:text="'削除'" th:disabled="${workTime.isFuture}" onclick="return confirm('このレコードを削除してもよろしいでしょうか？');"></button>
-                </form>
+                <a class="btn-red"
+                   th:if="${!workTime.isFuture}"
+                   th:text="'削除'"
+                   th:href="@{/worktimes/{workTimeId}/delete(workTimeId=${workTime.id})}">
+                </a>
+                <a class="btn-red"
+                   th:if="${workTime.isFuture}"
+                   th:text="'削除'"
+                   onclick="return false"
+                   style="cursor: not-allowed;">
+                </a>
+
             </td>
             </tr>
             </tbody>
         </table>
+
+        <div>
+            <button th:onclick="'/worktime?year=' + ${currentYear} + '&month=' + (${currentMonth} + 1)"
+                    th:text="'来月'" th:disabled="${currentMonth} == 12" class="btn"></button>
+            <button th:onclick="'/worktime?year=' + ${currentYear} + '&month=' + (${currentMonth} - 1)"
+                    th:text="'先月'" th:disabled="${currentMonth} == 1" class="btn"></button>
+        </div>
     </div>
 </div>
 </body>
