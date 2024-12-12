@@ -13,53 +13,48 @@ import java.util.Set;
 @Setter
 @Data
 @Builder
-
 public class WorkTimeDTO {
     private Long id;
     private LocalDate date;
     private LocalDateTime checkinTime;
     private LocalDateTime checkoutTime;
-    private Float breakTime;
-    private Float workTime;
-    private Float overTime;
+    private Float breakTime = 0f; // Default to 0
+    private Float workTime = 0f; // Default to 0
+    private Float overTime = 0f; // Default to 0
     private UserDTO user;
     private Set<TaskDTO> tasks;
 
-    // Added fields for the attendance sheet
-    private boolean isHoliday;
-    private boolean isWeekend;
-    private boolean isFuture;
-    private String weekday; // Add this to display the weekday name (月, 火, etc.)
+    private Boolean isHoliday = false; // Default to false
+    private Boolean isWeekend = false; // Default to false
+    private Boolean isFuture = false; // Default to false
+    private String weekday = ""; // Default to an empty string
 
-    //constructor
-    public WorkTimeDTO() {
-    }
+    public WorkTimeDTO() {}
 
-    public WorkTimeDTO(Long id, LocalDate date,
-                       LocalDateTime checkinTime, LocalDateTime checkoutTime,
-                       Float breakTime, Float workTime, Float overTime) {
+    public WorkTimeDTO(Long id, LocalDate date, LocalDateTime checkinTime, LocalDateTime checkoutTime,
+                       Float breakTime, Float workTime, Float overTime, UserDTO user, Set<TaskDTO> tasks,
+                       Boolean isHoliday, Boolean isWeekend, Boolean isFuture, String weekday) {
         this.id = id;
         this.date = date;
         this.checkinTime = checkinTime;
         this.checkoutTime = checkoutTime;
-        this.breakTime = breakTime;
-        this.workTime = workTime;
-        this.overTime = overTime;
-    }
-
-    public WorkTimeDTO(Long id, LocalDate date, LocalDateTime checkinTime, LocalDateTime checkoutTime, Float breakTime, Float workTime, Float overTime, UserDTO user, Set<TaskDTO> tasks, boolean isHoliday, boolean isWeekend, boolean isFuture, String weekday) {
-        this.id = id;
-        this.date = date;
-        this.checkinTime = checkinTime;
-        this.checkoutTime = checkoutTime;
-        this.breakTime = breakTime;
-        this.workTime = workTime;
-        this.overTime = overTime;
+        this.breakTime = breakTime != null ? breakTime : 0f;
+        this.workTime = workTime != null ? workTime : 0f;
+        this.overTime = overTime != null ? overTime : 0f;
         this.user = user;
         this.tasks = tasks;
-        this.isHoliday = isHoliday;
-        this.isWeekend = isWeekend;
-        this.isFuture = isFuture;
-        this.weekday = weekday;
+        this.isHoliday = isHoliday != null ? isHoliday : false;
+        this.isWeekend = isWeekend != null ? isWeekend : false;
+        this.isFuture = isFuture != null ? isFuture : false;
+        this.weekday = weekday != null ? weekday : "";
+    }
+
+    public void setWeekend(boolean b) {
+    }
+
+    public void setHoliday(boolean b) {
+    }
+
+    public void setFuture(boolean after) {
     }
 }
