@@ -2,6 +2,7 @@ package com.example.demo.service.JobType;
 
 import com.example.demo.dto.DepartmentDTO;
 import com.example.demo.dto.JobTypeDTO;
+import com.example.demo.dto.ProjectDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.JobType;
