@@ -74,8 +74,9 @@ public class WorkTimeUIController {
 
     //Show Create form
     @GetMapping("/create")
-    public String createWorkTimeForm(Model model){
+    public String createWorkTimeForm(@RequestParam("date") String date, Model model){
         WorkTime workTime = new WorkTime();
+        workTime.setDate(LocalDate.parse(date));
         model.addAttribute("workTime", workTime);
         return "worktime/worktime-create";
     }

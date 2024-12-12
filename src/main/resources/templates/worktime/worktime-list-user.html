@@ -59,7 +59,7 @@
                 </a>
                 <a class="btn-blue"
                    th:if="${!workTime.isFuture && workTime.id == null}"
-                   th:href="@{/worktimes/create}"
+                   th:href="@{/worktimes/create(date=${workTime.date})}"
                    th:text="'登録'">
                 </a>
                 <a class="btn-blue"
