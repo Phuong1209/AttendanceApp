@@ -82,9 +82,17 @@ public class WorkTimeUIController {
 
     //Create
     @PostMapping("/create")
-    public String saveWorkTime(@ModelAttribute("workTime") WorkTime workTime){
-        System.out.println("WorkTime ID before saving: " + workTime.getId());
-        workTime.setId(null); //make sure id not existed
+    public String saveWorkTime(@ModelAttribute("workTime") WorkTime newWorkTime){
+        System.out.println("WorkTime ID before saving: " + newWorkTime.getId());
+
+        //If code error
+        WorkTime workTime = new WorkTime();
+        workTime.setDate(newWorkTime.getDate());
+        workTime.setCheckinTime(newWorkTime.getCheckinTime());
+        workTime.setCheckoutTime(newWorkTime.getCheckoutTime());
+        workTime.setBreakTime(newWorkTime.getBreakTime());
+        workTime.setWorkTime(newWorkTime.getWorkTime());
+        workTime.setOverTime(newWorkTime.getOverTime());
 
         //get logged in user
         String username = SecurityUtil.getSessionUser();
