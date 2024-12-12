@@ -1,3 +1,35 @@
+<!--function calculateWorkAndOverTime(checkin, checkout, breakTime) {
+const checkinTime = parseTimeString(checkin);
+const checkoutTime = parseTimeString(checkout);
+const breakTimeHours = parseFloat(breakTime) || 0;
+
+if (!checkinTime || !checkoutTime) {
+return { workTime: '0', overTime: '0' };
+}
+
+const totalHours = (checkoutTime - checkinTime) / (1000 * 60 * 60) - breakTimeHours;
+const regularWorkTime = Math.max(0, Math.min(totalHours, 8));
+const overTime = Math.max(0, totalHours - 8);
+
+return { workTime: regularWorkTime.toFixed(2), overTime: overTime.toFixed(2) };
+}
+
+function updateWorkTimeTable() {
+const rows = document.querySelectorAll('tbody tr');
+rows.forEach(row => {
+const checkin = row.querySelector('.checkin')?.innerText.trim() || "";
+const checkout = row.querySelector('.checkout')?.innerText.trim() || "";
+const breakTime = row.querySelector('.break')?.innerText.trim() || "0";
+
+const { workTime, overTime } = calculateWorkAndOverTime(checkin, checkout, breakTime);
+
+row.querySelector('.worktime').innerText = workTime;
+row.querySelector('.overtime').innerText = overTime;
+});
+}
+
+document.addEventListener('DOMContentLoaded', updateWorkTimeTable);-->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>

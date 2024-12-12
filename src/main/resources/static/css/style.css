@@ -119,6 +119,14 @@
     text-align: center;
 }
 
+
+.weekend {
+    background-color: lightblue;
+}
+.future {
+    background-color: lightgray;
+}
+
 /*Form*/
 .form_create{
     margin: 30px auto;

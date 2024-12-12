@@ -30,7 +30,7 @@ public class ApplicationInitConfig {
                 User user = User.builder()
                         .userName("admin")
                         .password(passwordEncoder.encode("admin"))
-                        .build();a
+                        .build();
                 iUserRepository.save(user);
             }
         };
