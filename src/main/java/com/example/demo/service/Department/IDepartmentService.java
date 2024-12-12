@@ -44,4 +44,7 @@ public interface IDepartmentService {
     List<DepJobSummaryDTO> getDepJobSummary();
 
     List<DepProjSummaryDTO> getDepProjSummary();
+
+
+    void exportDepProSummaryToCSV(HttpServletResponse response, List<DepartmentSummaryDTO3> summaries) throws IOException;
 }

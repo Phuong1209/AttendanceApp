@@ -92,7 +92,7 @@ public class ProjectController {
     @GetMapping("/exportCSV")
     public void generateCSV(HttpServletResponse response) throws IOException {
         List<ProjectSummaryDTO> summaries = projectService.getSummaryByProject();
-        response.setContentType("CSVpplication/octet-stream");
+        response.setContentType("CSVapplication/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 

@@ -8,5 +8,6 @@ import lombok.Setter;
 
 public class ProjectSummaryDTO3 {
     String name;
+    String code;
     Float totalTime;
 }
