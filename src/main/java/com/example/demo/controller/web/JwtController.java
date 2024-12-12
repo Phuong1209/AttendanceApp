@@ -1,3 +1,4 @@
+/*
 package com.example.demo.controller.web;
 import com.example.demo.dto.request.AuthenticationRequest;
 import com.example.demo.dto.response.AuthenticationResponse;
@@ -69,4 +70,4 @@ public class JwtController {
         }
         return "redirect:/loginui?logout";
     }
-}
+}*/

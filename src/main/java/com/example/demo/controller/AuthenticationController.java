@@ -1,3 +1,4 @@
+/*
 package com.example.demo.controller;
 import com.example.demo.service.BlacklistService;
 import com.nimbusds.jose.JOSEException;
@@ -90,4 +91,4 @@ public class AuthenticationController {
 //                    .body(ErrorCode.UNKNOWN_ERROR.getMessage());
 //        }
 //    }
-}
+}*/

@@ -20,6 +20,13 @@
                 });
             });
     </script>
+    <script>
+        function parseTimeString(timeStr) {
+            if (!timeStr || !timeStr.includes(":")) return null;
+            const [hours, minutes] = timeStr.split(":").map(Number);
+            return new Date(1970, 0, 1, hours, minutes, 0);
+        }
+    </script>
 </head>
 <body>
 <div class="wrapper">
@@ -30,8 +37,8 @@
             <div></div>
         </div>
         <ul>
-            <li><a href="/worktimes">
-                <span class="icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></span>
+            <li><a th:href="'/worktimes/user' + ${userId}">
+            <span class="icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></span>
                 <span class="title">勤怠時間管理</span>
             </a></li>
 
@@ -45,7 +52,7 @@
                 <span class="title">部署管理</span>
             </a></li>
 
-            <li><a href="/jobTypes">
+            <li><a href="/jobtypes">
                 <span class="icon"><i class="fa-solid fa-briefcase"></i></span>
                 <span class="title">作業内容管理</span>
             </a></li>

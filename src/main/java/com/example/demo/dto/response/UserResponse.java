@@ -16,9 +16,9 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
     Long id;
-    String userName;
-    String password;
-    String Fullname;
+    String username;
+    String user_passwords;
+    String user_fullname;
     Set<Position> positions;
     Set<Department> departments;
     Set<WorkTime> workTimes;

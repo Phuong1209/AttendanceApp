@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="~{layout :: head}">
-
-</head>
+<head th:replace="~{layout :: head}"></head>
 
 <body>
 <div class="wrapper">
@@ -15,7 +13,9 @@
         <table class="list-table">
             <thead>
             <tr>
+<!--
                 <th>#</th>
+-->
                 <th>プロジェクトコード</th>
                 <th>プロジェクト名</th>
                 <th>作業名</th>
@@ -24,7 +24,9 @@
             </thead>
             <tbody th:each="summaryByProject, stat : ${summaryByProjects}">
             <tr>
+<!--
                 <td th:text="${stat.index+1}"></td>
+-->
                 <td th:text="${summaryByProject.projectCode}"></td>
                 <td th:text="${summaryByProject.projectName}"></td>
                 <td th:text="${summaryByProject.jobTypeName}"></td>
@@ -39,7 +41,9 @@
         <table class="list-table">
             <thead>
             <tr>
+<!--
                 <th>#</th>
+-->
                 <th>部署名</th>
                 <th>作業名</th>
                 <th>作業時間</th>
@@ -47,7 +51,9 @@
             </thead>
             <tbody th:each="summaryByDepartment, stat : ${summaryByDepartments}">
             <tr>
+<!--
                 <td th:text="${stat.index+1}"></td>
+-->
                 <td th:text="${summaryByDepartment.departmentName}"></td>
                 <td th:text="${summaryByDepartment.jobTypeName}"></td>
                 <td th:text="${summaryByDepartment.totalTime}"></td>
@@ -61,7 +67,9 @@
         <table class="list-table">
             <thead>
             <tr>
+<!--
                 <th>#</th>
+-->
                 <th>部署名</th>
                 <th>プロジェクトコード</th>
                 <th>プロジェクト名</th>
@@ -70,7 +78,9 @@
             </thead>
             <tbody th:each="summaryByDepartment3, stat : ${summaryByDepartment3s}">
             <tr>
+<!--
                 <td th:text="${stat.index+1}"></td>
+-->
                 <td th:text="${summaryByDepartment3.departmentName}"></td>
                 <td th:text="${summaryByDepartment3.projectCode}"></td>
                 <td th:text="${summaryByDepartment3.projectName}"></td>

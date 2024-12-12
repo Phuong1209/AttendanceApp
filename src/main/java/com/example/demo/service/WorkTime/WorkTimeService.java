@@ -4,6 +4,7 @@ import com.example.demo.dto.JobTypeDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
+import com.example.demo.repository.IUserRepository;
 import com.example.demo.repository.IWorkTimeRepository;
 import com.example.demo.utils.WorkTimeMapper;
 import jakarta.transaction.Transactional;
@@ -18,29 +19,29 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-
 public class WorkTimeService implements IWorkTimeService {
 
     private final IWorkTimeRepository workTimeRepository;
     private final WorkTimeMapper workTimeMapper;
+    private final IUserRepository userRepository;
 
-
-    //get all workTime
+    // Get all workTime
     @Override
     public List<WorkTimeDTO> getAllWorkTime() {
         List<WorkTime> workTimes = workTimeRepository.findAll();
-        return workTimes.stream().map((workTime) -> mapToWorkTimeDTO(workTime)).collect(Collectors.toList());
+        return workTimes.stream()
+                .map((workTime) -> mapToWorkTimeDTO(workTime))
+                .collect(Collectors.toList());
     }
 
-    //mapper
+    // Mapper
     public WorkTimeDTO mapToWorkTimeDTO(WorkTime workTime) {
-        //user --> userDto
         UserDTO userDTO = UserDTO.builder()
                 .id(workTime.getUser().getId())
                 .fullName(workTime.getUser().getFullName())
                 .build();
 
-        //map workTime to workTimeDto
+        // Map workTime to workTimeDTO
         WorkTimeDTO workTimeDTO = WorkTimeDTO.builder()
                 .id(workTime.getId())
                 .date(workTime.getDate())
@@ -51,31 +52,37 @@ public class WorkTimeService implements IWorkTimeService {
                 .overTime(workTime.getOverTime())
                 .user(userDTO)
                 .build();
+
         return workTimeDTO;
     }
 
-    //Save WorkTime
-    public WorkTime saveWorkTime(WorkTime workTime){
+    // Save WorkTime
+    public WorkTime saveWorkTime(WorkTime workTime) {
+        System.out.println("Saving WorkTime with id: " + workTime.getId()); // Debugging
+        Optional<WorkTime> existingWorkTime = workTimeRepository.findByUserAndDate(workTime.getUser(), workTime.getDate());
+        if (existingWorkTime.isPresent()) {
+            throw new IllegalArgumentException("WorkTime for this user on this date already exists");
+        }
         return workTimeRepository.save(workTime);
     }
 
-    //Find by Id
+    // Find by Id
     @Override
     public WorkTimeDTO findById(long workTimeId) {
         WorkTime workTime = workTimeRepository.findById(workTimeId).get();
         return mapToWorkTimeDTO(workTime);
     }
 
-    //Update
+    // Update
     @Override
     public void updateWorkTime(WorkTimeDTO workTimeDto) {
         WorkTime workTime = mapToWorkTime(workTimeDto);
         workTimeRepository.save(workTime);
     }
 
-    //Map (to edit)
-    private WorkTime mapToWorkTime(WorkTimeDTO workTimeDto){
-        //userDto --> user
+    // Map (to edit)
+    private WorkTime mapToWorkTime(WorkTimeDTO workTimeDto) {
+        // userDTO --> user
         User user = User.builder()
                 .id(workTimeDto.getUser().getId())
                 .fullName(workTimeDto.getUser().getFullName())
@@ -94,13 +101,13 @@ public class WorkTimeService implements IWorkTimeService {
         return workTime;
     }
 
-    //Delete
+    // Delete
     @Override
     public void delete(long workTimeId) {
         workTimeRepository.deleteById(workTimeId);
     }
 
-    //GetCalendar
+    // Get Calendar
     @Transactional
     @Override
     public List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long userId, int year, int month) {
@@ -112,14 +119,13 @@ public class WorkTimeService implements IWorkTimeService {
                 .map(workTime -> workTimeMapper.toDto(workTime, new ArrayList<>(workTime.getTasks())))
                 .collect(Collectors.toMap(WorkTimeDTO::getDate, dto -> dto));
 
-
         List<WorkTimeDTO> allDays = new ArrayList<>();
         for (LocalDate date = startOfMonth; !date.isAfter(endOfMonth); date = date.plusDays(1)) {
             WorkTimeDTO dto = workTimeMap.getOrDefault(date, new WorkTimeDTO());
             dto.setDate(date);
             dto.setWeekday(getWeekdayString(date));
             dto.setWeekend(date.getDayOfWeek().getValue() >= 6);
-            dto.setHoliday(false); // Add custom holiday logic if needed
+            dto.setHoliday(false);
             dto.setFuture(date.isAfter(LocalDate.now()));
             allDays.add(dto);
         }
@@ -127,7 +133,7 @@ public class WorkTimeService implements IWorkTimeService {
         return allDays;
     }
 
-    //get Weekday
+    // Get Weekday
     private String getWeekdayString(LocalDate date) {
         switch (date.getDayOfWeek()) {
             case MONDAY: return "月";
@@ -141,14 +147,8 @@ public class WorkTimeService implements IWorkTimeService {
         }
     }
 
-    //get list task
-    @Override
+    // Get list task
     public Set<Task> findTasksByWorkTime(Long workTimeId) {
         return workTimeRepository.findTasksByWorkTime(workTimeId);
     }
-
-
-
-
-
 }

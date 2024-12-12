@@ -9,8 +9,8 @@
     <div th:replace="~{layout :: top_menu}"></div>
     <div class="main_container">
         <h1>勤怠時間管理</h1>
-        <p><strong th:text="'User: ' + ${fullName}"></strong></p>
-        <p><strong th:text="'Date: ' + ${date}"></strong></p>
+        <!--<p><strong th:text="'User: ' + ${fullName}"></strong></p>
+        <p><strong th:text="'Date: ' + ${date}"></strong></p>-->
         <br>
         <p th:if="${isTaskLimitReached}" class="error-message" style="color:red;">タスクは最大20件まで登録できます。</p>
         <a class="btn-blue" th:href="@{/worktimes/{workTimeId}/tasks/create(workTimeId=${workTimeId})}"

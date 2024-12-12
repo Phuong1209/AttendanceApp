@@ -1,3 +1,4 @@
+/*
 package com.example.demo.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -16,3 +17,4 @@ public class ApiResponse <T>{
     private String message;
     private T result;
 }
+*/

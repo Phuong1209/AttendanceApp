@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import lombok.Builder;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 

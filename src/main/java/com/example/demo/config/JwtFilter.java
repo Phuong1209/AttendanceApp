@@ -1,9 +1,9 @@
+/*
 package com.example.demo.config;
 
 import com.example.demo.service.BlacklistService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String token = extractTokenFromCookie(request);
+        String token = extractToken(request);
         if (token != null && blacklistService.isTokenBlacklisted(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
@@ -40,17 +40,4 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         return null;
     }
-
-    private String extractTokenFromCookie(HttpServletRequest request) {
-        String token = null;
-        if (request.getCookies() != null) {
-            Cookie[] rc = request.getCookies();
-            for (Cookie cookie : rc) {
-                if (cookie.getName().equals("token")) {
-                    token = cookie.getValue();
-                }
-            }
-        }
-        return token;
-    }
-}
+}*/
