@@ -1,3 +1,4 @@
+/*
 package com.example.demo.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -10,3 +11,4 @@ import lombok.experimental.FieldDefaults;
 public class IntrospectResponse {
     boolean valid;
 }
+*/

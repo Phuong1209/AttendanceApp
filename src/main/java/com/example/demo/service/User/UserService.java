@@ -24,13 +24,14 @@ import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.enums.Position;
-import com.example.demo.exception.AppException;
-import com.example.demo.exception.ErrorCode;
+//import com.example.demo.exception.AppException;
+//import com.example.demo.exception.ErrorCode;
 import com.example.demo.mapper.UserMapper;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -43,9 +44,10 @@ public class UserService implements IUserService {
     private final IPositionRepository positionRepository;
     PasswordEncoder passwordEncoder;
     UserMapper userMapper;
-//    @PreAuthorize("hasRole('ADMIN')")
-    public UserResponse createRequest(UserCreationRequest request){
-        if(userRepository.existsByUserName(request.getUsername())){
+
+/*    //    @PreAuthorize("hasRole('ADMIN')")
+    public UserResponse createRequest(UserCreationRequest request) {
+        if (userRepository.existsByUserName(request.getUsername())) {
             throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
         }
         User user = userMapper.toUser(request);
@@ -53,35 +55,40 @@ public class UserService implements IUserService {
         HashSet<String> position = new HashSet<>();
         position.add(Position.USER.name());
         return userMapper.toUserResponse(userRepository.save(user));
-    }
-//    @PostAuthorize("returnObject.userName == authentication.name")
-    public UserResponse getMyInfo(){
+    }*/
+
+/*    //    @PostAuthorize("returnObject.userName == authentication.name")
+    public UserResponse getMyInfo() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(username).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_FOUND)
         );
         return userMapper.toUserResponse(user);
-    }
-//    @PreAuthorize("hasRole('ADMIN')")
-    public List<UserResponse> getAllUsers(){
+    }*/
+
+    //    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse).toList();
     }
-//    @PostAuthorize("returnObject.userName == authentication.name")
-    public UserResponse getUserById(Long id){
+
+/*    //    @PostAuthorize("returnObject.userName == authentication.name")
+    public UserResponse getUserById(Long id) {
         return userMapper.toUserResponse(userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
-    }
-//    @PostAuthorize("returnObject.userName == authentication.name")
+    }*/
+
+/*    //    @PostAuthorize("returnObject.userName == authentication.name")
     public UserResponse updateUser(Long userId, UserUpdateRequest request) {
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-    userMapper.updateUser(user, request);
-    user.setPassword(passwordEncoder.encode(request.getPassword()));
-    user.setPositions(new HashSet<>(positionRepository.findAllById(Collections.singleton(userId))));
-    return userMapper.toUserResponse(userRepository.save(user));
-    }
-//    @PreAuthorize("hasRole('ADMIN')")
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        userMapper.updateUser(user, request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPositions(new HashSet<>(positionRepository.findAllById(Collections.singleton(userId))));
+        return userMapper.toUserResponse(userRepository.save(user));
+    }*/
+
+    //    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
@@ -100,8 +107,13 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public User save(User model) {
-        return userRepository.save(model);
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User findByUserName(String userName) {
+        return userRepository.findByUserName(userName).orElse(null);
     }
 
     @Transactional
@@ -145,7 +157,7 @@ public class UserService implements IUserService {
     public List<UserDTO> getAllUser() {
         List<User> users = userRepository.findAll();
         List<UserDTO> userDTOS = new ArrayList<>();
-        for(User user : users) {
+        for (User user : users) {
             UserDTO userDTO = new UserDTO();
             userDTO.setUserName(user.getUserName());
             userDTO.setFullName(user.getFullName());
@@ -167,7 +179,7 @@ public class UserService implements IUserService {
             //get department list
             List<Department> departments = departmentRepository.findByUsers(user);
             Set<DepartmentDTO> departmentDTOS = new HashSet<>();
-            for(Department department: departments) {
+            for (Department department : departments) {
                 DepartmentDTO departmentDTO = new DepartmentDTO();
                 departmentDTO.setId(department.getId());
                 departmentDTO.setName(department.getName());
@@ -179,12 +191,12 @@ public class UserService implements IUserService {
             //get worktime list
             List<WorkTime> workTimes = workTimeRepository.findByUser(user);
             Set<WorkTimeDTO> workTimeDTOS = new HashSet<>();
-            for(WorkTime workTime : workTimes) {
+            for (WorkTime workTime : workTimes) {
                 WorkTimeDTO workTimeDTO = new WorkTimeDTO();
                 workTimeDTO.setId(workTime.getId());
                 workTimeDTO.setDate(workTime.getDate());
-                workTimeDTO.setCheckinTime(LocalTime.from(workTime.getCheckinTime()));
-                workTimeDTO.setCheckoutTime(LocalTime.from(workTime.getCheckoutTime()));
+                workTimeDTO.setCheckinTime(workTime.getCheckinTime());
+                workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
                 workTimeDTO.setBreakTime(workTime.getBreakTime());
                 workTimeDTO.setWorkTime(workTime.getWorkTime());
                 workTimeDTO.setOverTime(workTime.getOverTime());
@@ -198,6 +210,7 @@ public class UserService implements IUserService {
         }
         return userDTOS;
     }
+
     //list position
     @Transactional
     @Override
@@ -216,12 +229,12 @@ public class UserService implements IUserService {
 
     //list department
     public List<Department> getDepartmentByUser(Long userId) {
-        if(userId != null){
-            Optional<User>optionalUser = userRepository.findById(userId);
-            if(optionalUser.isPresent()) {
-                User foundUser=optionalUser.get();
-                List<Department>departments = departmentRepository.findByUsers(foundUser);
-                log.info("Department of user {}:{}",foundUser.getUserName(),departments);
+        if (userId != null) {
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if (optionalUser.isPresent()) {
+                User foundUser = optionalUser.get();
+                List<Department> departments = departmentRepository.findByUsers(foundUser);
+                log.info("Department of user {}:{}", foundUser.getUserName(), departments);
                 return departments;
             }
         }
@@ -230,253 +243,34 @@ public class UserService implements IUserService {
 
     //list worktime
     public List<WorkTime> getWorkTimeByUser(Long userId) {
-        if(userId != null){
-            Optional<User>optionalUser = userRepository.findById(userId);
-            if(optionalUser.isPresent()) {
-                User foundUser=optionalUser.get();
+        if (userId != null) {
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if (optionalUser.isPresent()) {
+                User foundUser = optionalUser.get();
                 List<WorkTime> workTimes = workTimeRepository.findByUser(foundUser);
-                log.info("Worktimes of user {}:{}",foundUser.getUserName(), workTimes);
+                workTimes.sort(Comparator.comparing(WorkTime::getDate).reversed());
+                log.info("Worktimes of user {}:{}", foundUser.getUserName(), workTimes);
                 return workTimes;
             }
         }
         return Collections.emptyList();
     }
-
 }
 
-//Comment
-/*    private final IUserRepository userRepository;
-    private final IWorkTimeRepository workTimeRepository;
-    private final IDepartmentRepository departmentRepository;
-    private final IPositionRepository positionRepository;
-    //private final PasswodEncoder passwordEncoder;
-
-    @Transactional
-    @Override
-    public Iterable<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    @Transactional
-    @Override
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    @Transactional
-    @Override
-    public User save(User model) { return userRepository.save(model);
-    }
-
-    //delete (old)
-    *//*@Transactional
-    @Override
-    public void remove(Long id) {
-        userRepository.deleteById(id);
-    }*//*
-
-    @Transactional
-    @Override
-    public void remove(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-
-            // Clear associations with departments
-            if (user.getDepartments() != null) {
-                for (Department department : user.getDepartments()) {
-                    department.getUsers().remove(user);
-                }
-                user.getDepartments().clear();
-            }
-
-            // Clear associations with positions
-            if (user.getPositions() != null) {
-                for (Position position : user.getPositions()) {
-                    position.getUsers().remove(user);
-                }
-                user.getPositions().clear();
-            }
-
-            // Delete the user
-            userRepository.delete(user);
-        } else {
-            throw new EntityNotFoundException("User with ID " + id + " not found");
-        }
-    }
-
-
-    //get list department of user
-    public List<Department> getDepartmentByUser(Long userId) {
-        if(userId != null){
-            Optional<User>optionalUser = userRepository.findById(userId);
-            if(optionalUser.isPresent()) {
-                User foundUser=optionalUser.get();
-                List<Department>departments = departmentRepository.findByUsers(foundUser);
-                log.info("Department of user {}:{}",foundUser.getUserName(),departments);
-                return departments;
-            }
-        }
-        return Collections.emptyList();
-    }
-
-    //get list worktime of user
-    public List<WorkTime> getWorkTimeByUser(Long userId) {
-        if(userId != null){
-            Optional<User>optionalUser = userRepository.findById(userId);
-            if(optionalUser.isPresent()) {
-                User foundUser=optionalUser.get();
-                List<WorkTime> workTimes = workTimeRepository.findByUser(foundUser);
-                log.info("Work times of user {}:{}",foundUser.getUserName(), workTimes);
-                return workTimes;
-            }
-        }
-        return Collections.emptyList();
-    }
-
-    //get list position of user
-    public List<Position> getPositionByUser(Long userId) {
-        if(userId != null){
-            Optional<User>optionalUser = userRepository.findById(userId);
-            if(optionalUser.isPresent()) {
-                User foundUser=optionalUser.get();
-                List<Position> positions = positionRepository.findByUsers(foundUser);
-                log.info("Positions of user {}:{}",foundUser.getUserName(), positions);
-                return positions;
-            }
-        }
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<UserDTO> getAllUser() {
-        List<User> users = userRepository.findAll();
-        List<UserDTO> userDTOS = new ArrayList<>();
-        for(User user : users) {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setId(user.getId());
-            userDTO.setUserName(user.getUserName());
-            userDTO.setFullName(user.getFullName());
-            userDTO.setPassword(user.getPassword());
-
-            //get department list
-            List<Department> departments = departmentRepository.findByUsers(user);
-            Set<DepartmentDTO> departmentDTOS = new HashSet<>();
-            for(Department department: departments) {
-                DepartmentDTO departmentDTO = new DepartmentDTO();
-                departmentDTO.setId(department.getId());
-                departmentDTO.setName(department.getName());
-                departmentDTOS.add(departmentDTO);
-            }
-            //add department list to user
-            userDTO.setDepartments(departmentDTOS);
-
-            //get worktime list
-            List<WorkTime> workTimes = workTimeRepository.findByUser(user);
-            Set<WorkTimeDTO> workTimeDTOS = new HashSet<>();
-            for(WorkTime workTime : workTimes) {
-                WorkTimeDTO workTimeDTO = new WorkTimeDTO();
-                workTimeDTO.setId(workTime.getId());
-                workTimeDTO.setDate(workTime.getDate());
-                workTimeDTO.setCheckinTime(workTime.getCheckinTime());
-                workTimeDTO.setCheckoutTime(workTime.getCheckoutTime());
-                workTimeDTO.setBreakTime(workTime.getBreakTime());
-                workTimeDTO.setWorkTime(workTime.getWorkTime());
-                workTimeDTO.setOverTime(workTime.getOverTime());
-                workTimeDTOS.add(workTimeDTO);
-            }
-            //add worktime list to user
-            userDTO.setWorkTimes(workTimeDTOS);
-
-            //get position list
-            List<Position> positions = positionRepository.findByUsers(user);
-            Set<PositionDTO> positionDTOS = new HashSet<>();
-            for(Position position : positions) {
-                PositionDTO positionDTO = new PositionDTO();
-                positionDTO.setId(position.getId());
-                positionDTO.setName(position.getName());
-                positionDTOS.add(positionDTO);
-            }
-            //add position list to user
-            userDTO.setPositions(positionDTOS);
-
-            //add user to user DTO
-            userDTOS.add(userDTO);
-        }
-        return userDTOS;
-    }
-
-    //Edit
-    @Transactional
-    public UserDTO editUser(Long userId, String newUserName, String newFullName, String newPassword, Set<Long> newDepartmentIds, Set<Long> newPositionIds) {
-        // Find the user by ID
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (!optionalUser.isPresent()) {
-            throw new NoSuchElementException("User not found with ID: " + userId);
-        }
-
-        User user = optionalUser.get();
-
-        // Update the user's username
-        if (newUserName != null && !newUserName.trim().isEmpty()) {
-            user.setUserName(newUserName);
-        }
-        if (newFullName != null && !newFullName.trim().isEmpty()) {
-            user.setFullName(newFullName);
-        }
-        if (newPassword != null && !newPassword.trim().isEmpty()) {
-            user.setPassword(newPassword);
-        }
-
-        // Update the user's departments
-        if (newDepartmentIds != null && !newDepartmentIds.isEmpty()) {
-            // Fetch the new Department entities by their IDs
-            List<Department> newDepartments = departmentRepository.findAllById(newDepartmentIds);
-            if (newDepartments.size() != newDepartmentIds.size()) {
-                throw new IllegalArgumentException("One or more Department IDs are invalid.");
-            }
-            user.setDepartments(new HashSet<>(newDepartments));
-        }
-
-        // Update the user's positions
-        if (newPositionIds != null && !newPositionIds.isEmpty()) {
-            // Fetch the new Position entities by their IDs
-            List<Position> newPositions = positionRepository.findAllById(newPositionIds);
-            if (newPositions.size() != newPositionIds.size()) {
-                throw new IllegalArgumentException("One or more Department IDs are invalid.");
-            }
-            user.setPositions(new HashSet<>(newPositions));
-        }
-
-        // Save the updated user
-        User updatedUser = userRepository.save(user);
-
-        // Map the updated user to UserDTO
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(updatedUser.getId());
-        userDTO.setUserName(updatedUser.getUserName());
-        userDTO.setFullName(updatedUser.getFullName());
-        userDTO.setPassword(updatedUser.getPassword());
-
-        // Map departments to DepartmentDTO
-        Set<DepartmentDTO> departmentDTOS = new HashSet<>();
-        for (Department department : updatedUser.getDepartments()) {
-            DepartmentDTO departmentDTO = new DepartmentDTO();
-            departmentDTO.setId(department.getId());
-            departmentDTO.setName(department.getName());
-            departmentDTOS.add(departmentDTO);
-        }
-        userDTO.setDepartments(departmentDTOS);
-
-        // Map positions to PositionDTO
-        Set<PositionDTO> positionDTOS = new HashSet<>();
-        for (Position position : updatedUser.getPositions()) {
-            PositionDTO positionDTO = new PositionDTO();
-            positionDTO.setId(position.getId());
-            positionDTO.setName(position.getName());
-            positionDTOS.add(positionDTO);
-        }
-        userDTO.setPositions(positionDTOS);
-
-        return userDTO;
-    }*/
+////    @Override
+////    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+////        Optional<User> user = userRepository.findByUserName(username);
+////        if (user.isEmpty()) {
+////            throw new UsernameNotFoundException("User is not exist!");
+////        }
+////        return new MyUserPrincipal(user.get());
+////    }
+////    @Transactional
+////    @Override
+////    public void register(UserRegisterDTO userRegisterDTO){
+////        User newUser = new User();
+////        newUser.setUserName(userRegisterDTO.getUserName());
+////        newUser.setPassword(userRegisterDTO.getPassword());
+////        newUser.setFullName(userRegisterDTO.getFullName());
+////        userRepository.save(newUser);
+//    }

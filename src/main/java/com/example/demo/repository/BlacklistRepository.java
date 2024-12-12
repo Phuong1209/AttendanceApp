@@ -1,3 +1,4 @@
+/*
 package com.example.demo.repository;
 
 import com.example.demo.model.BlacklistedToken;
@@ -8,3 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface BlacklistRepository extends JpaRepository<BlacklistedToken, Long> {
     boolean existsByToken(String token);
 }
+*/

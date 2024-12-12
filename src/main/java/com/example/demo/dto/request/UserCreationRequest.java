@@ -22,8 +22,8 @@ public class UserCreationRequest {
     String username;
     @Size(min = 8, message = "PASSWORD_TOO_SHORT")
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).*$", message = "PASSWORD_INVALID")
-    String user_passwords;
-    String user_fullname;
+    String password;
+    String fullName;
     Set<Position> positions;
     Set<Department> departments;
 }

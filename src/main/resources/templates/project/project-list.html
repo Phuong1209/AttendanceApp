@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>プロジェクト管理</h1>
+        <a class="btn-blue" href="http://localhost:8080/projects/create">新規部署作成</a>
+        <table class="list-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>プロジェクト名</th>
+                <th>プロジェクトコード</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody th:each="project, stat : ${projects}">
+            <tr>
+                <td th:text="${stat.index+1}"></td>
+                <td th:text="${project.name}"></td>
+                <td th:text="${project.code}"></td>
+
+                <!--        <td><button class="btn">メンバリストを見る</button></td>
+                        <td><button class="btn">作業リストを見る</button></td>-->
+                <td>
+                    <a class="btn-blue" th:href="@{/projects/{projectId}/edit(projectId=${project.id})}">修正</a>
+                    <a class="btn-red" th:href="@{/projects/{projectId}/delete(projectId=${project.id})}">削除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

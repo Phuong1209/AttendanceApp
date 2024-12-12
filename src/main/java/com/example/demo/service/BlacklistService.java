@@ -1,3 +1,4 @@
+/*
 package com.example.demo.service;
 
 
@@ -47,3 +48,4 @@ public class BlacklistService {
         return blacklistRepository.existsByToken(token);
     }
 }
+*/

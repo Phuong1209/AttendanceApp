@@ -8,5 +8,4 @@ import java.util.List;
 
 @Repository
 public interface IJobTypeRepository extends JpaRepository<JobType, Long> {
-    List<JobType> findByDepartments(Department department);
 }

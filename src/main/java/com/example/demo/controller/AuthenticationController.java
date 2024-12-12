@@ -1,18 +1,16 @@
+/*
 package com.example.demo.controller;
-
-import com.example.demo.dto.request.UserCreationRequest;
-import com.example.demo.dto.response.UserResponse;
-import com.example.demo.exception.AppException;
-import com.example.demo.exception.ErrorCode;
 import com.example.demo.service.BlacklistService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.dto.request.AuthenticationRequest;
 import com.example.demo.dto.request.IntrospectRequest;
@@ -20,7 +18,6 @@ import com.example.demo.dto.response.ApiResponse;
 import com.example.demo.dto.response.AuthenticationResponse;
 import com.example.demo.dto.response.IntrospectResponse;
 import com.example.demo.service.AuthenticationService;
-
 import java.text.ParseException;
 import java.util.Optional;
 
@@ -94,4 +91,4 @@ public class AuthenticationController {
 //                    .body(ErrorCode.UNKNOWN_ERROR.getMessage());
 //        }
 //    }
-}
+}*/

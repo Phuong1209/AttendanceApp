@@ -1,0 +1,78 @@
+<!--function calculateWorkAndOverTime(checkin, checkout, breakTime) {
+const checkinTime = parseTimeString(checkin);
+const checkoutTime = parseTimeString(checkout);
+const breakTimeHours = parseFloat(breakTime) || 0;
+
+if (!checkinTime || !checkoutTime) {
+return { workTime: '0', overTime: '0' };
+}
+
+const totalHours = (checkoutTime - checkinTime) / (1000 * 60 * 60) - breakTimeHours;
+const regularWorkTime = Math.max(0, Math.min(totalHours, 8));
+const overTime = Math.max(0, totalHours - 8);
+
+return { workTime: regularWorkTime.toFixed(2), overTime: overTime.toFixed(2) };
+}
+
+function updateWorkTimeTable() {
+const rows = document.querySelectorAll('tbody tr');
+rows.forEach(row => {
+const checkin = row.querySelector('.checkin')?.innerText.trim() || "";
+const checkout = row.querySelector('.checkout')?.innerText.trim() || "";
+const breakTime = row.querySelector('.break')?.innerText.trim() || "0";
+
+const { workTime, overTime } = calculateWorkAndOverTime(checkin, checkout, breakTime);
+
+row.querySelector('.worktime').innerText = workTime;
+row.querySelector('.overtime').innerText = overTime;
+});
+}
+
+document.addEventListener('DOMContentLoaded', updateWorkTimeTable);-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Meta tags for responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Dashboard</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+            </ul>
+            <form class="d-flex" th:action="@{/logout}" method="post">
+                <button class="btn btn-outline-light" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h1 class="text-center">Welcome!</h1>
+
+    <!-- Show only for ADMIN -->
+    <div sec:authorize="hasAuthority('ROLE_ADMIN')" class="alert alert-info mt-4">
+        <p>This is only visible to ADMINs.</p>
+    </div>
+
+    <!-- Show only for USER -->
+    <div sec:authorize="hasAuthority('ROLE_USER')" class="alert alert-warning mt-4">
+        <p>This is only visible to regular users.</p>
+    </div>
+</div>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.example.demo.enums;
 
+
 public enum Position {
     ADMIN ("上司"),
     USER("部下");

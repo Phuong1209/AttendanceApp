@@ -1,8 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ProjectDTO;
-import com.example.demo.dto.SummaryByProjectDTO;
-import com.example.demo.dto.request.IntrospectRequest;
+import com.example.demo.dto.ProjectEditRequest;
+import com.example.demo.dto.Summary.ProjectSummaryDTO;
+//import com.example.demo.dto.request.IntrospectRequest;
 import com.example.demo.model.Project;
 import com.example.demo.model.Task;
 import com.example.demo.repository.ITaskRepository;
@@ -66,7 +67,7 @@ public class ProjectController {
     @PutMapping("/{id}")
     public ResponseEntity<ProjectDTO> editProject(
             @PathVariable("id") Long projectId,
-            @RequestBody IntrospectRequest.ProjectEditRequest editRequest) {
+            @RequestBody ProjectEditRequest editRequest) {
         ProjectDTO updatedProject = projectService.editProject(projectId, editRequest.getName(), editRequest.getCode(), editRequest.getTaskIds());
         return ResponseEntity.ok(updatedProject);
     }
@@ -84,14 +85,14 @@ public class ProjectController {
 
     //summarize
     @GetMapping("/summarize")
-    public ResponseEntity<List<SummaryByProjectDTO>> getSummaryByProject() {
-        List<SummaryByProjectDTO> summaries = projectService.getSummaryByProject();
+    public ResponseEntity<List<ProjectSummaryDTO>> getSummaryByProject() {
+        List<ProjectSummaryDTO> summaries = projectService.getSummaryByProject();
         return ResponseEntity.ok(summaries);
     }
     @GetMapping("/exportCSV")
     public void generateCSV(HttpServletResponse response) throws IOException {
-        List<SummaryByProjectDTO> summaries = projectService.getSummaryByProject();
-        response.setContentType("CSVpplication/octet-stream");
+        List<ProjectSummaryDTO> summaries = projectService.getSummaryByProject();
+        response.setContentType("CSVapplication/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 

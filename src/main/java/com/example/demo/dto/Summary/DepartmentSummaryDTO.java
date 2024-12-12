@@ -1,15 +1,17 @@
-package com.example.demo.dto;
+package com.example.demo.dto.Summary;
 
+import com.example.demo.model.JobType;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 
-public class SummaryByProjectDTO {
+public class DepartmentSummaryDTO {
     private String name;
-    private String code;
     private List<JobTypeSummaryDTO> jobTypeSummaries;
+
 }

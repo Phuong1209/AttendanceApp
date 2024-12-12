@@ -1,8 +1,9 @@
 package com.example.demo.service.Project;
 
-import com.example.demo.dto.JobTypeSummaryDTO;
+import com.example.demo.dto.Summary.JobTypeSummaryDTO;
 import com.example.demo.dto.ProjectDTO;
-import com.example.demo.dto.SummaryByProjectDTO;
+import com.example.demo.dto.Summary.ProjJobSummaryDTO;
+import com.example.demo.dto.Summary.ProjectSummaryDTO;
 import com.example.demo.dto.TaskDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.*;
@@ -73,10 +74,15 @@ public class ProjectService implements IProjectService {
         List<ProjectDTO> projectDTOS = new ArrayList<>();
         List<Project> projects = projectRepository.findAll();
         for(Project project : projects) {
-            ProjectDTO projectDTO = new ProjectDTO();
-            projectDTO.setId(project.getId());
-            projectDTO.setName(project.getName());
-            projectDTO.setCode(project.getCode());
+            ProjectDTO projectDTO = ProjectDTO.builder()
+                    .id(project.getId())
+                    .name(project.getName())
+                    .code(project.getCode())
+                    .build();
+//            ProjectDTO projectDTO = new ProjectDTO();
+//            projectDTO.setId(project.getId());
+//            projectDTO.setName(project.getName());
+//            projectDTO.setCode(project.getCode());
 
             //get task list
             List<Task> tasks = taskRepository.findByProject(project);
@@ -95,6 +101,11 @@ public class ProjectService implements IProjectService {
             projectDTOS.add(projectDTO);
         }
         return projectDTOS;
+    }
+
+    @Override
+    public Project saveProject(Project project) {
+        return projectRepository.save(project);
     }
 
     //Edit
@@ -132,10 +143,15 @@ public class ProjectService implements IProjectService {
         Project updatedProject = projectRepository.save(project);
 
         // Map the updated department to DepartmentDTO
-        ProjectDTO projectDTO = new ProjectDTO();
-        projectDTO.setId(updatedProject.getId());
-        projectDTO.setName(updatedProject.getName());
-        projectDTO.setCode(updatedProject.getCode());
+        ProjectDTO projectDTO = ProjectDTO.builder()
+                .id(project.getId())
+                .name(project.getName())
+                .code(project.getCode())
+                .build();
+//        ProjectDTO projectDTO = new ProjectDTO();
+//        projectDTO.setId(updatedProject.getId());
+//        projectDTO.setName(updatedProject.getName());
+//        projectDTO.setCode(updatedProject.getCode());
 
         // Map tasks to TaskDTO
         Set<TaskDTO> taskDTOS = new HashSet<>();
@@ -151,13 +167,48 @@ public class ProjectService implements IProjectService {
         return projectDTO;
     }
 
+    @Override
+    public ProjectDTO findProjectById(Long projectId) {
+        Project project = projectRepository.findById(projectId).get();
+        return mapToProjectDTO(project);
+    }
+
+    @Override
+    public void updateProject(ProjectDTO projectDTO) {
+        Project project = mapToProject(projectDTO);
+        projectRepository.save(project);
+    }
+
+    @Override
+    public void deleteByProjectId(Long projectId) {
+        projectRepository.deleteById(projectId);
+    }
+
+    public static Project mapToProject(ProjectDTO project) {
+        Project projectDTO = Project.builder()
+                .id(project.getId())
+                .name(project.getName())
+                .code(project.getCode())
+                .build();
+        return  projectDTO;
+    }
+
+    public static ProjectDTO mapToProjectDTO(Project project) {
+        ProjectDTO projectDTO = ProjectDTO.builder()
+                .id(project.getId())
+                .name(project.getName())
+                .code(project.getCode())
+                .build();
+        return projectDTO;
+    }
+
     //Summarize by Project
-    public List<SummaryByProjectDTO> getSummaryByProject() {
-        List<SummaryByProjectDTO> summaries = new ArrayList<>();
+    public List<ProjectSummaryDTO> getSummaryByProject() {
+        List<ProjectSummaryDTO> summaries = new ArrayList<>();
         List<Project> projects = projectRepository.findAll();
 
         for (Project project : projects) {
-            SummaryByProjectDTO projectSummary = new SummaryByProjectDTO();
+            ProjectSummaryDTO projectSummary = new ProjectSummaryDTO();
             projectSummary.setName(project.getName());
 
             // Map to accumulate total time for each JobType within the project
@@ -190,8 +241,58 @@ public class ProjectService implements IProjectService {
         return summaries;
     }
 
+    //Summarize by Project FOR UI
+    public List<ProjJobSummaryDTO> getProjJobSummary() {
+        List<ProjJobSummaryDTO> summaries = new ArrayList<>();
+        List<Project> projects = projectRepository.findAll();
+
+        for (Project project : projects) {
+//            ProjJobSummaryDTO projJobSummaryDTO = new ProjJobSummaryDTO();
+//            projJobSummaryDTO.setProjectName(project.getName());
+//            projJobSummaryDTO.setProjectCode(project.getCode());
+
+            // Map to accumulate total time for each JobType within the project
+            Map<String, Float> jobTypeTotalTimeMap = new HashMap<>();
+
+            // For each project, retrieve all the tasks and calculate total times per JobType
+            for (Task task : project.getTasks()) {
+                JobType jobType = task.getJobType();
+                if (jobType != null) {
+                    String jobTypeName = jobType.getName();
+                    float currentTotal = jobTypeTotalTimeMap.getOrDefault(jobTypeName, 0f);
+                    jobTypeTotalTimeMap.put(jobTypeName, currentTotal + task.getTotalTime());
+                }
+            }
+
+            // Create and add a new ProjJobSummaryDTO for each job type
+            for (Map.Entry<String, Float> entry : jobTypeTotalTimeMap.entrySet()) {
+                ProjJobSummaryDTO projJobSummaryDTO = new ProjJobSummaryDTO();
+                projJobSummaryDTO.setProjectName(project.getName());
+                projJobSummaryDTO.setProjectCode(project.getCode());
+                projJobSummaryDTO.setJobTypeName(entry.getKey());
+                projJobSummaryDTO.setTotalTime(entry.getValue());
+                summaries.add(projJobSummaryDTO);
+            }
+            // Convert the job type map to a list of JobTypeSummaryDTO
+//            List<ProjJobSummaryDTO> jobTypeSummaries = jobTypeTotalTimeMap.entrySet()
+//                    .stream()
+//                    .map(entry -> {
+////                        ProjJobSummaryDTO projJobSummaryDTO = new ProjJobSummaryDTO();
+//                        projJobSummaryDTO.setJobTypeName(entry.getKey());
+//                        projJobSummaryDTO.setTotalTime(entry.getValue());
+//                        return projJobSummaryDTO;
+//                    })
+//                    .collect(Collectors.toList());
+
+//            projectSummary.setJobTypeSummaries(jobTypeSummaries);
+//            summaries.add(projJobSummaryDTO);
+        }
+        return summaries;
+    }
+
+
     // Phương thức xuất CSV cho ProjectSummaryDTO
-    public void exportProjectSummaryToCSV(HttpServletResponse response, List<SummaryByProjectDTO> summaries) throws IOException {
+    public void exportProjectSummaryToCSV(HttpServletResponse response, List<ProjectSummaryDTO> summaries) throws IOException {
         // Cài đặt loại nội dung và tên tệp CSV cho phản hồi HTTP
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=project_summary.csv");
@@ -203,7 +304,7 @@ public class ProjectService implements IProjectService {
         writer.writeNext(new String[] {"Project Name", "Job Type", "Total Time"});
 
         // Duyệt qua danh sách summaries và thêm dữ liệu vào file CSV
-        for (SummaryByProjectDTO projectSummary : summaries) {
+        for (ProjectSummaryDTO projectSummary : summaries) {
             String projectName = projectSummary.getName();
 
             // Duyệt qua danh sách JobTypeSummaryDTO trong DepartmentSummaryDTO

@@ -4,6 +4,7 @@ import com.example.demo.dto.UserDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 import java.io.Serializable;
@@ -24,7 +25,8 @@ public class User implements Serializable {
     private String fullName;
     private String userName;
     private String password;
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(
             name="user_position",
             joinColumns = @JoinColumn(name="user_id"),

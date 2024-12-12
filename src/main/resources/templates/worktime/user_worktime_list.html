@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>勤務時間管理・ユーザー一覧</title>
+    <style>
+        .btn-detail {
+            color: white;
+            background-color: blue;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>勤務時間管理・ユーザー一覧</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>ユーザー名</th>
+        <th>アクション</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.userName}"></td>
+        <td>
+            <a th:href="@{/worktimes/user/{id}(id=${user.id})}" class="btn-detail">詳細</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

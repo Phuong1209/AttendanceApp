@@ -1,4 +1,3 @@
-/*
 package com.example.demo.security;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -15,4 +14,3 @@ public class SecurityUtil {
         return null;
     }
 }
-*/

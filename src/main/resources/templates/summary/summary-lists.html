@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>集計</h1>
+        <div><h3>1．集計1：プロジェクト別作業別時間集計表</h3></div>
+        <table class="list-table">
+            <thead>
+            <tr>
+<!--
+                <th>#</th>
+-->
+                <th>プロジェクトコード</th>
+                <th>プロジェクト名</th>
+                <th>作業名</th>
+                <th>作業時間</th>
+            </tr>
+            </thead>
+            <tbody th:each="summaryByProject, stat : ${summaryByProjects}">
+            <tr>
+<!--
+                <td th:text="${stat.index+1}"></td>
+-->
+                <td th:text="${summaryByProject.projectCode}"></td>
+                <td th:text="${summaryByProject.projectName}"></td>
+                <td th:text="${summaryByProject.jobTypeName}"></td>
+                <td th:text="${summaryByProject.totalTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <button onclick="exportProjectCSV()" class="btn-blue">Download CSV</button>
+        <br>
+        <br>
+        <div><h3>2．集計2：部署別作業別時間集計表</h3></div>
+        <table class="list-table">
+            <thead>
+            <tr>
+<!--
+                <th>#</th>
+-->
+                <th>部署名</th>
+                <th>作業名</th>
+                <th>作業時間</th>
+            </tr>
+            </thead>
+            <tbody th:each="summaryByDepartment, stat : ${summaryByDepartments}">
+            <tr>
+<!--
+                <td th:text="${stat.index+1}"></td>
+-->
+                <td th:text="${summaryByDepartment.departmentName}"></td>
+                <td th:text="${summaryByDepartment.jobTypeName}"></td>
+                <td th:text="${summaryByDepartment.totalTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <button onclick="exportDepartmentCSV()" class="btn-blue">Download CSV</button>
+        <br>
+        <br>
+        <div><h3>3．集計3：部署別プロジェクト別時間集計表</h3></div>
+        <table class="list-table">
+            <thead>
+            <tr>
+<!--
+                <th>#</th>
+-->
+                <th>部署名</th>
+                <th>プロジェクトコード</th>
+                <th>プロジェクト名</th>
+                <th>作業時間</th>
+            </tr>
+            </thead>
+            <tbody th:each="summaryByDepartment3, stat : ${summaryByDepartment3s}">
+            <tr>
+<!--
+                <td th:text="${stat.index+1}"></td>
+-->
+                <td th:text="${summaryByDepartment3.departmentName}"></td>
+                <td th:text="${summaryByDepartment3.projectCode}"></td>
+                <td th:text="${summaryByDepartment3.projectName}"></td>
+                <td th:text="${summaryByDepartment3.totalTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <button id="downloadCsvButton" class="btn-blue">Download CSV</button>
+    </div>
+</div>
+<script src="/static/js/scripts.js"></script>
+</body>
+</html>

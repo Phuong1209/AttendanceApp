@@ -48,6 +48,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -75,6 +79,13 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!--		<dependency>-->
+		<!--			<groupId>org.springframework.security</groupId>-->
+		<!--			<artifactId>spring-security-core</artifactId>-->
+		<!--			<version>5.5.2</version> &lt;!&ndash; Use the appropriate version &ndash;&gt;-->
+		<!--		</dependency>-->
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.Summary;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,5 +8,6 @@ import lombok.Setter;
 
 public class ProjectSummaryDTO3 {
     String name;
+    String code;
     Float totalTime;
 }

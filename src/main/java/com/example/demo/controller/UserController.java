@@ -32,7 +32,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.dto.request.UserCreationRequest;
 import com.example.demo.dto.request.UserUpdateRequest;
-import com.example.demo.dto.response.ApiResponse;
+//import com.example.demo.dto.response.ApiResponse;
 import com.example.demo.dto.response.UserResponse;
 import com.example.demo.service.User.UserService;
 
@@ -56,7 +56,7 @@ import java.util.Set;
 public class UserController {
 
     UserService userService1;
-    //P
+
     @Autowired
     private IUserService userService;
     @Autowired
@@ -65,19 +65,24 @@ public class UserController {
     IDepartmentRepository departmentRepository;
     @Autowired
     DepartmentService departmentService;
+    @Autowired
     PasswordEncoder passwordEncoder;
 
+
+/*    //Tạm ẩn để test UI
     @GetMapping("/myInfo")
     public ApiResponse<UserResponse> getMyInfo(){
         return ApiResponse.<UserResponse>builder()
                 .result(userService1.getMyInfo())
                 .build();
-    }
+    }*/
+
 
     //show list
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
-        return ResponseEntity.ok().body(userService.findAll());
+        return ResponseEntity.ok().body(userService.getAllUser());
+
     }
 
     //show by Id

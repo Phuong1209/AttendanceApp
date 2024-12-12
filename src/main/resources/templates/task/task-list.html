@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{layout :: sidebar}"></div>
+    <div th:replace="~{layout :: top_menu}"></div>
+    <div class="main_container">
+        <h1>タスク管理</h1>
+        <a class="btn-blue" href="http://localhost:8080/tasks/create">新規作成</a>
+        <table class="list-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>プロジェクト</th>
+                <th>作業内容</th>
+                <th>作業時間</th>
+                <th>コメント</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody th:each="task, stat : ${tasks}">
+            <tr>
+                <td th:text="${stat.index+1}"></td>
+                <td th:text="${task.project.name}"></td>
+                <td th:text="${task.jobType.name}"></td>
+                <td th:text="${task.totalTime}"></td>
+                <td th:text="${task.comment}"></td>
+                <td><a class="btn-blue" th:href="@{/tasks/{taskId}(taskId=${task.id})}">修正</a>
+                    <a class="btn-red" th:href="@{/tasks/{taskId}/delete(taskId=${task.id})}">削除</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

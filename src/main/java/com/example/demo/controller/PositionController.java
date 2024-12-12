@@ -1,68 +1,43 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.PositionDTO;
-import com.example.demo.dto.response.ApiResponse;
-import com.example.demo.dto.response.PositionResponse;
-import com.example.demo.mapper.PositionMapper;
-import com.example.demo.model.Position;
-import com.example.demo.service.Position.PositionService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import com.example.demo.dto.request.PositionRequest;
+//import com.example.demo.dto.response.ApiResponse;
+import com.example.demo.dto.response.PositionResponse;
+//import com.example.demo.service.PositionService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/positions")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class PositionController {
+    //PositionService positionService;
+/*    @PostMapping
+    public ApiResponse<PositionResponse> create(@RequestBody PositionRequest request){
+        return ApiResponse.<PositionResponse>builder()
+                .result(positionService.create(request))
+                .build();
+    }*/
 
-    private final PositionService positionService;
-    private final PositionMapper positionMapper;
-
-    @PostMapping
-    public ResponseEntity<PositionResponse> createPosition(@RequestBody PositionDTO positionDTO) {
-        Position position = positionMapper.toPosition(positionDTO);
-        Position savedPosition = positionService.save(position);
-        PositionResponse response = positionMapper.toPositionResponse(savedPosition);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<PositionResponse> updatePosition(@PathVariable Long id, @RequestBody PositionDTO positionDTO) {
-        Optional<Position> optionalPosition = positionService.findById(id);
-        if (optionalPosition.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        Position position = optionalPosition.get();
-        position.setName(positionDTO.getName()); // Update the name field
-
-        Position updatedPosition = positionService.save(position);
-        PositionResponse response = positionMapper.toPositionResponse(updatedPosition);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
+/*
     @GetMapping
-    public ResponseEntity<List<PositionResponse>> getAllPositions() {
-        List<PositionResponse> responses = positionService.getAll();
-        return ResponseEntity.ok(responses);
+    public ApiResponse<List<PositionResponse>> getAll(){
+        return ApiResponse.<List<PositionResponse>>builder()
+                .result(positionService.getAll())
+                .build();
     }
+*/
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PositionResponse> getPositionById(@PathVariable Long id) {
-        Optional<Position> optionalPosition = positionService.findById(id);
-        return optionalPosition.map(position -> {
-            PositionResponse response = positionMapper.toPositionResponse(position);
-            return ResponseEntity.ok(response);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @DeleteMapping("/{positionId}")
+/*    @DeleteMapping("/{positionId}")
     public ApiResponse<Void> deleteById(@PathVariable Long positionId){
         positionService.delete(positionId);
         return ApiResponse.<Void>builder().build();
-    }
+    }*/
 }

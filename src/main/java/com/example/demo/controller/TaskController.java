@@ -1,3 +1,4 @@
+/*
 package com.example.demo.controller;
 
 import com.example.demo.dto.*;
@@ -113,13 +114,15 @@ public class TaskController {
     }
 
     //create (old)
+*/
 /*
     @PostMapping("")
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         taskService.save(task);
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
-*/
+*//*
+
 
     //edit (new)
     @PutMapping("/{id}")
@@ -171,3 +174,4 @@ public class TaskController {
     }
 
 }
+*/
