@@ -10,22 +10,29 @@
     <div class="main_container">
         <h1>プロジェクト作成</h1>
         <form role="form" method="POST" class="form_create" th:action="@{/projects/create}" th:object="${project}">
-            <div class="input_field">
-                <label for="name">プロジェクト名</label>
-                <input required
-                        type="text"
-                        id="name"
-                        placeholder="プロジェクト名"
-                        th:field="*{name}">
-            </div>
-            <div class="input_field">
-                <label for="code">プロジェクトコード</label>
-                <input required
-                        type="text"
-                        id="code"
-                        placeholder="プロジェクトコード"
-                        th:field="*{code}">
-            </div>
+            <table class="form-table">
+                <tr>
+                    <td><label for="name">プロジェクト名</label></td>
+                    <td>
+                        <input required
+                               type="text"
+                               id="name"
+                               placeholder="プロジェクト名"
+                               th:field="*{name}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><label for="code">プロジェクトコード</label></td>
+                    <td>
+                        <input required
+                               type="text"
+                               id="code"
+                               placeholder="プロジェクトコード"
+                               th:field="*{code}">
+                    </td>
+                </tr>
+            </table>
             <input type="submit" value="作成" class="btn-blue">
         </form>
     </div>
