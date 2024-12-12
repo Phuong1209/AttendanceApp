@@ -60,11 +60,11 @@ function exportDepartmentCSV() {
         });
 }
 
-
     document.getElementById('downloadCsvButton').addEventListener('click', function() {
     // Chuyển hướng trình duyệt đến endpoint tải file CSV
     window.location.href = '/summary/summaryProjectByDepartment';
 });
+
 
 
 
