@@ -1,8 +1,6 @@
-package com.example.demo.controller.web;
+package com.example.demo.controllerUI;
 
 import com.example.demo.dto.Summary.*;
-import com.example.demo.repository.IJobTypeRepository;
-import com.example.demo.service.Department.DepartmentService;
 import com.example.demo.service.Department.IDepartmentService;
 import com.example.demo.service.JobType.IJobTypeService;
 import com.example.demo.service.Project.IProjectService;
@@ -45,7 +43,7 @@ public class SummaryUIController {
     @GetMapping({"/summaryProjectByDepartment"})
     public void generateCSV(HttpServletResponse response) throws IOException {
         List<DepartmentSummaryDTO3> summaries = departmentService.getSummaryByDepartment3();
-        response.setContentType("CSVapplication/octet-stream");
+        response.setContentType("text/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 

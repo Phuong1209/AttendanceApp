@@ -30,6 +30,8 @@ public interface IWorkTimeRepository extends JpaRepository<WorkTime, Long> {
     //check existing worktime
     Optional<WorkTime> findByUserAndDate(User user, LocalDate date);
 
+    //validate date
+    boolean existsByUser_IdAndDate(Long userId, LocalDate date);
 
 /*Code TA
     @Query("SELECT w FROM WorkingTime w WHERE w.user_id = :userId AND w.date = :date")

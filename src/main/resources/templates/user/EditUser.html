@@ -14,7 +14,7 @@
                 <tr>
                     <td><label for="username">ユーザー名</label></td>
                     <td>
-                        <input type="text" required
+                        <input type="text"
                                id="username"
                                placeholder="部署名"
                                th:field="*{userName}">
@@ -23,7 +23,7 @@
                 <tr>
                     <td><label for="fullname">フルネーム</label></td>
                     <td>
-                        <input type="text" required
+                        <input type="text"
                                id="fullname"
                                placeholder="フルネーム"
                                th:field="*{fullName}">
@@ -41,7 +41,7 @@
                 <tr>
                     <td><label for="positions">役職</label></td>
                     <td>
-                        <select required
+                        <select
                                 class="form-select"
                                 id="positions"
                                 name="positionIds"
@@ -59,7 +59,7 @@
                     <td><label for="departments">部署</label></td>
                     <td>
                         <div class="multiple_P">
-                            <select required
+                            <select
                                     class="form-select"
                                     id="departments"
                                     name="departmentIds"
@@ -77,9 +77,6 @@
                 </tr>
             </table>
             <button type="submit" class="btn-blue">修正</button>
-            <a class="btn-red"
-               th:href="@{/members/reset_password/{id}(id=${user.id})}"
-               >パスワード・リセット</a>
         </form>
     </div>
 </div>

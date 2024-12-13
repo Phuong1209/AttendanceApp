@@ -1,4 +1,4 @@
-package com.example.demo.controller.web;
+package com.example.demo.controllerUI;
 
 import com.example.demo.model.User;
 import com.example.demo.security.SecurityUtil;

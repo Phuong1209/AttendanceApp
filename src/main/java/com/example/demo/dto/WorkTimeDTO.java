@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Getter
@@ -17,11 +18,11 @@ import java.util.Set;
 public class WorkTimeDTO {
     private Long id;
     private LocalDate date;
-    private LocalDateTime checkinTime;
-    private LocalDateTime checkoutTime;
-    private Float breakTime;
-    private Float workTime;
-    private Float overTime;
+    private LocalTime checkinTime;
+    private LocalTime checkoutTime;
+    private Double breakTime;
+    private Double workTime;
+    private Double overTime;
     private UserDTO user;
     private Set<TaskDTO> tasks;
 
@@ -36,8 +37,8 @@ public class WorkTimeDTO {
     }
 
     public WorkTimeDTO(Long id, LocalDate date,
-                       LocalDateTime checkinTime, LocalDateTime checkoutTime,
-                       Float breakTime, Float workTime, Float overTime) {
+                       LocalTime checkinTime, LocalTime checkoutTime,
+                       Double breakTime, Double workTime, Double overTime) {
         this.id = id;
         this.date = date;
         this.checkinTime = checkinTime;
@@ -47,7 +48,7 @@ public class WorkTimeDTO {
         this.overTime = overTime;
     }
 
-    public WorkTimeDTO(Long id, LocalDate date, LocalDateTime checkinTime, LocalDateTime checkoutTime, Float breakTime, Float workTime, Float overTime, UserDTO user, Set<TaskDTO> tasks, boolean isHoliday, boolean isWeekend, boolean isFuture, String weekday) {
+    public WorkTimeDTO(Long id, LocalDate date, LocalTime checkinTime, LocalTime checkoutTime, Double breakTime, Double workTime, Double overTime, UserDTO user, Set<TaskDTO> tasks, boolean isHoliday, boolean isWeekend, boolean isFuture, String weekday) {
         this.id = id;
         this.date = date;
         this.checkinTime = checkinTime;

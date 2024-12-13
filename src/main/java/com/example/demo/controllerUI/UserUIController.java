@@ -8,6 +8,7 @@ import com.example.demo.model.Position;
 import com.example.demo.model.User;
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IPositionRepository;
+import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.User.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ import java.util.stream.Collectors;
 public class UserUIController {
     @Autowired
     private IUserService userService;
+    @Autowired
+    IUserRepository userRepository;
     @Autowired
     IPositionRepository positionRepository;
     @Autowired
@@ -88,7 +91,6 @@ public class UserUIController {
         if(bindingResult.hasErrors()){
             return "user/EditUser";
         }
-
         // Lấy thông tin người dùng cũ
         Optional<User> optionalUser = userService.findById(id);
         if (optionalUser.isEmpty()) {
@@ -167,5 +169,4 @@ public class UserUIController {
         }
         return "redirect:/members"; // Chuyển hướng về trang userui
     }
-
 }

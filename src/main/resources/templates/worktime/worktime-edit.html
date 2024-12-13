@@ -16,28 +16,27 @@
                 <tr>
                     <td><label>日付</label></td>
                     <td>
-                        <input
-                                type="text"
-                                placeholder="日付"
-                                th:field="*{date}">
+                        <input type="text" th:field="*{date}" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td><label>出勤時間</label></td>
                     <td>
                         <input
-                                type="text"
+                                type="time"
                                 placeholder="出勤時間"
                                 th:field="*{checkinTime}">
+                        <span th:if="${#fields.hasErrors('checkinTime')}" th:errors="*{checkinTime}" class="error"></span>
                     </td>
                 </tr>
                 <tr>
                     <td><label>退勤時間</label></td>
                     <td>
                         <input
-                                type="text"
+                                type="time"
                                 placeholder="退勤時間"
                                 th:field="*{checkoutTime}">
+                        <span th:if="${#fields.hasErrors('checkoutTime')}" th:errors="*{checkoutTime}" class="error"></span>
                     </td>
                 </tr>
                 <tr>
@@ -49,25 +48,22 @@
                                 th:field="*{breakTime}">
                     </td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <td><label>所定内勤務時間</label></td>
                     <td>
-                        <input
-                                type="text"
-                                placeholder="所定内勤務時間"
-                                th:field="*{workTime}">
+                        <input type="text" id="calculatedWorkTime" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td><label>残業時間</label></td>
                     <td>
-                        <input
-                                type="text"
-                                placeholder="残業時間"
-                                th:field="*{overTime}">
+                        <input type="text" id="calculatedOverTime" readonly>
                     </td>
-                </tr>
+                </tr>-->
             </table>
+            <!--
+                        <button type="button" class="btn" onclick="calculateWorkTime()">計算</button>
+            -->
             <input type="submit" value="修正" class="btn-blue">
         </form>
     </div>
