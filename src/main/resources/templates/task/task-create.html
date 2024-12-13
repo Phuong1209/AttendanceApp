@@ -59,7 +59,7 @@
                 </tr>
                 <script>
                     document.getElementById('totalTime').addEventListener('invalid', function () {
-                        this.setCustomValidity('作業時間は0以上の値を入力してください');
+                        this.setCustomValidity('作業時間は0.1単位で入力してください。');
                     });
                     document.getElementById('totalTime').addEventListener('input', function () {
                         this.setCustomValidity('');
