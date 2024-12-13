@@ -57,12 +57,11 @@ public class UserUIController {
 
     @PostMapping("/create")
     public String saveUser(@ModelAttribute("user") User model) {
-        userService.saveEncryptedPassword(model);
         if(userRepository.existsByUserName(model.getUserName())){
             return "redirect:/members/create?error=user already exists";
     }
         else
-            userService.save(model);
+            userService.saveEncryptedPassword(model);
         return "redirect:/members";
         }
 
