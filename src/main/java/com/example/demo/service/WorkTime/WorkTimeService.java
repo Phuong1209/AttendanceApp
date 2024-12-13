@@ -36,7 +36,7 @@ public class WorkTimeService implements IWorkTimeService {
                 .collect(Collectors.toList());
     }
 
-    // Mapper
+    // Map to DTO
     public WorkTimeDTO mapToWorkTimeDTO(WorkTime workTime) {
         UserDTO userDTO = UserDTO.builder()
                 .id(workTime.getUser().getId())
@@ -54,7 +54,6 @@ public class WorkTimeService implements IWorkTimeService {
                 .overTime(workTime.getOverTime())
                 .user(userDTO)
                 .build();
-
         return workTimeDTO;
     }
 
@@ -68,10 +67,6 @@ public class WorkTimeService implements IWorkTimeService {
     public Map<String, Double> calculateWorkTime(LocalTime checkin, LocalTime checkout, Double breakTime) {
         long workedMinutes = java.time.Duration.between(checkin, checkout).toMinutes();
         double totalWorkTime = (workedMinutes / 60.0) - (breakTime != null ? breakTime : 0);
-
-        if (totalWorkTime <= 0) {
-            throw new IllegalArgumentException("作業時間に誤りがあります。");
-        }
 
         double workTime = Math.min(totalWorkTime, 8);
         double overTime = Math.max(totalWorkTime - 8, 0);
