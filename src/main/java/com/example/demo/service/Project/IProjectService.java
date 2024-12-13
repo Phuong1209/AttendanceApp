@@ -27,4 +27,6 @@ public interface IProjectService extends IGeneralService<Project> {
     void deleteByProjectId(Long projectId);
 
     List<ProjJobSummaryDTO> getProjJobSummary();
+
+    boolean canDeleteProject(Long projectId);
 }

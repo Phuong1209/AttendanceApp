@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.List;
@@ -70,13 +71,24 @@ public class ProjectUIController {
         projectService.updateProject(project);
         return "redirect:/projects";
     }
+//    @GetMapping("/{projectId}/delete")
+//    public String deleteProject(@PathVariable("projectId")Long projectId) {
+//        projectService.deleteByProjectId(projectId);
+//        return "redirect:/projects";
+//    }
     @GetMapping("/{projectId}/delete")
-    public String deleteProject(@PathVariable("projectId")Long projectId) {
+    public String deleteProject(@PathVariable("projectId") Long projectId, RedirectAttributes redirectAttributes) {
+        boolean isDeletable = projectService.canDeleteProject(projectId);
+
+        if (!isDeletable) {
+            redirectAttributes.addFlashAttribute("error", "プロジェクトを削除できません。作業と繋がられます。");
+            return "redirect:/projects";
+        }
+
         projectService.deleteByProjectId(projectId);
+        redirectAttributes.addFlashAttribute("success", "プロジェクトが削除されました。");
         return "redirect:/projects";
     }
-
-
 
 
 

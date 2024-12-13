@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="~{layout :: head}"></head>
+<head th:replace="~{layout :: head}">
+</head>
 
 <body>
 <div class="wrapper">
@@ -9,6 +10,9 @@
     <div th:replace="~{layout :: top_menu}"></div>
     <div class="main_container">
         <h1>プロジェクト管理</h1>
+        <!-- Alert Messages -->
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
         <a class="btn-blue" href="http://localhost:8080/projects/create">新規部署作成</a>
         <table class="list-table">
             <thead>
@@ -24,12 +28,12 @@
                 <td th:text="${stat.index+1}"></td>
                 <td th:text="${project.name}"></td>
                 <td th:text="${project.code}"></td>
-
-                <!--        <td><button class="btn">メンバリストを見る</button></td>
-                        <td><button class="btn">作業リストを見る</button></td>-->
                 <td>
                     <a class="btn-blue" th:href="@{/projects/{projectId}/edit(projectId=${project.id})}">修正</a>
-                    <a class="btn-red" th:href="@{/projects/{projectId}/delete(projectId=${project.id})}">削除</a>
+                    <a class="btn-red" th:href="@{/projects/{projectId}/delete(projectId=${project.id})}"
+                       onclick="return confirm('本当にこのプロジェクトを削除しますか？')">削除</a>
+<!--                    <a class="btn-red"-->
+<!--                       onclick="confirmDeletion(${project.id})" href="#">削除</a>-->
                 </td>
             </tr>
             </tbody>

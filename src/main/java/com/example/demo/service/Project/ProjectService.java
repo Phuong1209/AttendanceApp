@@ -184,6 +184,10 @@ public class ProjectService implements IProjectService {
         projectRepository.deleteById(projectId);
     }
 
+    public boolean canDeleteProject(Long projectId) {
+        return taskRepository.findByProjectId(projectId).isEmpty();
+    }
+
     public static Project mapToProject(ProjectDTO project) {
         Project projectDTO = Project.builder()
                 .id(project.getId())
