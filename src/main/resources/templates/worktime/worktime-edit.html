@@ -26,7 +26,6 @@
                                 type="time"
                                 placeholder="出勤時間"
                                 th:field="*{checkinTime}">
-                        <span th:if="${#fields.hasErrors('checkinTime')}" th:errors="*{checkinTime}" class="error"></span>
                     </td>
                 </tr>
                 <tr>
@@ -36,7 +35,6 @@
                                 type="time"
                                 placeholder="退勤時間"
                                 th:field="*{checkoutTime}">
-                        <span th:if="${#fields.hasErrors('checkoutTime')}" th:errors="*{checkoutTime}" class="error"></span>
                     </td>
                 </tr>
                 <tr>
@@ -61,6 +59,11 @@
                     </td>
                 </tr>-->
             </table>
+
+            <div class="error-message" th:if="${errorMessage}">
+                <p style="color:red" th:text="${errorMessage}"></p>
+            </div>
+
             <!--
                         <button type="button" class="btn" onclick="calculateWorkTime()">計算</button>
             -->

@@ -87,7 +87,7 @@ public class WorkTimeUIController {
         double totalWorkTime = (workedMinutes / 60.0) - (newWorkTime.getBreakTime() != null ? newWorkTime.getBreakTime() : 0);
 
         if (totalWorkTime <= 0) {
-            bindingResult.rejectValue("checkinTime", "error.workTime", "作業時間に誤りがあります。");
+            bindingResult.rejectValue("checkinTime", "error.workTime", "勤怠時間が0以下になっています。");
         } else {
             double workTime = Math.min(totalWorkTime, 8);
             double overTime = Math.max(totalWorkTime - 8, 0);
@@ -101,7 +101,6 @@ public class WorkTimeUIController {
             model.addAttribute("workTime", newWorkTime);
             return "worktime/worktime-create";
         }
-
 
         // Save workTime
         newWorkTime.setUser(loggedInUser);
@@ -134,7 +133,8 @@ public class WorkTimeUIController {
             workTimeDto.setWorkTime(calculatedTimes.get("workTime"));
             workTimeDto.setOverTime(calculatedTimes.get("overTime"));
         } catch (IllegalArgumentException e) {
-            bindingResult.rejectValue("checkinTime", "error.workTime", e.getMessage());
+            // Add a custom error message to the model
+            model.addAttribute("errorMessage", "勤怠時間が0以下になっています。");
             model.addAttribute("workTimeDto", workTimeDto);
             return "worktime/worktime-edit";
         }
