@@ -83,10 +83,10 @@ public class WorkTimeUIController {
         }
 
         // Validate checkin and checkout times
-        if (!isValidTimeInterval(newWorkTime.getCheckinTime())) {
+        if (!workTimeService.isValidTimeInterval(newWorkTime.getCheckinTime())) {
             bindingResult.rejectValue("checkinTime", "error.workTime", "10分単位で登録してください。");
         }
-        if (!isValidTimeInterval(newWorkTime.getCheckoutTime())) {
+        if (!workTimeService.isValidTimeInterval(newWorkTime.getCheckoutTime())) {
             bindingResult.rejectValue("checkoutTime", "error.workTime", "10分単位で登録してください。");
         }
 
@@ -98,7 +98,7 @@ public class WorkTimeUIController {
 
         // Calculate workTime and overTime
         try {
-            Map<String, Double> calculatedTimes = calculateWorkTime(
+            Map<String, Double> calculatedTimes = workTimeService.calculateWorkTime(
                     newWorkTime.getCheckinTime(),
                     newWorkTime.getCheckoutTime(),
                     newWorkTime.getBreakTime()
@@ -112,44 +112,11 @@ public class WorkTimeUIController {
             return "worktime/worktime-create";
         }
 
-        //Force create new workTime
-        WorkTime workTime = new WorkTime();
-        workTime.setDate(newWorkTime.getDate());
-        workTime.setCheckinTime(newWorkTime.getCheckinTime());
-        workTime.setCheckoutTime(newWorkTime.getCheckoutTime());
-        workTime.setBreakTime(newWorkTime.getBreakTime());
-        workTime.setWorkTime(newWorkTime.getWorkTime());
-        workTime.setOverTime(newWorkTime.getOverTime());
-
-        // Set user and clear ID to ensure new entry
-        workTime.setUser(loggedInUser);
-        workTimeService.saveWorkTime(workTime);
+        // Save workTime
+        newWorkTime.setUser(loggedInUser);
+        workTimeService.saveWorkTime(newWorkTime);
         return "redirect:/worktimes/user" + loggedInUser.getId();
     }
-
-    //validate 10 minutes interval
-    private boolean isValidTimeInterval(LocalTime time) {
-        return time.getMinute() % 10 == 0;
-    }
-
-    //calculate
-    private Map<String, Double> calculateWorkTime(LocalTime checkin, LocalTime checkout, Double breakTime) {
-        long workedMinutes = java.time.Duration.between(checkin, checkout).toMinutes();
-        double totalWorkTime = (workedMinutes / 60.0) - (breakTime != null ? breakTime : 0);
-
-        if (totalWorkTime < 0) {
-            throw new IllegalArgumentException("作業時間に誤りがあります。");
-        }
-
-        double workTime = Math.min(totalWorkTime, 8);
-        double overTime = Math.max(totalWorkTime - 8, 0);
-
-        Map<String, Double> result = new HashMap<>();
-        result.put("workTime", workTime);
-        result.put("overTime", overTime);
-        return result;
-    }
-
 
     //Show edit form
     @GetMapping("/{workTimeId}")
@@ -162,7 +129,34 @@ public class WorkTimeUIController {
     //Edit
     @PostMapping("/{workTimeId}")
     public String updateWorkTime(@PathVariable("workTimeId") Long workTimeId,
-                                   @ModelAttribute("workTimeDto") WorkTimeDTO workTimeDto){
+                                 @ModelAttribute("workTimeDto") WorkTimeDTO workTimeDto,
+                                 BindingResult bindingResult,
+                                 Model model) {
+        // Validate checkin and checkout times
+        if (!workTimeService.isValidTimeInterval(workTimeDto.getCheckinTime())) {
+            bindingResult.rejectValue("checkinTime", "error.workTime", "10分単位で登録してください。");
+        }
+        if (!workTimeService.isValidTimeInterval(workTimeDto.getCheckoutTime())) {
+            bindingResult.rejectValue("checkoutTime", "error.workTime", "10分単位で登録してください。");
+        }
+
+        // Calculate workTime and overTime
+        try {
+            Map<String, Double> calculatedTimes = workTimeService.calculateWorkTime(
+                    workTimeDto.getCheckinTime(),
+                    workTimeDto.getCheckoutTime(),
+                    workTimeDto.getBreakTime()
+            );
+
+            workTimeDto.setWorkTime(calculatedTimes.get("workTime"));
+            workTimeDto.setOverTime(calculatedTimes.get("overTime"));
+        } catch (IllegalArgumentException e) {
+            bindingResult.rejectValue("checkinTime", "error.workTime", e.getMessage());
+            model.addAttribute("workTimeDto", workTimeDto);
+            return "worktime/worktime-edit";
+        }
+
+        // Save updated workTime
         workTimeDto.setId(workTimeId);
         workTimeService.updateWorkTime(workTimeDto);
         return "redirect:/worktimes/user" + workTimeDto.getUser().getId();

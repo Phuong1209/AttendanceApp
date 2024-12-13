@@ -11,7 +11,9 @@ import com.example.demo.service.IGeneralService;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Repository
@@ -31,6 +33,10 @@ public interface IWorkTimeService {
 
     //validate
     boolean existsByUserAndDate(Long userId, LocalDate date);
+    boolean isValidTimeInterval(LocalTime checkinTime);
+
+    //calculate
+    Map<String, Double> calculateWorkTime(LocalTime checkinTime, LocalTime checkoutTime, Double breakTime);
 
      /*//show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);*/
