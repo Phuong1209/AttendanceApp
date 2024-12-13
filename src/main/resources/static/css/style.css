@@ -11,6 +11,12 @@
     margin: 10 px;
 }
 
+.error {
+    color: red;
+    margin: 5px 5px;
+    font-size: 12px;
+}
+
 /*Sidebar*/
 .wrapper .sidebar{
     position: fixed;

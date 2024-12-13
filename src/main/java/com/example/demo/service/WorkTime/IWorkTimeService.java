@@ -10,6 +10,7 @@ import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.service.IGeneralService;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +28,9 @@ public interface IWorkTimeService {
 
     //show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);
+
+    //validate
+    boolean existsByUserAndDate(Long userId, LocalDate date);
 
      /*//show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);*/

@@ -57,6 +57,12 @@ public class WorkTimeService implements IWorkTimeService {
         return workTimeDTO;
     }
 
+    //Validation
+    @Override
+    public boolean existsByUserAndDate(Long userId, LocalDate date) {
+        return workTimeRepository.existsByUser_IdAndDate(userId, date);
+    }
+
     //Save
     public WorkTime saveWorkTime(WorkTime workTime) {
         return workTimeRepository.save(workTime);

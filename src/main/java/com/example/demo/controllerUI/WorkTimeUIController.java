@@ -1,11 +1,10 @@
-package com.example.demo.controller.web;
+package com.example.demo.controllerUI;
 
 import com.example.demo.dto.TaskDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IProjectRepository;
-import com.example.demo.repository.IUserRepository;
 import com.example.demo.security.SecurityUtil;
 import com.example.demo.service.Task.TaskService;
 import com.example.demo.service.User.UserService;
@@ -13,11 +12,14 @@ import com.example.demo.service.WorkTime.IWorkTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -63,39 +65,53 @@ public class WorkTimeUIController {
         return "worktime/worktime-create";
     }
 
-/*    //Show user's workTime
-    @GetMapping("/user{userId}")
-    public String listUserWorkTime(@PathVariable("userId") Long userId, Model model) {
-        //add user to model
-        User user = userService.findById(userId).orElse(null);
-        model.addAttribute("user", user);
-
-        // Get the current date
-        LocalDate today = LocalDate.now();
-        int year = today.getYear();
-        int month = today.getMonthValue();
-
-        //add workTime to model
-        Iterable<WorkTimeDTO> workTimes = workTimeService.getWorkTimeForUserAndMonth(userId, year, month);
-        model.addAttribute("workTimes", workTimes);
-
-        // Add attributes to the model for rendering
-        model.addAttribute("currentYear", year);
-        model.addAttribute("currentMonth", month);
-        model.addAttribute("workTimes", workTimes);
-
-        // Add navigation buttons for previous and next months
-        model.addAttribute("previousMonth", month == 1 ? 12 : month - 1);
-        model.addAttribute("previousYear", month == 1 ? year - 1 : year);
-        model.addAttribute("nextMonth", month == 12 ? 1 : month + 1);
-        model.addAttribute("nextYear", month == 12 ? year + 1 : year);
-
-        return "worktime/worktime-list-user";
-    }*/
-
     //Create
     @PostMapping("/create")
-    public String saveWorkTime(@ModelAttribute("workTime") WorkTime newWorkTime) {
+    public String saveWorkTime(@ModelAttribute("workTime") WorkTime newWorkTime,
+                               BindingResult bindingResult,
+                               Model model) {
+        // Get logged-in user
+        String username = SecurityUtil.getSessionUser();
+        User loggedInUser = userService.findByUserName(username);
+
+        // Validate date
+        if (workTimeService.existsByUserAndDate(loggedInUser.getId(), newWorkTime.getDate())) {
+            bindingResult.rejectValue("date", "error.workTime", "この日付に作業実績の登録があります。");
+        }
+        if (newWorkTime.getDate().isAfter(LocalDate.now().plusDays(1))) {
+            bindingResult.rejectValue("date", "error.workTime", "未来の日に登録することができません。");
+        }
+
+        // Validate checkin and checkout times
+        if (!isValidTimeInterval(newWorkTime.getCheckinTime())) {
+            bindingResult.rejectValue("checkinTime", "error.workTime", "10分単位で登録してください。");
+        }
+        if (!isValidTimeInterval(newWorkTime.getCheckoutTime())) {
+            bindingResult.rejectValue("checkoutTime", "error.workTime", "10分単位で登録してください。");
+        }
+
+        // Handle validation errors
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("workTime", newWorkTime);
+            return "worktime/worktime-create";
+        }
+
+        // Calculate workTime and overTime
+        try {
+            Map<String, Double> calculatedTimes = calculateWorkTime(
+                    newWorkTime.getCheckinTime(),
+                    newWorkTime.getCheckoutTime(),
+                    newWorkTime.getBreakTime()
+            );
+
+            newWorkTime.setWorkTime(calculatedTimes.get("workTime"));
+            newWorkTime.setOverTime(calculatedTimes.get("overTime"));
+        } catch (IllegalArgumentException e) {
+            bindingResult.rejectValue("checkinTime", "error.workTime", e.getMessage());
+            model.addAttribute("workTime", newWorkTime);
+            return "worktime/worktime-create";
+        }
+
         //Force create new workTime
         WorkTime workTime = new WorkTime();
         workTime.setDate(newWorkTime.getDate());
@@ -105,15 +121,35 @@ public class WorkTimeUIController {
         workTime.setWorkTime(newWorkTime.getWorkTime());
         workTime.setOverTime(newWorkTime.getOverTime());
 
-        // Get logged-in user
-        String username = SecurityUtil.getSessionUser();
-        User loggedInUser = userService.findByUserName(username);
-
         // Set user and clear ID to ensure new entry
         workTime.setUser(loggedInUser);
         workTimeService.saveWorkTime(workTime);
         return "redirect:/worktimes/user" + loggedInUser.getId();
     }
+
+    //validate 10 minutes interval
+    private boolean isValidTimeInterval(LocalTime time) {
+        return time.getMinute() % 10 == 0;
+    }
+
+    //calculate
+    private Map<String, Double> calculateWorkTime(LocalTime checkin, LocalTime checkout, Double breakTime) {
+        long workedMinutes = java.time.Duration.between(checkin, checkout).toMinutes();
+        double totalWorkTime = (workedMinutes / 60.0) - (breakTime != null ? breakTime : 0);
+
+        if (totalWorkTime < 0) {
+            throw new IllegalArgumentException("作業時間に誤りがあります。");
+        }
+
+        double workTime = Math.min(totalWorkTime, 8);
+        double overTime = Math.max(totalWorkTime - 8, 0);
+
+        Map<String, Double> result = new HashMap<>();
+        result.put("workTime", workTime);
+        result.put("overTime", overTime);
+        return result;
+    }
+
 
     //Show edit form
     @GetMapping("/{workTimeId}")
@@ -139,15 +175,6 @@ public class WorkTimeUIController {
         workTimeService.delete(workTimeId);
         // After deleting, redirect to the user's attendance screen
         return "redirect:/worktimes/user" + workTimeDto.getUser().getId();
-    }
-
-    // Admin Path - Show List of Users
-    @GetMapping("/admin")
-    public String listUsers(Model model) {
-        Iterable<User> users = userService.findAll();
-        System.out.println("Users: " + users); // Debugging output
-        model.addAttribute("users", users);
-        return "worktime/user_worktime_list";
     }
 
     //Show task list:
@@ -252,4 +279,44 @@ public class WorkTimeUIController {
         taskService.delete(taskId);
         return "redirect:/worktimes/" + workTimeId + "/tasks";
     }
+
 }
+
+/*    //Show user's workTime
+    @GetMapping("/user{userId}")
+    public String listUserWorkTime(@PathVariable("userId") Long userId, Model model) {
+        //add user to model
+        User user = userService.findById(userId).orElse(null);
+        model.addAttribute("user", user);
+
+        // Get the current date
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        int month = today.getMonthValue();
+
+        //add workTime to model
+        Iterable<WorkTimeDTO> workTimes = workTimeService.getWorkTimeForUserAndMonth(userId, year, month);
+        model.addAttribute("workTimes", workTimes);
+
+        // Add attributes to the model for rendering
+        model.addAttribute("currentYear", year);
+        model.addAttribute("currentMonth", month);
+        model.addAttribute("workTimes", workTimes);
+
+        // Add navigation buttons for previous and next months
+        model.addAttribute("previousMonth", month == 1 ? 12 : month - 1);
+        model.addAttribute("previousYear", month == 1 ? year - 1 : year);
+        model.addAttribute("nextMonth", month == 12 ? 1 : month + 1);
+        model.addAttribute("nextYear", month == 12 ? year + 1 : year);
+
+        return "worktime/worktime-list-user";
+    }*/
+
+/*    // Admin Path - Show List of Users
+    @GetMapping("/admin")
+    public String listUsers(Model model) {
+        Iterable<User> users = userService.findAll();
+        System.out.println("Users: " + users); // Debugging output
+        model.addAttribute("users", users);
+        return "worktime/user_worktime_list";
+    }*/
