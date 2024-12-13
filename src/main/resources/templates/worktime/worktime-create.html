@@ -15,16 +15,15 @@
                     <td><label>日付</label></td>
                     <td>
                         <input
-                            type="text"
-                            th:field="*{date}"
-                            readonly>
+                            type="date"
+                            th:field="*{date}">
                     </td>
                 </tr>
                 <tr>
                     <td><label>出勤時間</label></td>
                     <td>
                         <input
-                            type="text"
+                            type="datetime-local"
                             placeholder="出勤時間"
                             th:field="*{checkinTime}">
                     </td>
@@ -33,7 +32,7 @@
                     <td><label>退勤時間</label></td>
                     <td>
                         <input
-                                type="text"
+                                type="datetime-local"
                                 placeholder="退勤時間"
                                 th:field="*{checkoutTime}">
                     </td>
