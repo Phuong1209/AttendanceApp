@@ -145,4 +145,11 @@ function togglePasswordVisibility() {
     document.getElementById("calculatedOverTime").value = overTime.toFixed(2);
     }
 */
-
+function togglePasswordVisibility() {
+  var x = document.getElementById("password");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
