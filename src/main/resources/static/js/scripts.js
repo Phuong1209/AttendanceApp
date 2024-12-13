@@ -74,5 +74,33 @@ document.getElementById('downloadCsvButton').addEventListener('click', function(
         .catch(error => console.error('Error downloading CSV:', error)); // Xử lý lỗi nếu có
 });
 
+//calculate workTime
+/*
+function calculateWorkTime() {
+    const checkinTime = document.querySelector('input[th\\:field="*{checkinTime}"]').value;
+    const checkoutTime = document.querySelector('input[th\\:field="*{checkoutTime}"]').value;
+    const breakTime = parseFloat(document.querySelector('input[th\\:field="*{breakTime}"]').value || 0);
 
+    if (!checkinTime || !checkoutTime || isNaN(breakTime)) {
+        alert("すべてのフィールドを入力してください。");
+        return;
+    }
+
+    const checkin = new Date(`1970-01-01T${checkinTime}`);
+    const checkout = new Date(`1970-01-01T${checkoutTime}`);
+    const totalMinutes = (checkout - checkin) / (1000 * 60) - (breakTime * 60);
+
+    if (totalMinutes < 0) {
+        alert("Please confirm your worktime");
+        return;
+    }
+
+    const totalWorkTime = totalMinutes / 60;
+    const workTime = Math.min(totalWorkTime, 8);
+    const overTime = Math.max(totalWorkTime - 8, 0);
+
+    document.getElementById("calculatedWorkTime").value = workTime.toFixed(2);
+    document.getElementById("calculatedOverTime").value = overTime.toFixed(2);
+    }
+*/
 

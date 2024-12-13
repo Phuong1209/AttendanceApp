@@ -10,7 +10,10 @@ import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.service.IGeneralService;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Repository
@@ -23,10 +26,17 @@ public interface IWorkTimeService {
     void delete(long workTimeId);
 
     //Calendar
-    List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long id, int year, int month);
+    //List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long id, int year, int month);
 
     //show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);
+
+    //validate
+    boolean existsByUserAndDate(Long userId, LocalDate date);
+    boolean isValidTimeInterval(LocalTime checkinTime);
+
+    //calculate
+    Map<String, Double> calculateWorkTime(LocalTime checkinTime, LocalTime checkoutTime, Double breakTime);
 
      /*//show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);*/

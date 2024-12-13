@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
@@ -23,11 +24,11 @@ public class WorkTime implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
-    private LocalDateTime checkinTime;
-    private LocalDateTime checkoutTime;
-    private Float breakTime;
-    private Float workTime;
-    private Float overTime;
+    private LocalTime checkinTime;
+    private LocalTime checkoutTime;
+    private Double breakTime;
+    private Double workTime;
+    private Double overTime;
 
     @OneToMany(mappedBy = "workTime", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -37,7 +38,6 @@ public class WorkTime implements Serializable {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
-
 }
 
 

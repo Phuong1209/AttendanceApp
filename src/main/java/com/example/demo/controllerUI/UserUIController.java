@@ -1,8 +1,5 @@
-package com.example.demo.controller.web;
+package com.example.demo.controllerUI;
 
-import com.example.demo.dto.DepartmentDTO;
-import com.example.demo.dto.PositionDTO;
-import com.example.demo.dto.UserDTO;
 import com.example.demo.model.Department;
 import com.example.demo.model.Position;
 import com.example.demo.model.User;
@@ -12,8 +9,6 @@ import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.User.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,9 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.PasswordAuthentication;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/members")

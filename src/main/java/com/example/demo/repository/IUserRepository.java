@@ -1,9 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.Department;
-import com.example.demo.model.JobType;
-import com.example.demo.model.User;
-import com.example.demo.model.WorkTime;
+import com.example.demo.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +22,8 @@ public interface IUserRepository extends JpaRepository <User, Long> {
     User findFirstByUserName(String username);
 
     Long id(Long id);
+
+    //show list WorkTime
+    @Query("SELECT u.workTimes FROM User u WHERE u.id = :userId")
+    Set<WorkTime> findWorkTimesByUser(@Param("userId") Long userId);
 }
