@@ -45,7 +45,7 @@ public class SummaryUIController {
     @GetMapping({"/summaryProjectByDepartment"})
     public void generateCSV(HttpServletResponse response) throws IOException {
         List<DepartmentSummaryDTO3> summaries = departmentService.getSummaryByDepartment3();
-        response.setContentType("CSVapplication/octet-stream");
+        response.setContentType("text/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
 

@@ -60,10 +60,18 @@ function exportDepartmentCSV() {
         });
 }
 
-//export CSV summaryProjectByDepartment
-    document.getElementById('downloadCsvButton').addEventListener('click', function() {
-    // Chuyển hướng trình duyệt đến endpoint tải file CSV
-    window.location.href = '/summary/summaryProjectByDepartment';
+document.getElementById('downloadCsvButton').addEventListener('click', function() {
+    // Gửi yêu cầu GET tới endpoint mà trả về file CSV
+    fetch('/summary/summaryProjectByDepartment')
+        .then(response => response.blob())  // Lấy file CSV dưới dạng blob
+        .then(blob => {
+            // Tạo URL cho file CSV
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'summaryProjectByDepartment.csv'; // Tên file CSV khi tải xuống
+            link.click(); // Mô phỏng hành động nhấn vào liên kết để tải file
+        })
+        .catch(error => console.error('Error downloading CSV:', error)); // Xử lý lỗi nếu có
 });
 
 
