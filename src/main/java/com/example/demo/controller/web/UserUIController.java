@@ -57,9 +57,7 @@ public class UserUIController {
     @PostMapping("/create")
     public String saveUser(@ModelAttribute("user") User model) {
         if(userRepository.existsByUserName(model.getUserName())){
-        userService.save(model);
             return "redirect:/members/create?error=user already exists";
-
     }
         else
             userService.save(model);
@@ -91,7 +89,6 @@ public class UserUIController {
         if(bindingResult.hasErrors()){
             return "user/EditUser";
         }
-
         // Lấy thông tin người dùng cũ
         Optional<User> optionalUser = userService.findById(id);
         if (optionalUser.isEmpty()) {
@@ -138,5 +135,4 @@ public class UserUIController {
         }
         return "redirect:/members"; // Chuyển hướng về trang userui
     }
-
 }
