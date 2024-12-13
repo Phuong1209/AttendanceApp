@@ -71,25 +71,10 @@ document.getElementById('downloadCsvButton').addEventListener('click', function(
             link.download = 'summaryProjectByDepartment.csv'; // Tên file CSV khi tải xuống
             link.click(); // Mô phỏng hành động nhấn vào liên kết để tải file
         })
-        .catch(error => console.error('Error downloading CSV:', error)); // Xử lý lỗi nếu có
-//màn user
-if (token) {
-    fetch("http://localhost:8080/userui", {
-        method: "GET",  // hoặc POST
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-        }
-    })
-        .then(response => response.text())
-        .then(data => {
-            console.log(data);
-        })
-
-    document.getElementById('downloadCsvButton').addEventListener('click', function() {
-    // Chuyển hướng trình duyệt đến endpoint tải file CSV
-    window.location.href = '/summary/summaryProjectByDepartment';
+        .catch(error => console.error('Error downloading CSV:', error));
 });
+// Xử lý lỗi nếu có
+
 
 //calculate workTime
 /*
