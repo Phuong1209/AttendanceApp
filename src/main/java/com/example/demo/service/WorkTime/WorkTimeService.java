@@ -58,10 +58,28 @@ public class WorkTimeService implements IWorkTimeService {
         return workTimeDTO;
     }
 
-    //Validation
+    //Validate date
     @Override
     public boolean existsByUserAndDate(Long userId, LocalDate date) {
         return workTimeRepository.existsByUser_IdAndDate(userId, date);
+    }
+
+    //Calculate
+    public Map<String, Double> calculateWorkTime(LocalTime checkin, LocalTime checkout, Double breakTime) {
+        long workedMinutes = java.time.Duration.between(checkin, checkout).toMinutes();
+        double totalWorkTime = (workedMinutes / 60.0) - (breakTime != null ? breakTime : 0);
+
+        if (totalWorkTime <= 0) {
+            throw new IllegalArgumentException("作業時間に誤りがあります。");
+        }
+
+        double workTime = Math.min(totalWorkTime, 8);
+        double overTime = Math.max(totalWorkTime - 8, 0);
+
+        Map<String, Double> result = new HashMap<>();
+        result.put("workTime", workTime);
+        result.put("overTime", overTime);
+        return result;
     }
 
     //Save
@@ -108,28 +126,6 @@ public class WorkTimeService implements IWorkTimeService {
     @Override
     public void delete(long workTimeId) {
         workTimeRepository.deleteById(workTimeId);
-    }
-
-    //Validate 10 minutes interval
-    public boolean isValidTimeInterval(LocalTime time) {
-        return time != null && time.getMinute() % 10 == 0;
-    }
-
-    public Map<String, Double> calculateWorkTime(LocalTime checkin, LocalTime checkout, Double breakTime) {
-        long workedMinutes = java.time.Duration.between(checkin, checkout).toMinutes();
-        double totalWorkTime = (workedMinutes / 60.0) - (breakTime != null ? breakTime : 0);
-
-        if (totalWorkTime < 0) {
-            throw new IllegalArgumentException("作業時間に誤りがあります。");
-        }
-
-        double workTime = Math.min(totalWorkTime, 8);
-        double overTime = Math.max(totalWorkTime - 8, 0);
-
-        Map<String, Double> result = new HashMap<>();
-        result.put("workTime", workTime);
-        result.put("overTime", overTime);
-        return result;
     }
 
     // Get list task
