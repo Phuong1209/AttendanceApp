@@ -14,7 +14,7 @@
                 <tr>
                     <td><label for="project">プロジェクト</label></td>
                     <td>
-                        <select required id="project" th:field="*{project.id}">
+                        <select id="project" th:field="*{project.id}">
                             <option value="" disabled selected>プロジェクト</option>
                             <option th:each="project: ${projects}" th:value="${project.id}" th:text="${project.name}"></option>
                         </select>
@@ -24,21 +24,36 @@
                 <tr>
                     <td><label for="jobType">作業内容</label></td>
                     <td>
-                        <select required id="jobType" th:field="*{jobType.id}" >
+                        <select id="jobType" th:field="*{jobType.id}" >
                             <option value="" disabled selected></option>
                             <option th:each="jobType : ${jobTypes}" th:value="${jobType.id}" th:text="${jobType.name}"></option>
                         </select>
                     </td>
                 </tr>
 
+<!--                <tr>-->
+<!--                    <td><label for="totalTime">作業時間</label></td>-->
+<!--                    <td>-->
+<!--                        <input-->
+<!--                                type="text"-->
+<!--                                id="totalTime"-->
+<!--                                placeholder="作業時間"-->
+<!--                                th:field="*{totalTime}">-->
+<!--                    </td>-->
+<!--                </tr>-->
                 <tr>
                     <td><label for="totalTime">作業時間</label></td>
                     <td>
-                        <input required
-                                type="text"
+                        <input
+                                type="number"
                                 id="totalTime"
                                 placeholder="作業時間"
-                                th:field="*{totalTime}">
+                                th:field="*{totalTime}"
+                                min="0.1"
+                                step="0.1"
+                                oninvalid="this.setCustomValidity('作業時間は0以上の値を入力してください')"
+                                oninput="this.setCustomValidity('')"
+                                required>
                     </td>
                 </tr>
                 <tr>

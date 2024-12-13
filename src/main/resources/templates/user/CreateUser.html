@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml">
-<head th:replace="~{layout :: head}">
+<head th:replace="~{layout :: head}"></head>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -34,10 +34,11 @@
                 <tr>
                     <td><label for="username">ユーザー名</label></td>
                     <td>
-                        <input type="text" required
+                        <input type="text"
                                id="username"
                                placeholder="部署名"
-                               th:field="*{userName}">
+                               th:field="*{userName}"
+                               required>
                     </td>
                 </tr>
                 <tr>

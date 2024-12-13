@@ -8,6 +8,7 @@ import com.example.demo.model.Position;
 import com.example.demo.model.User;
 import com.example.demo.repository.IDepartmentRepository;
 import com.example.demo.repository.IPositionRepository;
+import com.example.demo.repository.IUserRepository;
 import com.example.demo.service.User.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ import java.util.stream.Collectors;
 public class UserUIController {
     @Autowired
     private IUserService userService;
+    @Autowired
+    IUserRepository userRepository;
     @Autowired
     IPositionRepository positionRepository;
     @Autowired
@@ -55,8 +58,15 @@ public class UserUIController {
     @PostMapping("/create")
     public String saveUser(@ModelAttribute("user") User model) {
         userService.saveEncryptedPassword(model);
-        return "redirect:/members";
+        if(userRepository.existsByUserName(model.getUserName())){
+        userService.save(model);
+            return "redirect:/members/create?error=user already exists";
+
     }
+        else
+            userService.save(model);
+        return "redirect:/members";
+        }
 
     @GetMapping("/edit/{id}")
     public String editUserForm(@PathVariable("id") Long id, Model model) {
