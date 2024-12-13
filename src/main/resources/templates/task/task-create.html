@@ -32,7 +32,7 @@
                     </td>
                 </tr>
 
-                <tr>
+            <!--    <tr>
                     <td><label for="totalTime">作業時間</label></td>
                     <td>
                         <input
@@ -41,7 +41,30 @@
                                 placeholder="作業時間"
                                 th:field="*{totalTime}">
                     </td>
+                </tr>-->
+                <tr>
+                    <td><label for="totalTime">作業時間</label></td>
+                    <td>
+                        <input
+                                type="number"
+                                id="totalTime"
+                                placeholder="作業時間"
+                                th:field="*{totalTime}"
+                                min="0.1"
+                                step="0.1"
+                                oninvalid="this.setCustomValidity('作業時間は0.1以上の値を入力してください')"
+                                oninput="this.setCustomValidity('')"
+                                required>
+                    </td>
                 </tr>
+                <script>
+                    document.getElementById('totalTime').addEventListener('invalid', function () {
+                        this.setCustomValidity('作業時間は0以上の値を入力してください');
+                    });
+                    document.getElementById('totalTime').addEventListener('input', function () {
+                        this.setCustomValidity('');
+                    });
+                </script>
                 <tr>
                     <td><label for="comment">コメント</label>
                     </td>
