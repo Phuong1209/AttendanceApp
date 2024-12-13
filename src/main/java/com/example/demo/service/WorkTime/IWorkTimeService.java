@@ -33,7 +33,6 @@ public interface IWorkTimeService {
 
     //validate
     boolean existsByUserAndDate(Long userId, LocalDate date);
-    boolean isValidTimeInterval(LocalTime checkinTime);
 
     //calculate
     Map<String, Double> calculateWorkTime(LocalTime checkinTime, LocalTime checkoutTime, Double breakTime);
