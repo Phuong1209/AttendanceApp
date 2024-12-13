@@ -31,7 +31,6 @@
         <!-- Alert Messages -->
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
         <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-        <a class="btn-blue" href="http://localhost:8080/members/create">新規ユーザ作成</a>
         <form method="POST" th:action="@{/members/create}" th:object="${user}">
             <table class="form-table">
                 <tr>

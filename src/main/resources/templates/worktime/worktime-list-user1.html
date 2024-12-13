@@ -9,6 +9,8 @@
     <div th:replace="~{layout :: top_menu}"></div>
     <div class="main_container">
         <h1>勤怠時間管理</h1>
+        <p><strong th:text="'User: ' + ${user.fullName}"></strong></p>
+        <br>
         <a class="btn-blue" th:href="@{/worktimes/create}">新規作成</a>
         <table class="list-table">
             <thead>
@@ -32,7 +34,7 @@
                 <td th:text="${#temporals.format(workTime.checkinTime, 'HH:mm')}"></td>
                 <td th:text="${#temporals.format(workTime.checkoutTime, 'HH:mm')}"></td>
                 <td th:text="${workTime.breakTime}"></td>
-                <td th:text="${workTime.workTime}"></td>
+                <td th:classappend="${workTime.workTime <= 0} ? 'text-red' : ''" th:text="${workTime.workTime}"></td>
                 <td th:text="${workTime.overTime}"></td>
                 <td><a class="btn" th:href="@{/worktimes/{workTimeId}/tasks(workTimeId=${workTime.id})}">リストを見る</a></td>
                 <td><a class="btn-blue" th:href="@{/worktimes/{workTimeId}(workTimeId=${workTime.id})}">修正</a>
