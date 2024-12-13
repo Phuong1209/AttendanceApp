@@ -25,4 +25,5 @@ public interface IUserRepository extends JpaRepository <User, Long> {
     User findFirstByUserName(String username);
 
     Long id(Long id);
+
 }

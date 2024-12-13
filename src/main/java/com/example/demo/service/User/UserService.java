@@ -105,6 +105,10 @@ public class UserService implements IUserService {
         return userRepository.findById(id);
     }
 
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUserName(username);
+    }
     @Transactional
     @Override
     public User save(User user) {

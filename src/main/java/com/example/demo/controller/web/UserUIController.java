@@ -53,8 +53,13 @@ public class UserUIController {
     }
 
     @PostMapping("/create")
-    public String saveUser(@ModelAttribute("user") User model) {
-        userService.saveEncryptedPassword(model);
+    public String saveUser(@ModelAttribute("user") User user, Model model) {
+        if (userService.existsByUsername(user.getUserName())) {
+            model.addAttribute("error", "このユーザー名はすでに使用されています。");
+            return "user/CreateUser";
+        }
+        userService.saveEncryptedPassword(user);
+        model.addAttribute("success", "ユーザーが正常に作成されました。");
         return "redirect:/members";
     }
 

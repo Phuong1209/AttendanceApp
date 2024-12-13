@@ -43,5 +43,6 @@ public interface IUserService  {
 //    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
     //find logged in user
     User findByUserName(String userName);
+    boolean existsByUsername(String username);
 }
 
