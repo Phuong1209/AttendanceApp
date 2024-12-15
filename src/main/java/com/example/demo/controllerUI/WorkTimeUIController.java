@@ -78,7 +78,7 @@ public class WorkTimeUIController {
         if (workTimeService.existsByUserAndDate(loggedInUser.getId(), newWorkTime.getDate())) {
             bindingResult.rejectValue("date", "error.workTime", "この日付に作業実績の登録があります。");
         }
-        if (newWorkTime.getDate().isAfter(LocalDate.now().plusDays(1))) {
+        if (newWorkTime.getDate().isAfter(LocalDate.now())) {
             bindingResult.rejectValue("date", "error.workTime", "未来の日に登録することができません。");
         }
 
@@ -174,7 +174,7 @@ public class WorkTimeUIController {
         model.addAttribute("tasks", tasks);
 
         //check task number
-        boolean isTasklimitReached = tasks.size() >= 7;
+        boolean isTasklimitReached = tasks.size() >= 5;
         model.addAttribute("isTaskLimitReached", isTasklimitReached);
 
         return "worktime/worktime-tasks";

@@ -42,7 +42,7 @@
              th:href="@{/members/edit/{id}(id=${user.id})}">更新</a>
           <a class="btn-red"
              th:href="@{/members/delete/{id}(id=${user.id})}"
-             onclick="return confirm('Are you sure?')">削除</a>
+             onclick="return confirm('このメンバーを削除してもよろしいでしょうか？')">削除</a>
         </td>
       </tr>
       </tbody>

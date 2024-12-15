@@ -60,12 +60,8 @@
                                placeholder="パスワード"
                                name="password"
                                th:field="*{password}">
-                        <span style="transform: translateY(-50%); cursor: pointer;"
-                              onclick="togglePasswordVisibility()">
-                        <i id="toggleIcon" class="fa fa-eye"></i>
-                        </span>
-                        </input>
                     </td>
+                    <td>
                 </tr>
                 <tr>
                     <td><label for="position">役職</label></td>
@@ -90,15 +86,17 @@
                                     placeholder="Select your department"
                                     th:field="*{departments}"
                                     multiple>
-                                <option value="1">技術部</option>
-                                <option value="2">営業部</option>
-                                <option value="3">広告部</option>
-                                <option value="4">人事部</option>
+                                <option value="1">IT</option>
+                                <option value="2">HR</option>
+                                <option value="3">Marketing</option>
+                                <option value="4">Finance</option>
                             </select>
                         </div>
                     </td>
                 </tr>
             </table>
+            <input type="checkbox" onclick="myFunction()"> パスワードを表示
+            <br><br>
             <button type="submit" class="btn-blue">作成</button>
         </form>
     </div>

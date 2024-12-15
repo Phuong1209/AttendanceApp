@@ -1,6 +1,5 @@
-//Sidebar display
 document.addEventListener('DOMContentLoaded', () => {
-    // Select all <a> tags in the sidebar
+    // Sidebar link highlighting
     const links = document.querySelectorAll('.sidebar ul li > a');
     const currentPath = window.location.pathname; // Get current URL path
 
@@ -19,8 +18,29 @@ document.addEventListener('DOMContentLoaded', () => {
             event.currentTarget.classList.add('active');
         });
     });
+
+    // Download CSV button functionality
+    const downloadCsvButton = document.getElementById('downloadCsvButton');
+    if (downloadCsvButton) {
+        downloadCsvButton.addEventListener('click', () => {
+            // Send GET request to fetch the CSV file
+            fetch('/summary/summaryProjectByDepartment')
+                .then(response => response.blob())  // Get file as blob
+                .then(blob => {
+                    // Create URL for the CSV file
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'summaryProjectByDepartment.csv'; // File name for download
+                    document.body.appendChild(link);
+                    link.click(); // Simulate click to download the file
+                    document.body.removeChild(link);
+                })
+                .catch(error => console.error('Error downloading CSV:', error));
+        });
+    }
 });
 
+//Check multiple Selection
 const selectBtn = document.querySelector(".select-btn"),
     items = document.querySelectorAll(".item");
 
@@ -134,7 +154,8 @@ function exportDepartmentCSV() {
             console.error('There was an error with the fetch operation:', error);
         });
 }
-document.addEventListener('DOMContentLoaded', function () {
+
+/*document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('downloadCsvButton').addEventListener('click', function() {
     // Gửi yêu cầu GET tới endpoint mà trả về file CSV
         fetch('/summary/summaryProjectByDepartment')
@@ -150,80 +171,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .catch(error => console.error('Error downloading CSV:', error));
                 });
-                });
+                });*/
 // Xử lý lỗi nếu có
 
-
-//calculate workTime
-/*
-function calculateWorkTime() {
-    const checkinTime = document.querySelector('input[th\\:field="*{checkinTime}"]').value;
-    const checkoutTime = document.querySelector('input[th\\:field="*{checkoutTime}"]').value;
-    const breakTime = parseFloat(document.querySelector('input[th\\:field="*{breakTime}"]').value || 0);
-
-    if (!checkinTime || !checkoutTime || isNaN(breakTime)) {
-        alert("すべてのフィールドを入力してください。");
-        return;
-    }
-
-    const checkin = new Date(`1970-01-01T${checkinTime}`);
-    const checkout = new Date(`1970-01-01T${checkoutTime}`);
-    const totalMinutes = (checkout - checkin) / (1000 * 60) - (breakTime * 60);
-//create user
-if (token) {
-    fetch("http://localhost:8080/userui/createuser", {
-        method: "GET",  // hoặc POST
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-        }
-    })
-        .then(response => response.text())
-        .then(data => {
-            console.log(data);
-        })
-}
-
-if (token) {
-    fetch("http://localhost:8080/userui/editUser/{id}", {
-        method: "GET",  // hoặc POST
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-        }
-    })
-        .then(response => response.text())
-        .then(data => {
-            console.log(data);
-        })
-}
-function togglePasswordVisibility() {
-        const passwordField = document.getElementById("password");
-        const toggleIcon = document.getElementById("toggleIcon");
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            toggleIcon.classList.remove("fa-eye");
-            toggleIcon.classList.add("fa-eye-slash");
-        } else {
-            passwordField.type = "password";
-            toggleIcon.classList.remove("fa-eye-slash");
-            toggleIcon.classList.add("fa-eye");
-        }
-    }
-    if (totalMinutes < 0) {
-        alert("Please confirm your worktime");
-        return;
-    }
-
-    const totalWorkTime = totalMinutes / 60;
-    const workTime = Math.min(totalWorkTime, 8);
-    const overTime = Math.max(totalWorkTime - 8, 0);
-
-    document.getElementById("calculatedWorkTime").value = workTime.toFixed(2);
-    document.getElementById("calculatedOverTime").value = overTime.toFixed(2);
-    }
-*/
-function togglePasswordVisibility() {
+//Show password
+function myFunction() {
   var x = document.getElementById("password");
   if (x.type === "password") {
     x.type = "text";
@@ -231,3 +183,4 @@ function togglePasswordVisibility() {
     x.type = "password";
   }
 }
+
