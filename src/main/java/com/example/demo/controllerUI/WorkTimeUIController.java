@@ -174,7 +174,7 @@ public class WorkTimeUIController {
         model.addAttribute("tasks", tasks);
 
         //check task number
-        boolean isTasklimitReached = tasks.size() >= 7;
+        boolean isTasklimitReached = tasks.size() >= 5;
         model.addAttribute("isTaskLimitReached", isTasklimitReached);
 
         return "worktime/worktime-tasks";

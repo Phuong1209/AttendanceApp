@@ -1,6 +1,5 @@
-//Sidebar display
 document.addEventListener('DOMContentLoaded', () => {
-    // Select all <a> tags in the sidebar
+    // Sidebar link highlighting
     const links = document.querySelectorAll('.sidebar ul li > a');
     const currentPath = window.location.pathname; // Get current URL path
 
@@ -19,8 +18,29 @@ document.addEventListener('DOMContentLoaded', () => {
             event.currentTarget.classList.add('active');
         });
     });
+
+    // Download CSV button functionality
+    const downloadCsvButton = document.getElementById('downloadCsvButton');
+    if (downloadCsvButton) {
+        downloadCsvButton.addEventListener('click', () => {
+            // Send GET request to fetch the CSV file
+            fetch('/summary/summaryProjectByDepartment')
+                .then(response => response.blob())  // Get file as blob
+                .then(blob => {
+                    // Create URL for the CSV file
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'summaryProjectByDepartment.csv'; // File name for download
+                    document.body.appendChild(link);
+                    link.click(); // Simulate click to download the file
+                    document.body.removeChild(link);
+                })
+                .catch(error => console.error('Error downloading CSV:', error));
+        });
+    }
 });
 
+//Check multiple Selection
 const selectBtn = document.querySelector(".select-btn"),
     items = document.querySelectorAll(".item");
 
@@ -135,19 +155,23 @@ function exportDepartmentCSV() {
         });
 }
 
-document.getElementById('downloadCsvButton').addEventListener('click', function() {
+/*document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('downloadCsvButton').addEventListener('click', function() {
     // Gửi yêu cầu GET tới endpoint mà trả về file CSV
-    fetch('/summary/summaryProjectByDepartment')
-        .then(response => response.blob())  // Lấy file CSV dưới dạng blob
-        .then(blob => {
-            // Tạo URL cho file CSV
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'summaryProjectByDepartment.csv'; // Tên file CSV khi tải xuống
-            link.click(); // Mô phỏng hành động nhấn vào liên kết để tải file
-        })
-        .catch(error => console.error('Error downloading CSV:', error));
-});
+        fetch('/summary/summaryProjectByDepartment')
+            .then(response => response.blob())  // Lấy file CSV dưới dạng blob
+            .then(blob => {
+             // Tạo URL cho file CSV
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'summaryProjectByDepartment.csv'; // Tên file CSV khi tải xuống
+                document.body.appendChild(link);
+                link.click(); // Mô phỏng hành động nhấn vào liên kết để tải file
+                document.body.removeChild(link);
+                })
+                .catch(error => console.error('Error downloading CSV:', error));
+                });
+                });*/
 // Xử lý lỗi nếu có
 
 //Show password
