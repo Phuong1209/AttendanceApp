@@ -245,6 +245,7 @@ public class DepartmentService implements IDepartmentService {
         return summaries;
     }
     //Summarize Pj by department FOR UI
+/*
     public List<DepProjSummaryDTO> getDepProjSummary() {
         List<Department> departments = departmentRepository.findAll();
         List<DepProjSummaryDTO> summaries = new ArrayList<>();
@@ -303,6 +304,46 @@ public class DepartmentService implements IDepartmentService {
             }
             return summaries;
         }
+*/
+
+    public List<DepProjSummaryDTO> getDepProjSummary() {
+        List<Department> departments = departmentRepository.findAll();
+        List<DepProjSummaryDTO> summaries = new ArrayList<>();
+
+        for (Department department : departments) {
+            // Map to accumulate total time for each project within the department
+            Map<String, DepProjSummaryDTO> projectTotalTimeMap = new HashMap<>();
+
+            // For each user in the department, retrieve all their tasks and calculate total times per project
+            for (User user : department.getUsers()) {
+                for (WorkTime workTime : user.getWorkTimes()) {
+                    for (Task task : workTime.getTasks()) {
+                        Project project = task.getProject();
+                        if (project != null) {
+                            String projectCode = project.getCode();
+                            String projectName = project.getName();
+
+                            // Get or create a new DTO for this project
+                            DepProjSummaryDTO depProjSummaryDTO = projectTotalTimeMap.getOrDefault(
+                                    projectCode,
+                                    new DepProjSummaryDTO(department.getName(), projectCode, projectName, 0f)
+                            );
+
+                            // Update the total time
+                            depProjSummaryDTO.setTotalTime(depProjSummaryDTO.getTotalTime() + task.getTotalTime());
+                            projectTotalTimeMap.put(projectCode, depProjSummaryDTO);
+                        }
+                    }
+                }
+            }
+
+            // Add all unique project summaries for the department to the final summaries list
+            summaries.addAll(projectTotalTimeMap.values());
+        }
+
+        return summaries;
+    }
+
 
 
     // Phương thức xuất CSV cho DepartmentSummaryDTO
