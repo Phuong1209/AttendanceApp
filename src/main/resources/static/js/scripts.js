@@ -59,20 +59,23 @@ function exportDepartmentCSV() {
             console.error('There was an error with the fetch operation:', error);
         });
 }
-
-document.getElementById('downloadCsvButton').addEventListener('click', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('downloadCsvButton').addEventListener('click', function() {
     // Gửi yêu cầu GET tới endpoint mà trả về file CSV
-    fetch('/summary/summaryProjectByDepartment')
-        .then(response => response.blob())  // Lấy file CSV dưới dạng blob
-        .then(blob => {
-            // Tạo URL cho file CSV
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'summaryProjectByDepartment.csv'; // Tên file CSV khi tải xuống
-            link.click(); // Mô phỏng hành động nhấn vào liên kết để tải file
-        })
-        .catch(error => console.error('Error downloading CSV:', error));
-});
+        fetch('/summary/summaryProjectByDepartment')
+            .then(response => response.blob())  // Lấy file CSV dưới dạng blob
+            .then(blob => {
+             // Tạo URL cho file CSV
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'summaryProjectByDepartment.csv'; // Tên file CSV khi tải xuống
+                document.body.appendChild(link);
+                link.click(); // Mô phỏng hành động nhấn vào liên kết để tải file
+                document.body.removeChild(link);
+                })
+                .catch(error => console.error('Error downloading CSV:', error));
+                });
+                });
 // Xử lý lỗi nếu có
 
 
