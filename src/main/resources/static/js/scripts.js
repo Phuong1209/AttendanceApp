@@ -220,7 +220,9 @@ function togglePasswordVisibility() {
     document.getElementById("calculatedOverTime").value = overTime.toFixed(2);
     }
 */
-function togglePasswordVisibility() {
+
+//Show password
+function myFunction() {
   var x = document.getElementById("password");
   if (x.type === "password") {
     x.type = "text";
@@ -228,3 +230,4 @@ function togglePasswordVisibility() {
     x.type = "password";
   }
 }
+

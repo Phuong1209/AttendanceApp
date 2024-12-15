@@ -40,6 +40,7 @@ public class SummaryUIController {
 
         return "summary/summary-lists";
     }
+
     @GetMapping({"/summaryProjectByDepartment"})
     public void generateCSV(HttpServletResponse response) throws IOException {
         List<DepartmentSummaryDTO3> summaries = departmentService.getSummaryByDepartment3();

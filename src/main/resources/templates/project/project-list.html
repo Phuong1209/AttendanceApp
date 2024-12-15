@@ -31,7 +31,7 @@
                 <td>
                     <a class="btn-blue" th:href="@{/projects/{projectId}/edit(projectId=${project.id})}">修正</a>
                     <a class="btn-red" th:href="@{/projects/{projectId}/delete(projectId=${project.id})}"
-                       onclick="return confirm('本当にこのプロジェクトを削除しますか？')">削除</a>
+                       onclick="return confirm('このプロジェクトを削除してもよろしいでしょうか？')">削除</a>
 <!--                    <a class="btn-red"-->
 <!--                       onclick="confirmDeletion(${project.id})" href="#">削除</a>-->
                 </td>

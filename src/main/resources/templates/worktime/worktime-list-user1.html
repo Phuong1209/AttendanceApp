@@ -9,7 +9,7 @@
     <div th:replace="~{layout :: top_menu}"></div>
     <div class="main_container">
         <h1>勤怠時間管理</h1>
-        <p><strong th:text="'User: ' + ${user.fullName}"></strong></p>
+        <p><strong th:text="'ユーザ名: ' + ${user.fullName}"></strong></p>
         <br>
         <a class="btn-blue" th:href="@{/worktimes/create}">新規作成</a>
         <table class="list-table">
