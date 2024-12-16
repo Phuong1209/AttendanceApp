@@ -46,6 +46,36 @@ public class WorkTimeUIController {
 
     //Show user's workTime
     @GetMapping("/user{userId}")
+    public String listUserWorkTime2(@PathVariable("userId") Long userId, Model model) {
+        //add user to model
+        User user = userService.findById(userId).orElse(null);
+        model.addAttribute("user", user);
+
+        // Get the current date
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        int month = today.getMonthValue();
+
+        //add workTime to model
+        Iterable<WorkTimeDTO> workTimes = workTimeService.getWorkTimeForUserAndMonth(userId, year, month);
+        model.addAttribute("workTimes", workTimes);
+
+        // Add attributes to the model for rendering
+        model.addAttribute("currentYear", year);
+        model.addAttribute("currentMonth", month);
+        model.addAttribute("workTimes", workTimes);
+
+        // Add navigation buttons for previous and next months
+        model.addAttribute("previousMonth", month == 1 ? 12 : month - 1);
+        model.addAttribute("previousYear", month == 1 ? year - 1 : year);
+        model.addAttribute("nextMonth", month == 12 ? 1 : month + 1);
+        model.addAttribute("nextYear", month == 12 ? year + 1 : year);
+
+        return "worktime/worktime-list-user";
+    }
+
+    /*//Show user's workTime
+    @GetMapping("/user{userId}")
     public String listUserWorkTime(@PathVariable("userId") Long userId, Model model) {
         //add user to model
         User user = userService.findById(userId).orElse(null);
@@ -55,7 +85,7 @@ public class WorkTimeUIController {
         model.addAttribute("workTimes", workTimes);
 
         return "worktime/worktime-list-user1";
-    }
+    }*/
 
     //Show Create form
     @GetMapping("/create")
@@ -259,35 +289,7 @@ public class WorkTimeUIController {
 
 }
 
-/*    //Show user's workTime
-    @GetMapping("/user{userId}")
-    public String listUserWorkTime(@PathVariable("userId") Long userId, Model model) {
-        //add user to model
-        User user = userService.findById(userId).orElse(null);
-        model.addAttribute("user", user);
 
-        // Get the current date
-        LocalDate today = LocalDate.now();
-        int year = today.getYear();
-        int month = today.getMonthValue();
-
-        //add workTime to model
-        Iterable<WorkTimeDTO> workTimes = workTimeService.getWorkTimeForUserAndMonth(userId, year, month);
-        model.addAttribute("workTimes", workTimes);
-
-        // Add attributes to the model for rendering
-        model.addAttribute("currentYear", year);
-        model.addAttribute("currentMonth", month);
-        model.addAttribute("workTimes", workTimes);
-
-        // Add navigation buttons for previous and next months
-        model.addAttribute("previousMonth", month == 1 ? 12 : month - 1);
-        model.addAttribute("previousYear", month == 1 ? year - 1 : year);
-        model.addAttribute("nextMonth", month == 12 ? 1 : month + 1);
-        model.addAttribute("nextYear", month == 12 ? year + 1 : year);
-
-        return "worktime/worktime-list-user";
-    }*/
 
 /*    // Admin Path - Show List of Users
     @GetMapping("/admin")

@@ -142,10 +142,8 @@ public class WorkTimeService implements IWorkTimeService {
         }
     }
 
-}
-
-// Get Calendar
-    /*@Transactional
+    // Get Calendar
+    @Transactional
     @Override
     public List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long userId, int year, int month) {
         LocalDate startOfMonth = LocalDate.of(year, month, 1);
@@ -168,4 +166,8 @@ public class WorkTimeService implements IWorkTimeService {
         }
 
         return allDays;
-    }*/
+    }
+
+
+}
+
