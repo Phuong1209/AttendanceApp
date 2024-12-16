@@ -246,8 +246,23 @@ public class WorkTimeUIController {
         model.addAttribute("projects", projects);
 
         //show list jobtype
-        List<JobType> jobTypes = jobTypeRepository.findAll();
-        model.addAttribute("jobTypes", jobTypes);
+        // Get logged-in user
+        String username = SecurityUtil.getSessionUser();
+        User loggedInUser = userService.findByUserName(username);
+
+        // Get list of departments for the logged-in user
+        List<Department> departments = userService.getDepartmentByUser(loggedInUser.getId());
+
+        // Combine JobTypes from all departments
+        Set<JobType> combinedJobTypes = new HashSet<>();
+        for (Department department : departments) {
+            Set<JobType> jobTypes = departmentService.findJobTypesByDepartment(department.getId());
+            combinedJobTypes.addAll(jobTypes);
+        }
+
+        // Convert the set to a list (if required by your UI)
+        List<JobType> jobTypesList = new ArrayList<>(combinedJobTypes);
+        model.addAttribute("jobTypes", jobTypesList);
 
         return "task/task-edit";
     }
