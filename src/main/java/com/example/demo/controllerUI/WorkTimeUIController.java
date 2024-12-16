@@ -6,6 +6,7 @@ import com.example.demo.model.*;
 import com.example.demo.repository.IJobTypeRepository;
 import com.example.demo.repository.IProjectRepository;
 import com.example.demo.security.SecurityUtil;
+import com.example.demo.service.Department.IDepartmentService;
 import com.example.demo.service.Task.TaskService;
 import com.example.demo.service.User.UserService;
 import com.example.demo.service.WorkTime.IWorkTimeService;
@@ -17,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/worktimes")
@@ -35,6 +33,8 @@ public class WorkTimeUIController {
     private IJobTypeRepository jobTypeRepository;
     @Autowired
     private IProjectRepository projectRepository;
+    @Autowired
+    private IDepartmentService departmentService;
 
     //Show all workTime
     @GetMapping({"","/"})
@@ -183,7 +183,7 @@ public class WorkTimeUIController {
     // Show Create Task Form
     @GetMapping("{workTimeId}/tasks/create")
     public String createTaskForm(@PathVariable("workTimeId") Long workTimeId,
-                                 Model model){
+                                 Model model) {
         model.addAttribute("workTimeId", workTimeId);
 
         WorkTimeDTO workTimeDto = workTimeService.findById(workTimeId);
@@ -197,8 +197,23 @@ public class WorkTimeUIController {
         model.addAttribute("projects", projects);
 
         //show list jobtype
-        List<JobType> jobTypes = jobTypeRepository.findAll();
-        model.addAttribute("jobTypes", jobTypes);
+        // Get logged-in user
+        String username = SecurityUtil.getSessionUser();
+        User loggedInUser = userService.findByUserName(username);
+
+        // Get list of departments for the logged-in user
+        List<Department> departments = userService.getDepartmentByUser(loggedInUser.getId());
+
+        // Combine JobTypes from all departments
+        Set<JobType> combinedJobTypes = new HashSet<>();
+        for (Department department : departments) {
+            Set<JobType> jobTypes = departmentService.findJobTypesByDepartment(department.getId());
+            combinedJobTypes.addAll(jobTypes);
+        }
+
+        // Convert the set to a list (if required by your UI)
+        List<JobType> jobTypesList = new ArrayList<>(combinedJobTypes);
+        model.addAttribute("jobTypes", jobTypesList);
 
         return "task/task-create";
     }
@@ -231,8 +246,23 @@ public class WorkTimeUIController {
         model.addAttribute("projects", projects);
 
         //show list jobtype
-        List<JobType> jobTypes = jobTypeRepository.findAll();
-        model.addAttribute("jobTypes", jobTypes);
+        // Get logged-in user
+        String username = SecurityUtil.getSessionUser();
+        User loggedInUser = userService.findByUserName(username);
+
+        // Get list of departments for the logged-in user
+        List<Department> departments = userService.getDepartmentByUser(loggedInUser.getId());
+
+        // Combine JobTypes from all departments
+        Set<JobType> combinedJobTypes = new HashSet<>();
+        for (Department department : departments) {
+            Set<JobType> jobTypes = departmentService.findJobTypesByDepartment(department.getId());
+            combinedJobTypes.addAll(jobTypes);
+        }
+
+        // Convert the set to a list (if required by your UI)
+        List<JobType> jobTypesList = new ArrayList<>(combinedJobTypes);
+        model.addAttribute("jobTypes", jobTypesList);
 
         return "task/task-edit";
     }
