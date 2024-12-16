@@ -26,7 +26,7 @@ public interface IWorkTimeService {
     void delete(long workTimeId);
 
     //Calendar
-    //List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long id, int year, int month);
+    List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long id, int year, int month);
 
     //show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);
