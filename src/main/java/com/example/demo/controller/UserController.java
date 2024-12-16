@@ -68,7 +68,6 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-
 /*    //Tạm ẩn để test UI
     @GetMapping("/myInfo")
     public ApiResponse<UserResponse> getMyInfo(){
@@ -77,12 +76,10 @@ public class UserController {
                 .build();
     }*/
 
-
     //show list
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok().body(userService.getAllUser());
-
     }
 
     //show by Id
@@ -221,7 +218,6 @@ public class UserController {
                 if (optionalDepartment.isPresent()) {
                     newDepartments.add(optionalDepartment.get());
                 } else {
-                        // ポジションが存在しない場合の処理（必要ならエラーを返す）
                         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                     }
 
