@@ -1,3 +1,4 @@
+//Thanh Phuong & Mai Huong
 package com.example.demo.dto;
 
 import lombok.Builder;
@@ -26,7 +27,7 @@ public class WorkTimeDTO {
     private UserDTO user;
     private Set<TaskDTO> tasks;
 
-    // Added fields for the attendance sheet
+    // Added fields for the attendance sheet (MaiHuong)
     private boolean isHoliday;
     private boolean isWeekend;
     private boolean isFuture;

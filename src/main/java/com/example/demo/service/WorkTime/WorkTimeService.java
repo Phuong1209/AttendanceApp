@@ -1,6 +1,6 @@
+//Thanh Phuong & Mai Huong
 package com.example.demo.service.WorkTime;
 
-import com.example.demo.dto.JobTypeDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.WorkTimeDTO;
 import com.example.demo.model.*;
@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -142,7 +141,7 @@ public class WorkTimeService implements IWorkTimeService {
         }
     }
 
-    // Get Calendar
+    //Get Calendar (Mai Huong)
     @Transactional
     @Override
     public List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long userId, int year, int month) {

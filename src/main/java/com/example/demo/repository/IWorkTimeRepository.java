@@ -1,4 +1,4 @@
-//Code P
+//Thanh Phuong & Mai Huong
 package com.example.demo.repository;
 
 import com.example.demo.model.Task;
@@ -33,7 +33,7 @@ public interface IWorkTimeRepository extends JpaRepository<WorkTime, Long> {
     //validate date
     boolean existsByUser_IdAndDate(Long userId, LocalDate date);
 
-/*Code TA
+/*Tuan Anh
     @Query("SELECT w FROM WorkingTime w WHERE w.user_id = :userId AND w.date = :date")
     Optional<WorkingTime> findByUserIdAndDate(@Param("userId") Long userId, @Param("date") LocalDate date);
 
@@ -59,7 +59,7 @@ public interface IWorkTimeRepository extends JpaRepository<WorkTime, Long> {
 }
 
 
-//code TA
+//Tuan Anh
 package com.example.demo.repository;
 
 import com.example.demo.model.User;

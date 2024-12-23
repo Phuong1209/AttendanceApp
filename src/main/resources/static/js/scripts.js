@@ -1,3 +1,4 @@
+//Thu Phuong & Thanh Phuong
 document.addEventListener('DOMContentLoaded', () => {
     // Sidebar link highlighting
     const links = document.querySelectorAll('.sidebar ul li > a');
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-//Check multiple Selection
+//Check multiple selection
 const selectBtn = document.querySelector(".select-btn"),
     items = document.querySelectorAll(".item");
 

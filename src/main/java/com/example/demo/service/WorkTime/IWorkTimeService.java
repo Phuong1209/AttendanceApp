@@ -1,3 +1,4 @@
+//Thanh Phuong & Mai Huong
 package com.example.demo.service.WorkTime;
 
 import com.example.demo.dto.DepartmentDTO;
@@ -25,22 +26,19 @@ public interface IWorkTimeService {
     void updateWorkTime(WorkTimeDTO workTimeDto);
     void delete(long workTimeId);
 
-    //Calendar
-    List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long id, int year, int month);
-
     //show list task
     Set<Task> findTasksByWorkTime(Long workTimeId);
-
-    //validate
-    boolean existsByUserAndDate(Long userId, LocalDate date);
 
     //calculate
     Map<String, Double> calculateWorkTime(LocalTime checkinTime, LocalTime checkoutTime, Double breakTime);
 
-     /*//show list task
-    Set<Task> findTasksByWorkTime(Long workTimeId);*/
+    //Calendar (Mai Huong)
+    List<WorkTimeDTO> getWorkTimeForUserAndMonth(Long id, int year, int month);
 
-    /*Code TA
+    //validate (Mai Huong)
+    boolean existsByUserAndDate(Long userId, LocalDate date);
+
+    /*Tuan Anh
     WorkTime checkin(Long userId, LocalDateTime checkinTime);      // Check-in user
     WorkTime checkout(Long userId, LocalDateTime checkoutTime);    // Check-out user
     WorkTime updateBreaktime(Long userId, Float breaktimeHours); // Set/update breaktime
